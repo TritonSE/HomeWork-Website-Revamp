@@ -20,22 +20,17 @@
     "mongoose": "^8.8.3"
   },
   "devDependencies": {
-    "@eslint/compat": "^1.2.4",
-    "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.17.0",
     "@types/express": "^5.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.1",
-    "@typescript-eslint/parser": "^8.18.1",
-    "eslint": "^9.17.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-react": "^7.37.2",
     "globals": "^15.14.0",
     "husky": "^9.1.7",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.18.1"
+    "typescript": "^5.7.2"
   }
 }
