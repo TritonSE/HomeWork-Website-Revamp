@@ -2,7 +2,8 @@ import { json } from "body-parser";
 import express from "express";
 import mongoose from "mongoose";
 
-import { mongoUri, port } from "./config";
+// import { mongoUri, port } from "./config";
+import { port } from "./config";
 import articleRoutes from "./routes/article";
 
 // Initialize Express App

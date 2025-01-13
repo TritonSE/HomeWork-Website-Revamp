@@ -5,6 +5,14 @@ import createHttpError from "http-errors";
 import ArticleModel from "../models/article";
 import validationErrorParser from "../util/validationErrorParser";
 
+type ArticleUpdate = {
+  header: string;
+  dateCreated: Date;
+  author: string;
+  body?: string | null;
+  thumbnail?: string | null;
+};
+
 export const createArticle: RequestHandler = async (req, res, next) => {
   const errors = validationResult(req);
   try {
@@ -32,7 +40,8 @@ export const updateArticle: RequestHandler = async (req, res, next) => {
     validationErrorParser(errors);
 
     // Returns the updated article
-    const article = await ArticleModel.findByIdAndUpdate(id, req.body, {
+    const reqBody : ArticleUpdate = req.body;
+    const article = await ArticleModel.findByIdAndUpdate(id, reqBody, {
       new: true,
       runValidators: true,
     });

@@ -16,7 +16,7 @@ const validationErrorParser = (errors: Result<ValidationError>) => {
 
     // parse through errors returned by the validator and append them to the error string
     for (const error of errors.array()) {
-      errorString += error.msg + " ";
+      errorString += String(error.msg) + " ";
     }
 
     // trim removes the trailing space created in the for loop
