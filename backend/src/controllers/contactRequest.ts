@@ -1,5 +1,8 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import { validationResult } from "express-validator";
 import nodemailer from "nodemailer";
+
+import validationErrorParser from "../../src/util/validationErrorParser";
 
 export type ContactRequest = {
   fullName: string;
@@ -8,7 +11,12 @@ export type ContactRequest = {
   message?: string;
 };
 
-export const handleContactRequest = (req: Request, res: Response): void => {
+export const handleContactRequest = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  const errors = validationResult(req);
   const {
     fullName,
     email,
@@ -17,10 +25,11 @@ export const handleContactRequest = (req: Request, res: Response): void => {
   } = req.body as ContactRequest;
 
   console.log("Contact request received:", { fullName, email, phoneNumber, message });
+  const EMAIL_SUBJECT = `Contact Request from ${fullName}`;
+  const EMAIL_BODY = `Name: ${fullName}\nEmail: ${email}\nPhone: ${phoneNumber}\nMessage: ${message}`;
 
-  const sendContactEmail = async (subject: string, message: string) => {
-    const EMAIL_SUBJECT = `Contact Request from ${subject}`;
-    const EMAIL_BODY = `Name: ${fullName}\nEmail: ${email}\nPhone: ${phoneNumber}\nMessage: ${message}`;
+  try {
+    validationErrorParser(errors);
     const transporter = nodemailer.createTransport({
       service: "Gmail",
       host: "smtp.gmail.com",
@@ -36,13 +45,11 @@ export const handleContactRequest = (req: Request, res: Response): void => {
       subject: EMAIL_SUBJECT,
       text: EMAIL_BODY,
     };
-    try {
-      await transporter.sendMail(mailOptions);
-      console.log("Contact email sent successfully");
-    } catch (error) {
-      console.error("Error sending email:", error);
-    }
-  };
-  sendContactEmail(fullName, message);
-  res.status(200).json({ message: "Contact request submitted successfully." });
+    await transporter.sendMail(mailOptions);
+    console.log("Contact email sent successfully");
+    res.status(200).json({ message: "Contact request submitted successfully." });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    next(error);
+  }
 };

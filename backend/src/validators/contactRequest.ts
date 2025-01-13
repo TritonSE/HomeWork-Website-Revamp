@@ -1,22 +1,44 @@
-import express, { Request, Response, NextFunction } from "express";
-import { ContactRequest } from "../controllers/contactRequest";
-import { ContactError } from "../errors/contact";
-export const validateContactRequest = (req: Request, res: Response, next: NextFunction) => {
-  const { fullName, email, phoneNumber } = req.body as ContactRequest;
+import { body } from "express-validator";
 
-  if (!fullName || !email || !phoneNumber) {
-    throw ContactError.INVALID_FORM;
-  }
+const makeFullNameValidator = () =>
+  body("fullName")
+    .exists()
+    .withMessage("Full name is required")
+    .bail()
+    .isString()
+    .withMessage("Full name must be a string")
+    .bail()
+    .notEmpty()
+    .withMessage("Full name cannot be empty");
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    throw ContactError.INVALID_EMAIL;
-  }
+const makeEmailValidator = () =>
+  body("email")
+    .exists()
+    .withMessage("Email is required")
+    .bail()
+    .isString()
+    .withMessage("Email must be a string")
+    .bail()
+    .isEmail()
+    .withMessage("Invalid email format");
 
-  const phoneRegex = /^\d{10,15}$/;
-  if (!phoneRegex.test(phoneNumber)) {
-    throw ContactError.INVALID_PHONE;
-  }
+const makePhoneNumberValidator = () =>
+  body("phoneNumber")
+    .exists()
+    .withMessage("Phone number is required")
+    .bail()
+    .isString()
+    .withMessage("Phone number must be a string")
+    .bail()
+    .matches(/^\d{10,15}$/)
+    .withMessage("Phone number must be between 10 and 15 digits");
 
-  next();
-};
+const makeMessageValidator = () =>
+  body("message").optional().isString().withMessage("Message must be a string");
+
+export const validateContactRequest = [
+  makeFullNameValidator(),
+  makeEmailValidator(),
+  makePhoneNumberValidator(),
+  makeMessageValidator(),
+];
