@@ -12,7 +12,7 @@ const app = express();
 // Provide json body-parser middleware
 app.use(json());
 
-app.use("/api/article", articleRoutes);
+app.use("/api/articles", articleRoutes);
 
 mongoose
   .connect("mongodb://localhost:27017")
