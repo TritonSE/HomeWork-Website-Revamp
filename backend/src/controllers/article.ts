@@ -40,7 +40,7 @@ export const updateArticle: RequestHandler = async (req, res, next) => {
     validationErrorParser(errors);
 
     // Returns the updated article
-    const reqBody : ArticleUpdate = req.body;
+    const reqBody : ArticleUpdate = req.body as ArticleUpdate;
     const article = await ArticleModel.findByIdAndUpdate(id, reqBody, {
       new: true,
       runValidators: true,
