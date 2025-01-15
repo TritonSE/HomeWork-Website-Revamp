@@ -2,8 +2,7 @@ import { json } from "body-parser";
 import express from "express";
 import mongoose from "mongoose";
 
-// import { mongoUri, port } from "./config";
-import { port } from "./config";
+import { mongoUri, port } from "./config";
 import articleRoutes from "./routes/article";
 
 // Initialize Express App
@@ -15,8 +14,7 @@ app.use(json());
 app.use("/api/articles", articleRoutes);
 
 mongoose
-  .connect("mongodb://localhost:27017")
-  // .connect(mongoUri)
+  .connect(mongoUri)
   .then(() => {
     console.log("Mongoose connected!");
     // Tell app to listen on our port environment variable
