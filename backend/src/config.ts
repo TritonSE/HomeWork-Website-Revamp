@@ -5,7 +5,7 @@ import { InternalError } from "./errors";
 // Retrieve .env variables
 dotenv.config();
 
-//Function to check if env variable is defined, throws variable if not
+//Function to check if env variable is defined, throws error if not
 function throwIfUndefined(envVar: string | undefined, error: InternalError) {
   if (!envVar) throw error;
   return envVar;

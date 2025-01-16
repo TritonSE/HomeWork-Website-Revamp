@@ -20,7 +20,7 @@ const verifyAuthToken = async (req: RequestWithUserId, res: Response, next: Next
   const authHeader = req.headers.authorization;
   const token = authHeader?.startsWith("Bearer") ? authHeader.split(" ")[1] : null;
 
-  //Throws error if no token is in request header
+  //Throws error if token is not in request header
   if (!token) {
     res
       .status(AuthError.TOKEN_NOT_IN_HEADER.status)
