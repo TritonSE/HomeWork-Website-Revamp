@@ -1,14 +1,27 @@
 import { json } from "body-parser";
 import express from "express";
+import mongoose from "mongoose";
 
-import { port } from "./config";
 import { errorHandler } from "./errors/handler";
 import contactRoute from "./routes/contactRequest";
+import { mongoUri, port } from "./config";
+import articleRoutes from "./routes/article";
+
+// Initialize Express App
 const app = express();
 
 app.use(json());
 app.use("/api", contactRoute);
+app.use("/api/articles", articleRoutes);
 app.use(errorHandler);
-app.listen(port, () => {
-  console.log(`> Listening on port ${port}`);
-});
+mongoose
+  .connect(mongoUri)
+  .then(() => {
+    console.log("Mongoose connected!");
+    // Tell app to listen on our port environment variable
+    app.listen(port, () => {
+      console.log(`> Listening on port ${port}`);
+    });
+  })
+  .catch(console.error);
+
