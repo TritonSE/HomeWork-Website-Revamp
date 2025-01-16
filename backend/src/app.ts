@@ -1,7 +1,9 @@
 import { json } from "body-parser";
 import express from "express";
+import mongoose from "mongoose";
 
-import { port } from "./config";
+import { mongoUri, port } from "./config";
+import articleRoutes from "./routes/article";
 
 // Initialize Express App
 const app = express();
@@ -9,7 +11,15 @@ const app = express();
 // Provide json body-parser middleware
 app.use(json());
 
-// Tell app to listen on our port environment variable
-app.listen(port, () => {
-  console.log(`> Listening on port ${port}`);
-});
+app.use("/api/articles", articleRoutes);
+
+mongoose
+  .connect(mongoUri)
+  .then(() => {
+    console.log("Mongoose connected!");
+    // Tell app to listen on our port environment variable
+    app.listen(port, () => {
+      console.log(`> Listening on port ${port}`);
+    });
+  })
+  .catch(console.error);
