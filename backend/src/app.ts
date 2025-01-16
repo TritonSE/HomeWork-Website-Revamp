@@ -1,11 +1,10 @@
 import { json } from "body-parser";
 import express from "express";
 import mongoose from "mongoose";
-
-import { errorHandler } from "./errors/handler";
-import contactRoute from "./routes/contactRequest";
 import { mongoUri, port } from "./config";
+import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
+import contactRoute from "./routes/contactRequest";
 
 // Initialize Express App
 const app = express();
@@ -24,4 +23,3 @@ mongoose
     });
   })
   .catch(console.error);
-
