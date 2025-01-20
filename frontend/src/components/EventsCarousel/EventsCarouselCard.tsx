@@ -20,7 +20,7 @@ export const EventsCarouselCard: React.FC<EventProps> = ({ event }) => {
   return (
     <div
       className="
-            flex-shrink-0 w-3/4 sm:w-2/5 h-full p-4 pt-5 pb-5 
+            flex-shrink-0 sm:w-2/5 w-full h-full p-4 pt-5 pb-5 
             rounded-lg border border-gray-400 shadow-md 
             snap-normal snap-start"
     >
