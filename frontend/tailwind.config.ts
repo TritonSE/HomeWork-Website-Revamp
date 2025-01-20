@@ -13,8 +13,8 @@ export default {
         foreground: "var(--foreground)",
       },
       fontFamily: {
-        golos: ['"GolosText"', 'sans-serif'],
-        manrope: ['"Manrope"', 'sans-serif'],
+        golos: ['"GolosText"', "sans-serif"],
+        manrope: ['"Manrope"', "sans-serif"],
       },
     },
   },
