@@ -25,7 +25,7 @@ export const EventsCarouselCard: React.FC<EventProps> = ({ event }) => {
             snap-normal snap-start"
     >
       <div className="flex flex-col gap-2">
-        <img src={event.thumbnail} alt={event.thumbnailAlt ?? event.header}/>
+        <Image src={event.thumbnail} alt={event.thumbnailAlt ?? event.header} layout="responsive" width={8} height={16}/>
         <h3 className="font-golos md:text-lg text-sm font-medium">{event.header}</h3>
         <p className="font-manrope md:text-sm text-xs text-gray-400">{event.dateCreated}</p>
         <p className="font-golos md:text-sm text-xs font-light line-clamp-3">{event.body}</p>
