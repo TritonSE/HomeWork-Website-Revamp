@@ -80,7 +80,7 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ children }) => {
 
   return (
     <div className={`flex flex-row ${carouselFormat}`}>
-      <div className="flex flex-col justify-center w-4/5 sm:w-1/2">
+      <div className="flex flex-col justify-center items-end w-5/6 sm:w-1/2">
         <Image
           src={leftArrow as StaticImport}
           alt="Event carousel left arrow"
@@ -97,7 +97,7 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ children }) => {
       >
         {children}
       </div>
-      <div className="flex flex-col justify-center w-4/5 sm:w-1/2">
+      <div className="flex flex-col justify-center items-start w-5/6 sm:w-1/2">
         <Image
           src={rightArrow as StaticImport}
           alt="Event carousel right arrow"
