@@ -13,6 +13,17 @@ type EventsCarouselProps = {
     | React.ReactElement<typeof EventsCarouselCard>[];
 };
 
+/**
+ * Carousel to house news and events cards
+ * 
+ * Example usage:
+ * <EventsCarousel>
+        <EventsCarouselCard key="1" event={event1} />
+        <EventsCarouselCard key="2" event={event1} />
+        <EventsCarouselCard key="3" event={event1} />
+        <EventsCarouselCard key="4" event={event1} />
+    </EventsCarousel>
+ */
 export const EventsCarousel: React.FC<EventsCarouselProps> = ({ children }) => {
   const carouselRef = useRef<HTMLDivElement>(null);
 

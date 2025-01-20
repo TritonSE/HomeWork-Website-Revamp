@@ -16,6 +16,9 @@ type EventProps = {
   event: Event;
 };
 
+/**
+ * Card to display event information in the EventsCarousel component
+ */
 export const EventsCarouselCard: React.FC<EventProps> = ({ event }) => {
   return (
     <div
@@ -25,7 +28,13 @@ export const EventsCarouselCard: React.FC<EventProps> = ({ event }) => {
             snap-normal snap-start"
     >
       <div className="flex flex-col gap-2">
-        <Image src={event.thumbnail} alt={event.thumbnailAlt ?? event.header} layout="responsive" width={8} height={16}/>
+        <Image
+          src={event.thumbnail}
+          alt={event.thumbnailAlt ?? event.header}
+          layout="responsive"
+          width={8}
+          height={16}
+        />
         <h3 className="font-golos md:text-lg text-sm font-medium">{event.header}</h3>
         <p className="font-manrope md:text-sm text-xs text-gray-400">{event.dateCreated}</p>
         <p className="font-golos md:text-sm text-xs font-light line-clamp-3">{event.body}</p>
