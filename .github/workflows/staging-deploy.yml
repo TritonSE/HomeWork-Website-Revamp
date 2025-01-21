@@ -10,6 +10,5 @@ jobs:
     uses: ./.github/workflows/build-and-deploy.yml
     with:
       environment: Staging
-      firebaseProjectId: homework-dev-445619
       firebaseHostingChannelId: live
     secrets: inherit

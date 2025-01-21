@@ -9,5 +9,4 @@ jobs:
     uses: ./.github/workflows/build-and-deploy.yml
     with:
       environment: Preview
-      firebaseProjectId: homework-dev-445619
     secrets: inherit
