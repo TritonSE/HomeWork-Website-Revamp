@@ -18,14 +18,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Create Backend .env file
-        run: cd backend && touch .env && \
-            echo PORT=${{secrets.PORT}} >> .env && \
-            echo MONGO_URI=${{secrets.MONGO_URI}} >> .env && \
-            echo SERVICE_ACCOUNT_KEY=${{secrets.SERVICE_ACCOUNT_KEY}} >> .env && \
-            echo EMAIL=${{secrets.EMAIL}} >> .env && \
+        run: | 
+            cd backend 
+            touch .env
+            echo PORT=${{secrets.PORT}} >> .env
+            echo MONGO_URI=${{secrets.MONGO_URI}} >> .env
+            echo SERVICE_ACCOUNT_KEY=${{secrets.SERVICE_ACCOUNT_KEY}} >> .env
+            echo EMAIL=${{secrets.EMAIL}} >> .env
             echo EMAIL_PASSWORD=${{secrets.EMAIL_PASSWORD}} >> .env
       - name: Create Frontend .env file
-        run: cd frontend && touch .env #&& do stuff
+        run: |
+            cd frontend 
+            touch .env 
       - name: Build Backend
         run: cd backend && npm run build
       - name: Build Frontend
