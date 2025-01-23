@@ -18,10 +18,12 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "express-validator": "^7.2.1",
-    "mongoose": "^8.9.5"
+    "mongoose": "^8.9.5",
+    "nodemailer": "^6.9.16"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/nodemailer": "^6.4.17",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
     "eslint": "^8.57.1",
