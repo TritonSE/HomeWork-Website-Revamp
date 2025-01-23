@@ -18,7 +18,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "express-validator": "^7.2.1",
-    "mongoose": "^8.8.3"
+    "mongoose": "^8.9.5"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
