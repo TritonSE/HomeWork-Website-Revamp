@@ -4,6 +4,7 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "nodemon src/app.ts",
+    "build": "npm ci && tsc && tsc-alias",
     "test": "echo \"Error: no test specified\" && exit 1",
     "check-git-hooks": "cd .. && node .secret-scan/secret-scan.js -- --check-git-hooks",
     "format": "npm run check-git-hooks && prettier --write .",
@@ -18,6 +19,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "express-validator": "^7.2.1",
+    "firebase-functions": "^6.2.0",
     "mongoose": "^8.9.5"
   },
   "devDependencies": {
@@ -32,6 +34,7 @@
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
     "typescript": "^5.7.2"
   }
 }

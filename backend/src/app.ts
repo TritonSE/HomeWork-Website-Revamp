@@ -1,5 +1,6 @@
 import { json } from "body-parser";
 import express from "express";
+import { onRequest } from "firebase-functions/v2/https";
 import mongoose from "mongoose";
 
 import { mongoUri, port } from "./config";
@@ -23,3 +24,5 @@ mongoose
     });
   })
   .catch(console.error);
+
+export const backend = onRequest({ region: "us-west1" }, app);
