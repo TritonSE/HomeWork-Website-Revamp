@@ -93,7 +93,7 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ children }) => {
         className="
                 flex flex-row gap-5 
                 mr-5 ml-5 
-                overflow-x-auto scroll-smooth snap-x snap-mandatory"
+                overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hidden"
       >
         {children}
       </div>
