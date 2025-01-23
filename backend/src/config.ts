@@ -20,5 +20,8 @@ const serviceAccountKey = throwIfUndefined(
   InternalError.NO_SERVICE_ACCOUNT_KEY,
 );
 
-export { port };
 export { serviceAccountKey };
+if (!process.env.MONGO_URI) throw InternalError.NO_MONGO_URI;
+const mongoUri = process.env.MONGO_URI;
+
+export { port, mongoUri };
