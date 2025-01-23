@@ -6,6 +6,8 @@ import createHttpError from "http-errors";
  * added to a string and that string is used as the error message for the HTTP
  * error.
  *
+ * From the TSE onboarding repo (https://github.com/TritonSE/onboarding)
+ *
  * @param errors the validation result provided by express validator middleware
  */
 const validationErrorParser = (errors: Result<ValidationError>) => {

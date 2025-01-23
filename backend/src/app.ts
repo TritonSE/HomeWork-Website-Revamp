@@ -3,6 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 
 import { mongoUri, port } from "./config";
+import articleRoutes from "./routes/article";
 import subscriptionRoutes from "./routes/subscription";
 
 // Initialize Express App
@@ -12,6 +13,7 @@ const app = express();
 app.use(json());
 
 app.use("/api/subscriptions", subscriptionRoutes);
+app.use("/api/articles", articleRoutes);
 
 mongoose
   .connect(mongoUri)
