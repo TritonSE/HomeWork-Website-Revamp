@@ -5,10 +5,10 @@ import { mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
 import contactRoute from "./routes/contactRequest";
-
+import cors from "cors";
 // Initialize Express App
 const app = express();
-
+app.use(cors({ origin: process.env.FRONTEND_ORIGIN }));
 app.use(json());
 app.use("/api", contactRoute);
 app.use("/api/articles", articleRoutes);
