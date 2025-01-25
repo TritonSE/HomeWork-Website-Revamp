@@ -1,11 +1,12 @@
 import { json } from "body-parser";
+import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
+
 import { mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
 import contactRoute from "./routes/contactRequest";
-import cors from "cors";
 // Initialize Express App
 const app = express();
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN }));
