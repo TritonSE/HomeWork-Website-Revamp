@@ -8,6 +8,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Layouts must accept a children prop.
+  // This will be populated with nested layouts or pages
   return (
     <html lang="en">
       <body>
