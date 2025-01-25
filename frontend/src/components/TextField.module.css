@@ -1,0 +1,88 @@
+/* ===============================
+   Container
+   =============================== */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Space between elements inside the container */
+  width: 100%; /* Ensures full-width container */
+  font-family: "Golos Text", Arial, sans-serif; /* Font */
+}
+
+/* ===============================
+     Label
+     =============================== */
+.label {
+  font-family: "Golos Text", Arial, sans-serif; /* Font */
+  font-weight: 400; /* Font weight */
+  font-size: 16px; /* Font size */
+  line-height: 24px; /* Line height */
+  color: #484848; /* Neutral/Gray6 color */
+  margin-bottom: 0px; /* Removes extra space below label */
+}
+
+.label p {
+  font-size: 16px; /* Font size of <p> inside the label */
+  margin-bottom: 2px; /* Minimal spacing below <p> */
+}
+
+/* ===============================
+     Input Field
+     =============================== */
+.input {
+  margin-top: 0px; /* Removes unnecessary margin */
+  box-sizing: border-box; /* Includes padding and border in width/height */
+  width: 100%; /* Full-width input */
+  padding: 6px 12px; /* Spacing inside the input */
+  border-radius: 4px; /* Rounded corners */
+  border: 1px solid #d9d9d9; /* Neutral border color */
+  font-family: "Golos Text", Arial, sans-serif; /* Font */
+  font-weight: 400; /* Font weight */
+  font-size: 16px; /* Font size */
+  line-height: 24px; /* Line height */
+  color: #484848; /* Neutral/Gray6 color */
+  background-color: #ffffff; /* White background */
+  outline: none; /* Removes default outline */
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s; /* Smooth interactions */
+}
+
+.input::placeholder {
+  color: #484848; /* Placeholder text color */
+}
+
+/* ===============================
+     Caption
+     =============================== */
+.caption {
+  display: block; /* Align caption below the input */
+  margin-top: 2px; /* Minimal spacing above caption */
+  font-family: "Golos Text", Arial, sans-serif; /* Font */
+  font-weight: 400; /* Font weight */
+  font-size: 10px; /* Font size */
+  line-height: 15px; /* Line height */
+  color: #484848; /* Neutral/Gray6 color */
+  letter-spacing: 0.02em; /* Subtle spacing between letters */
+}
+
+/* ===============================
+     Error Message
+     =============================== */
+.errorMessage {
+  display: block; /* Align caption below the input */
+  margin-top: 2px; /* Minimal spacing above caption */
+  font-family: "Golos Text", Arial, sans-serif; /* Font */
+  font-weight: 400; /* Font weight */
+  font-size: 10px; /* Font size */
+  line-height: 15px; /* Line height */
+  color: #b93b3b; /* Neutral/Gray6 color */
+  letter-spacing: 0.02em; /* Subtle spacing between letters */
+  align-items: center;
+}
+
+.errorIcon {
+  font-size: 14px; /* Font size for icon */
+  line-height: 20px; /* Line height */
+  vertical-align: middle;
+}
