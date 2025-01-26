@@ -1,18 +1,25 @@
-import admin, { ServiceAccount } from "firebase-admin";
+/**
+ * This file contains the configuration for firebase
+ * It exports a firebase auth object which will allow users
+ * to access any firebase services. For this project we will use
+ * firebase to for authentication.
+ */
 
-import { config } from "../config";
+import * as firebaseAdmin from "firebase-admin/app";
+import { getAuth as getAdminAuth } from "firebase-admin/auth";
 
-const firebaseConfig: ServiceAccount = {
-  projectId: config.firebase.projectId,
-  clientEmail: config.firebase.clientEmail,
-  privateKey: config.firebase.privateKey,
-};
+import { serviceAccountKey } from "../config";
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(firebaseConfig),
-    databaseURL: config.firebase.databaseURL,
-  });
-}
+/**
+ * This will initialize the firebase app to store
+ * user credentials
+ */
 
-export const firebaseAdminAuth = admin.auth();
+// Uses service account key from .env
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.cert(JSON.parse(serviceAccountKey) as string),
+});
+
+const firebaseAdminAuth = getAdminAuth();
+
+export { firebaseAdminAuth };

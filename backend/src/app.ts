@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 
-import { config } from "./config";
+import { port, mongoUri } from "./config";
 import userRoutes from "./routes/user";
 import "./util/firebase";
 
@@ -9,7 +9,7 @@ const app = express();
 
 // Connect to MongoDB
 mongoose
-  .connect(config.mongodb.uri)
+  .connect(mongoUri)
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -20,8 +20,8 @@ mongoose
 app.use(express.json());
 app.use("/api/users", userRoutes);
 
-app.listen(config.port, () => {
-  console.log(`Server is running on port ${config.port}`);
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
 
 export default app;
