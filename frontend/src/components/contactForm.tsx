@@ -5,6 +5,10 @@ import phone from "phone";
 import React, { useState } from "react";
 
 import { post } from "../api/requests";
+type ErrorResponse = {
+  error?: string;
+  message?: string;
+};
 const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -13,10 +17,10 @@ const ContactForm: React.FC = () => {
     message: "",
   });
 
-  const [fullNameError, setFullNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [phoneNumberError, setPhoneNumberError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fullNameError, setFullNameError] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [phoneNumberError, setPhoneNumberError] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
 
   const handleInputChange = (name: string, value: string) => {
@@ -26,7 +30,7 @@ const ContactForm: React.FC = () => {
     const fullNameRegex = /^[a-zA-Z]{2,}\s+[a-zA-Z]{2,}(?:\s+[a-zA-Z]{2,})*$/;
     return fullNameRegex.test(name.trim());
   };
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     if (!validateFullName(formData.fullName)) {
       setFullNameError("Please enter a valid full name");
@@ -51,11 +55,15 @@ const ContactForm: React.FC = () => {
         setResponseMessage("Thank you for reaching out! We'll get back to you soon.");
         setFormData({ fullName: "", email: "", phoneNumber: "", message: "" });
       } else {
-        const errorData = await response.json();
-        setResponseMessage(errorData.error || "Failed to submit your request.");
+        const errorData = (await response.json()) as ErrorResponse;
+        setResponseMessage(errorData.error ?? "Failed to submit your request.");
       }
-    } catch (error: any) {
-      setResponseMessage(error.message || "An error occurred while submitting your request.");
+    } catch (error) {
+      if (error instanceof Error) {
+        setResponseMessage(error.message || "An error occurred while submitting your request.");
+      } else {
+        setResponseMessage("An unknown error occurred.");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -65,10 +73,15 @@ const ContactForm: React.FC = () => {
     <div style={{ padding: "20px", maxWidth: "700px" }}>
       <h1 className="text-2xl text-[48px] font-golos font-medium text-left">Get in Touch</h1>
       <p className="text-left mb-2 text-[20px]">
-        Send us a quick message and we'll reach back out to you soon.
+        Send us a quick message and we&apos;ll reach back out to you soon.
       </p>
-      <p className="text-left mb-2 text-[20px]">We're excited to have you here!</p>
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column" }}>
+      <p className="text-left mb-2 text-[20px]">We&apos;re excited to have you here!</p>
+      <form
+        onSubmit={(e) => {
+          void handleSubmit(e);
+        }}
+        style={{ display: "flex", flexDirection: "column" }}
+      >
         <div>
           <TextField
             label="Full Name"
