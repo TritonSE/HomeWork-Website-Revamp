@@ -1,19 +1,15 @@
-import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 
+import { config } from "./config";
 import userRoutes from "./routes/user";
-// Import Firebase configuration
 import "./util/firebase";
 
-dotenv.config();
-
 const app = express();
-const port = process.env.PORT
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI!)
+  .connect(config.mongodb.uri)
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -24,9 +20,8 @@ mongoose
 app.use(express.json());
 app.use("/api/users", userRoutes);
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(config.port, () => {
+  console.log(`Server is running on port ${config.port}`);
 });
 
 export default app;

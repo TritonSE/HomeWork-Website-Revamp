@@ -1,15 +1,17 @@
 import admin, { ServiceAccount } from "firebase-admin";
 
+import { config } from "../config";
+
 const firebaseConfig: ServiceAccount = {
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-  privateKey: process.env.FIREBASE_PRIVATE_KEY,
+  projectId: config.firebase.projectId,
+  clientEmail: config.firebase.clientEmail,
+  privateKey: config.firebase.privateKey,
 };
+
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(firebaseConfig),
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    databaseURL: process.env.FIREBASE_URI,
+    databaseURL: config.firebase.databaseURL,
   });
 }
 
