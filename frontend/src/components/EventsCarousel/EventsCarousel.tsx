@@ -1,3 +1,5 @@
+"use client";
+
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -93,7 +95,7 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ children }) => {
         ref={carouselRef}
         className="
                 flex flex-row gap-5 
-                mr-5 ml-5 
+                w-full mr-5 ml-5 
                 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hidden"
       >
         {children}
