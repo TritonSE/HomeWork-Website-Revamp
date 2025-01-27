@@ -19,9 +19,9 @@ const FooterLink: React.FC<{ links: LinkProps[] }> = ({ links }) => {
   return (
     <div
       className="
-            flex flex-col justify-start gap-5 basis-5/12 md:basis-auto 
+            flex flex-col justify-start gap-3.5 sm:gap-5 basis-5/12 md:basis-auto
             w-1/5 
-            text-sm md:text-base"
+            text-base"
     >
       {links.map((link, index) => (
         <a
@@ -44,9 +44,75 @@ type SocialMediaIconProps = {
 
 const SocialMediaIcon: React.FC<SocialMediaIconProps> = ({ icon, iconAlt, iconUrl }) => {
   return (
-    <a href={iconUrl} className="relative w-1/12 h-8 flex-shrink">
+    <a href={iconUrl} className="relative sm:w-1/12 w-1/6 h-8 flex-shrink">
       <Image src={icon} alt={iconAlt} layout="fill" objectFit="contain" />
     </a>
+  );
+};
+
+const SubscriptionForm: React.FC<{ handleSubmit: React.FormEventHandler<HTMLFormElement> }> = ({
+  handleSubmit,
+}) => {
+  return (
+    <div className="flex flex-col justify-start w-full">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-full">
+        <p className="mb-2">Subscribe to our newsletter to stay updated!</p>
+        <label htmlFor="email" className="sr-only">
+          Email
+        </label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Email"
+          className="p-2 w-full sm:max-w-md text-black"
+        />
+        <label htmlFor="fullName" className="sr-only">
+          Full Name
+        </label>
+        <input
+          type="text"
+          id="fullName"
+          placeholder="Full Name"
+          className="p-2 mt-2 w-full sm:max-w-md text-black"
+        />
+        <button
+          type="submit"
+          className="w-1/3 min-w-fit max-w-32 mt-2 p-2 bg-orange-600 rounded text-white text-sm"
+        >
+          Subscribe
+        </button>
+      </form>
+    </div>
+  );
+};
+
+const AdminLoginButton: React.FC<{ handleAdminLogin: () => void }> = ({ handleAdminLogin }) => {
+  return (
+    <button
+      onClick={handleAdminLogin}
+      className="
+                flex flex-row justify-center items-center gap-1 
+                p-1.5 w-fit sm:5/12 border border-gray-400 rounded-2xl 
+                text-gray-400 text-sm"
+    >
+      <div className="relative w-3 h-3">
+        <Image
+          src={AdminLogin as StaticImport}
+          alt="Admin login logo"
+          layout="fill"
+          objectFit="contain"
+        />
+      </div>
+      <p>Admin Login</p>
+    </button>
+  );
+};
+
+const HomeworkIcon: React.FC = () => {
+  return (
+    <div className="relative w-1/3 h-44">
+      <Image src={Logo as StaticImport} alt="Homework logo" layout="fill" objectFit="contain" />
+    </div>
   );
 };
 
@@ -56,6 +122,16 @@ const SocialMediaIcon: React.FC<SocialMediaIconProps> = ({ icon, iconAlt, iconUr
  * Needs to be updated to include real social media icons and page links
  */
 export const Footer = () => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    console.log("Form button clicked!");
+  };
+
+  // Placeholder for admin login functionality
+  const handleAdminLogin = () => {
+    console.log("Admin login clicked");
+  };
+
   // Placeholder links for page links
   const aboutUsLinks: LinkProps[] = [
     { text: "About Us", url: "#", isHeader: true },
@@ -80,101 +156,71 @@ export const Footer = () => {
   ];
 
   // Placeholder for social media links
-  const FacebookIcon: SocialMediaIconProps = {
+  const facebookIcon: SocialMediaIconProps = {
     icon: Facebook as StaticImport,
     iconAlt: "Facebook Icon",
     iconUrl: "#",
   };
 
-  const InstagramIcon: SocialMediaIconProps = {
+  const instagramIcon: SocialMediaIconProps = {
     icon: Instagram as StaticImport,
     iconAlt: "Instagram Icon",
     iconUrl: "#",
   };
 
-  // Placeholder for admin login functionality
-  const handleAdminLoginClick = () => {
-    console.log("Admin login clicked");
-  };
-
   return (
     <div className="bg-black p-10 text-white font-golos">
-      {/* Top row of footer */}
-      <div className="w-full h-fit flex flex-row justify-between gap-5 mb-7 text-sm md:text-base">
-        {/* Container for subscribe section */}
-        <div className="flex flex-col justify-start w-full">
-          <form className="flex flex-col gap-3 w-full">
-            <p className="mb-2">Subscribe to our newsletter to stay updated!</p>
-            <label htmlFor="email" className="sr-only">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Email"
-              className="p-2 w-full max-w-md text-black"
-            />
-            <label htmlFor="fullName" className="sr-only">
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              placeholder="Full Name"
-              className="p-2 mt-2 w-full max-w-md text-black"
-            />
-            <button
-              type="submit"
-              className="w-1/3 min-w-fit max-w-32 mt-2 p-2 bg-orange-600 rounded text-white text-sm"
-            >
-              Subscribe
-            </button>
-          </form>
+      {/* Desktop/Tablet layout */}
+      <div className="hidden sm:block">
+        <div className="w-full h-fit flex flex-row justify-between gap-5 mb-7 text-base">
+          <SubscriptionForm handleSubmit={handleSubmit} />
+          <div className="flex flex-row flex-wrap gap-y-5 justify-evenly gap-2 sm:gap-4 w-full">
+            <FooterLink links={aboutUsLinks} />
+            <FooterLink links={whatWeDoLinks} />
+            <FooterLink links={getInvolvedLinks} />
+            <FooterLink links={stayConnectedLinks} />
+          </div>
         </div>
-
-        {/* Container for page link section */}
-        <div className="flex flex-row flex-wrap gap-y-5 justify-evenly gap-2 sm:gap-4 w-full">
-          <FooterLink links={aboutUsLinks} />
-          <FooterLink links={whatWeDoLinks} />
-          <FooterLink links={getInvolvedLinks} />
-          <FooterLink links={stayConnectedLinks} />
+        <div className="w-full h-fit flex flex-row justify-between items-center">
+          <div className="flex flex-col gap-5 text-sm">
+            <div className="flex flex-row justify-start items-center gap-4 w-full h-full">
+              <SocialMediaIcon {...facebookIcon} />
+              <SocialMediaIcon {...instagramIcon} />
+              <p>
+                FKA: Building Justice <br />
+                DBA: Homework SD <br />
+                Nonprofit EIN: 84-3930979
+              </p>
+            </div>
+            <p>Copyright © 2025 Homework - All rights reserved.</p>
+            <AdminLoginButton handleAdminLogin={handleAdminLogin} />
+          </div>
+          <HomeworkIcon />
         </div>
       </div>
-      {/* Bottom row of footer */}
-      <div className="w-full h-fit flex flex-row justify-between items-center">
-        {/* Social media and miscelaneous info section */}
-        <div className="flex flex-col gap-5 text-xs md:text-sm">
-          <div className="flex flex-row justify-start items-center gap-4 w-full h-full">
-            <SocialMediaIcon {...FacebookIcon} />
-            <SocialMediaIcon {...InstagramIcon} />
-            <p>
-              FKA: Building Justice <br />
-              DBA: Homework SD <br />
-              Nonprofit EIN: 84-3930979
-            </p>
+
+      {/* Mobile Layout */}
+      <div className="block sm:hidden">
+        <div className="flex flex-col gap-7">
+          <SubscriptionForm handleSubmit={handleSubmit} />
+          <div className="flex flex-row flex-wrap gap-y-7 justify-around gap-5 w-full">
+            <FooterLink links={aboutUsLinks} />
+            <FooterLink links={whatWeDoLinks} />
+            <FooterLink links={getInvolvedLinks} />
+            <FooterLink links={stayConnectedLinks} />
           </div>
-          <p>Copyright © 2025 Homework - All rights reserved.</p>
-          <button
-            onClick={handleAdminLoginClick}
-            className="
-                            flex flex-row justify-center items-center gap-1 
-                            pt-1 pb-1 w-5/12 border border-gray-400 rounded-2xl 
-                            text-gray-400"
-          >
-            <div className="relative w-3 h-3">
-              <Image
-                src={AdminLogin as StaticImport}
-                alt="Admin login logo"
-                layout="fill"
-                objectFit="contain"
-              />
+
+          <div className="flex flex-col justify-center items-center gap-5 w-full">
+            <div className="flex flex-row justify-center items-center gap-3 mb-2 w-full">
+              <SocialMediaIcon {...facebookIcon} />
+              <SocialMediaIcon {...instagramIcon} />
             </div>
-            <p>Admin Login</p>
-          </button>
-        </div>
-        {/* Homework Logo */}
-        <div className="relative w-1/3 h-44">
-          <Image src={Logo as StaticImport} alt="Homework logo" layout="fill" objectFit="contain" />
+            <AdminLoginButton handleAdminLogin={handleAdminLogin} />
+            <p className="text-center text-xs">
+              FKA: Building Justice | DBA: Homework SD | Nonprofit EIN: 84-3930979
+            </p>
+            <p className="text-center text-xs">Copyright © 2025 Homework - All rights reserved.</p>
+          </div>
         </div>
       </div>
     </div>
