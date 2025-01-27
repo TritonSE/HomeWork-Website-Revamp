@@ -1,27 +1,26 @@
+import { json } from "body-parser";
+import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
 
-import { port, mongoUri } from "./config";
-import userRoutes from "./routes/user";
-import "./util/firebase";
-
+import { mongoUri, port } from "./config";
+import { errorHandler } from "./errors/handler";
+import articleRoutes from "./routes/article";
+import contactRoute from "./routes/contactRequest";
+// Initialize Express App
 const app = express();
-
-// Connect to MongoDB
+app.use(cors({ origin: process.env.FRONTEND_ORIGIN }));
+app.use(json());
+app.use("/api", contactRoute);
+app.use("/api/articles", articleRoutes);
+app.use(errorHandler);
 mongoose
   .connect(mongoUri)
   .then(() => {
-    console.log("Connected to MongoDB");
+    console.log("Mongoose connected!");
+    // Tell app to listen on our port environment variable
+    app.listen(port, () => {
+      console.log(`> Listening on port ${port}`);
+    });
   })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-  });
-
-app.use(express.json());
-app.use("/api/users", userRoutes);
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
-
-export default app;
+  .catch(console.error);
