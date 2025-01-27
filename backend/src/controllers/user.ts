@@ -5,11 +5,16 @@ import UserModel from "../models/user";
 import { firebaseAdminAuth } from "../util/firebase";
 import validationErrorParser from "../util/validationErrorParser";
 
+export type CreateRequest = {
+  name: string;
+  email: string;
+  password: string;
+};
 export const createUser: RequestHandler = async (req, res, next) => {
   const errors = validationResult(req);
   try {
     validationErrorParser(errors);
-    const { name, email, password } = req.body;
+    const { name, email, password } = req.body as CreateRequest;
 
     const userRecord = await firebaseAdminAuth.createUser({
       email,
