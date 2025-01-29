@@ -110,7 +110,7 @@ const AdminLoginButton: React.FC<{ handleAdminLogin: () => void }> = ({ handleAd
 
 const HomeworkIcon: React.FC = () => {
   return (
-    <div className="relative w-1/3 h-44">
+    <div className="relative w-full sm:w-1/3 h-44">
       <Image src={Logo as StaticImport} alt="Homework logo" layout="fill" objectFit="contain" />
     </div>
   );
@@ -202,6 +202,7 @@ export const Footer = () => {
       {/* Mobile Layout */}
       <div className="block sm:hidden">
         <div className="flex flex-col gap-7">
+          <HomeworkIcon />
           <SubscriptionForm handleSubmit={handleSubmit} />
           <div className="flex flex-row flex-wrap gap-y-7 justify-around gap-5 w-full">
             <FooterLink links={aboutUsLinks} />
