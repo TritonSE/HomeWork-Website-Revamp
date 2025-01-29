@@ -15,14 +15,3 @@
   font-weight: 100 900;
   font-style: normal;
 }
-
-@layer utilities {
-  .scrollbar-hidden::-webkit-scrollbar {
-    display: none;
-  }
-
-  .scrollbar-hidden {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-}
