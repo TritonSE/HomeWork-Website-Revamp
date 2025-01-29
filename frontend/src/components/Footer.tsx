@@ -45,7 +45,7 @@ type SocialMediaIconProps = {
 const SocialMediaIcon: React.FC<SocialMediaIconProps> = ({ icon, iconAlt, iconUrl }) => {
   return (
     <a href={iconUrl} className="relative sm:w-1/12 w-1/6 h-8 flex-shrink">
-      <Image src={icon} alt={iconAlt} layout="fill" objectFit="contain" />
+      <Image src={icon} alt={iconAlt} fill className="object-contain" />
     </a>
   );
 };
@@ -99,8 +99,8 @@ const AdminLoginButton: React.FC<{ handleAdminLogin: () => void }> = ({ handleAd
         <Image
           src={AdminLogin as StaticImport}
           alt="Admin login logo"
-          layout="fill"
-          objectFit="contain"
+          fill
+          className="object-contain"
         />
       </div>
       <p>Admin Login</p>
@@ -111,7 +111,7 @@ const AdminLoginButton: React.FC<{ handleAdminLogin: () => void }> = ({ handleAd
 const HomeworkIcon: React.FC = () => {
   return (
     <div className="relative w-full sm:w-1/3 h-44">
-      <Image src={Logo as StaticImport} alt="Homework logo" layout="fill" objectFit="contain" />
+      <Image src={Logo as StaticImport} alt="Homework logo" fill className="object-contain" />
     </div>
   );
 };
