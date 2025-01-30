@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import { mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
+import quoteRoutes from "./routes/quote";
 import contactRoute from "./routes/contactRequest";
 // Initialize Express App
 const app = express();
@@ -13,6 +14,8 @@ app.use(cors({ origin: process.env.FRONTEND_ORIGIN }));
 app.use(json());
 app.use("/api", contactRoute);
 app.use("/api/articles", articleRoutes);
+app.use("/api/quotes", quoteRoutes);
+
 app.use(errorHandler);
 mongoose
   .connect(mongoUri)
