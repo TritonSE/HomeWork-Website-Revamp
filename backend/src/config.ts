@@ -11,7 +11,6 @@ function throwIfUndefined(envVar: string | undefined, error: InternalError) {
   return envVar;
 }
 
-
 if (!process.env.PORT) throw InternalError.NO_APP_PORT;
 const port = process.env.PORT;
 
