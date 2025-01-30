@@ -1,0 +1,68 @@
+.logo {
+  justify-content: center;
+}
+
+.navBar {
+  position: sticky;
+  height: 98px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+}
+
+.outerDiv {
+  width: calc(100% - 104px);
+  height: 154px;
+  margin: 28px 52px 28px 52px;
+  opacity: 0px;
+}
+
+.menu {
+  height: 98px;
+  gap: 64px;
+  opacity: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.options {
+  padding: 36px 24px 36px 24px;
+  opacity: 0px;
+  font-family: "Golos Text";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: white;
+}
+
+.options:hover {
+  text-decoration: underline;
+}
+
+.button {
+  width: 120px;
+  height: 48px;
+  border-radius: 4px;
+  border: 0px;
+  opacity: 0px;
+  background: #f05629;
+  font-family: "Golos Text";
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.button:hover {
+  background: #e66f4b;
+  animation-delay: 100;
+}
