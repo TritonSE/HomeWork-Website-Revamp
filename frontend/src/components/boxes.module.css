@@ -1,8 +1,8 @@
 .container {
-  width: 1440px;
+  width: 100%;
   height: 662px;
-  display: flex;
+  display: grid; /* Enables grid layout */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Dynamic column sizing */
   flex-wrap: wrap; /* Allows wrapping for smaller screens */
-  justify-content: center; /* Centers the cards horizontally */
-  align-items: flex-start; /* Align cards by their top edge */
+  align-items: end; /* Moves cards to the bottom */
 }

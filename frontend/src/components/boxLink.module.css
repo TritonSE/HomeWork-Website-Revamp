@@ -1,10 +1,7 @@
 .imageContainer {
   position: relative;
   overflow: hidden; /* Ensures the zoomed image doesn't overflow */
-  width: 360px; /* Set a fixed width for the image container */
   display: flex; /* Center image if smaller */
-  display: inline-block;
-  transition: transform 0.3s ease-in-out;
   cursor: pointer; /* Changes cursor to a finger on hover */
 }
 
@@ -16,8 +13,9 @@
   left: 0;
   width: 0; /* Initially hidden */
   height: 6px; /* Thickness of the blue line */
-  background-color: blue; /* Line color */
+  background-color: #275db2; /* Line color */
   transition: width 0.3s ease-in-out; /* Animation for width */
+  z-index: 2;
 }
 
 /* Hover effect: Expand the line */
@@ -28,10 +26,12 @@
 /* Alternating Heights */
 .imageContainer.short {
   height: 539px; /* Short card */
+  min-height: 539px;
 }
 
 .imageContainer.tall {
   height: 598px; /* Tall card */
+  min-height: 598px;
 }
 
 .imageContainer img {
@@ -42,12 +42,13 @@
   height: 100%; /* Ensures it fills the container vertically */
   object-fit: cover; /* Ensures the image maintains its aspect ratio */
   transition:
-    transform 0.3s ease-in-out,
-    filter 0.3s ease; /* Smooth zoom effect */
+    filter 0.5s ease-in-out,
+    transform 0.5s ease-in-out; /* Smooth transition */
+  filter: brightness(0.8); /* Ensure a starting brightness */
 }
 
 .imageContainer:hover img {
-  filter: brightness(1.1); /* Brighten the image */
+  filter: brightness(1.2); /* Brighten the image */
   transform: scale(1.1); /* Zoom in the image slightly */
 }
 
@@ -86,13 +87,13 @@
 
 .textTop .title {
   margin: 0;
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 500;
   line-height: 150%;
 }
 
 .textTop .description {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: normal;
   line-height: 130%;
 }
@@ -105,16 +106,34 @@
   font-family: "GolosText";
   transition: color 0.2s ease;
   padding-bottom: 40px;
+  margin-top: 100px;
+
   position: absolute;
   bottom: 0;
   content: "→";
-}
-/* Arrow icon beside Learn More */
-.imageContainer:hover .learMore {
-  content: "→";
+  display: inline-flex; /* Aligns text and arrow on the same line */
+  align-items: center; /* Vertically centers content */
+  gap: 0.5rem; /* Space between text and arrow */
+  transition: color 0.3s ease;
 }
 
-.imageContainer:hover .learnMore::after {
-  content: "→";
-  margin-left: 0.75rem; /* Add space to the arrow on hover */
+/* Default Arrow (Image) */
+.learnMore .arrow {
+  display: inline-block;
+  width: 1rem; /* Increased size */
+  height: 1rem; /* Match width and height */
+  background-image: url("/Arrow1.png"); /* Default arrow */
+  background-repeat: no-repeat;
+  background-size: contain; /* Ensures the arrow scales correctly */
+  vertical-align: middle; /* Aligns with text */
+
+  transition: background-image 0.3s ease;
+}
+
+/* Hover Arrow (Image) */
+.imageContainer:hover .arrow {
+  width: 2.12rem; /* Increased size */
+  height: 0.875rem; /* Match width and height */
+
+  background-image: url("/Arrow2.png"); /* Hover arrow */
 }
