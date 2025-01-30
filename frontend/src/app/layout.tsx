@@ -2,6 +2,7 @@
 
 import { ThemeProvider } from "@tritonse/tse-constellation";
 import "../global.css";
+import { Footer } from "@/components/Footer";
 
 export default function RootLayout({
   children,
@@ -20,6 +21,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <Footer />
       </body>
     </html>
   );
