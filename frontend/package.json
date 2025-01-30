@@ -14,9 +14,12 @@
     "prepare": "cd .. && husky"
   },
   "dependencies": {
-    "next": "15.0.3",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "@tritonse/tse-constellation": "^0.0.8",
+    "email-validator": "^2.0.4",
+    "next": "^15.1.6",
+    "phone": "^3.1.57",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
