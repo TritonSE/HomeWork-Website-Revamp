@@ -6,11 +6,14 @@ import mongoose from "mongoose";
 import { mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
+import subscriptionRoutes from "./routes/subscription";
 import contactRoute from "./routes/contactRequest";
+
 // Initialize Express App
 const app = express();
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN }));
 app.use(json());
+app.use("/api/subscriptions", subscriptionRoutes);
 app.use("/api", contactRoute);
 app.use("/api/articles", articleRoutes);
 app.use(errorHandler);
