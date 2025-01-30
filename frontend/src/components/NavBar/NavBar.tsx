@@ -26,7 +26,9 @@ const Navbar = () => {
         >
           <button
             className="hover:text-gray-400 focus:outline-none"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
+            onClick={() => {
+              setDropdownOpen((prev) => !prev);
+            }}
             aria-haspopup="true"
             aria-expanded={dropdownOpen}
           >
