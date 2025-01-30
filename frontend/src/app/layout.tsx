@@ -1,6 +1,8 @@
 "use client";
 
 import { ThemeProvider } from "@tritonse/tse-constellation";
+
+import NavBar from "../components/NavBar/NavBar";
 import "../global.css";
 
 export default function RootLayout({
@@ -12,13 +14,17 @@ export default function RootLayout({
   // This will be populated with nested layouts or pages
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-screen overflow-y-auto bg-black text-white">
         <ThemeProvider
           colors={{
             primary_dark: "#F05629",
           }}
         >
-          {children}
+          <NavBar /> {/* Add the NavBar here */}
+          <main className="min-h-screen pt-[120px]">
+            {children}
+            <div className="h-[2000px] bg-gray-900">Temporary Scrollable Content</div>
+          </main>
         </ThemeProvider>
       </body>
     </html>
