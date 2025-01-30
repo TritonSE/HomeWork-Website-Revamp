@@ -1,0 +1,8 @@
+.container {
+  width: 1440px;
+  height: 662px;
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping for smaller screens */
+  justify-content: center; /* Centers the cards horizontally */
+  align-items: flex-start; /* Align cards by their top edge */
+}
