@@ -1,9 +1,3 @@
-import Cards from "../components/boxes";
-
 export default function Page() {
-  return (
-    <div>
-      <Cards />
-    </div>
-  );
+  return <h1>Hello, TSE</h1>;
 }
