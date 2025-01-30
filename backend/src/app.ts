@@ -1,18 +1,19 @@
 import { json } from "body-parser";
+import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
 
 import { mongoUri, port } from "./config";
+import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
-
+import contactRoute from "./routes/contactRequest";
 // Initialize Express App
 const app = express();
-
-// Provide json body-parser middleware
+app.use(cors({ origin: process.env.FRONTEND_ORIGIN }));
 app.use(json());
-
+app.use("/api", contactRoute);
 app.use("/api/articles", articleRoutes);
-
+app.use(errorHandler);
 mongoose
   .connect(mongoUri)
   .then(() => {
