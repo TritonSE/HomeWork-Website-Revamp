@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
-import testimonyRoutes from "./routes/testimony";
+import quoteRoutes from "./routes/quote";
 import contactRoute from "./routes/contactRequest";
 
 // Initialize Express App
@@ -13,7 +13,7 @@ const app = express();
 app.use(json());
 app.use("/api", contactRoute);
 app.use("/api/articles", articleRoutes);
-app.use("/api/testimonys", testimonyRoutes);
+app.use("/api/quotes", quoteRoutes);
 
 app.use(errorHandler);
 mongoose

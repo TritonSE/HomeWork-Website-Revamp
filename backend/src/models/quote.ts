@@ -1,6 +1,6 @@
 import { InferSchemaType, Schema, model } from "mongoose";
 
-const testimonySchema = new Schema({
+const quoteSchema = new Schema({
   // body
   body: { type: String, required: true },
 
@@ -11,6 +11,6 @@ const testimonySchema = new Schema({
   source: { type: String, required: true },
 });
 
-type TestimonyItem = InferSchemaType<typeof testimonySchema>;
+type QuoteItem = InferSchemaType<typeof quoteSchema>;
 
-export default model<TestimonyItem>("TestimonyItem", testimonySchema);
+export default model<QuoteItem>("QuoteItem", quoteSchema);

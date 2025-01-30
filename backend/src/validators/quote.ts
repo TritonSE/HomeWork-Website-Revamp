@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 
 /**
- * Validators for creating and updating testimonys
+ * Validators for creating and updating quotes
  */
 const makeBodyValidator = () =>
   body("body")
@@ -36,6 +36,6 @@ const makeSourceValidator = () =>
     .notEmpty()
     .withMessage("source cannot be empty");
 
-export const createTestimony = [makeBodyValidator(), makeImageValidator(), makeSourceValidator()];
+export const createQuote = [makeBodyValidator(), makeImageValidator(), makeSourceValidator()];
 
-export const updateTestimony = [makeBodyValidator(), makeImageValidator(), makeSourceValidator()];
+export const updateQuote = [makeBodyValidator(), makeImageValidator(), makeSourceValidator()];
