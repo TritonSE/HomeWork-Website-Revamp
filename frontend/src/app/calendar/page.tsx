@@ -1,4 +1,4 @@
-import CalendarForm from "../../components/CalendarPage";
+import CalendarForm from "../../components/cp";
 
 const CalendarPage = () => {
   return <CalendarForm />;
