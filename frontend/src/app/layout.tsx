@@ -20,8 +20,8 @@ export default function RootLayout({
           }}
         >
           {children}
+          <Footer />
         </ThemeProvider>
-        <Footer />
       </body>
     </html>
   );
