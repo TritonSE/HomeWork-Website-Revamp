@@ -7,6 +7,7 @@ import { mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
 import subscriptionRoutes from "./routes/subscription";
+import quoteRoutes from "./routes/quote";
 import contactRoute from "./routes/contactRequest";
 
 // Initialize Express App
@@ -16,6 +17,8 @@ app.use(json());
 app.use("/api/subscriptions", subscriptionRoutes);
 app.use("/api", contactRoute);
 app.use("/api/articles", articleRoutes);
+app.use("/api/quotes", quoteRoutes);
+
 app.use(errorHandler);
 mongoose
   .connect(mongoUri)
