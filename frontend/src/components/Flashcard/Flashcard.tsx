@@ -1,11 +1,11 @@
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import React, { useState } from "react";
 
 import Rotate from "@/../public/images/flashcards/rotate.svg";
 
 type FlashcardProps = {
   title: string;
-  icon: StaticImageData;
+  icon: string;
   info: string;
 };
 

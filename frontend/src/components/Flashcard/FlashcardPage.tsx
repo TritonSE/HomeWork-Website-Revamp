@@ -1,51 +1,45 @@
 "use client";
-import { StaticImageData } from "next/image";
 import React from "react";
 
 import Flashcard from "./Flashcard";
 
-import Flashcard1 from "@/../public/images/flashcards/flashcard1.png";
-import Flashcard2 from "@/../public/images/flashcards/flashcard2.png";
-import Flashcard3 from "@/../public/images/flashcards/flashcard3.png";
-import Flashcard4 from "@/../public/images/flashcards/flashcard4.png";
-import Flashcard5 from "@/../public/images/flashcards/flashcard5.png";
-import Flashcard6 from "@/../public/images/flashcards/flashcard6.png";
+// import Flashcard1 from "@/../public/images/flashcards/flashcard1.png";
+// import Flashcard2 from "@/../public/images/flashcards/flashcard2.png";
+// import Flashcard3 from "@/../public/images/flashcards/flashcard3.png";
+// import Flashcard4 from "@/../public/images/flashcards/flashcard4.png";
+// import Flashcard5 from "@/../public/images/flashcards/flashcard5.png";
+// import Flashcard6 from "@/../public/images/flashcards/flashcard6.png";
 
-type FlashcardType = {
-  title: string;
-  icon: StaticImageData;
-  info: string;
-};
 const FlashcardPage: React.FC = () => {
-  const flashcards: FlashcardType[] = [
+  const flashcards = [
     {
       title: "Attending a Life Skills Workshop",
-      icon: Flashcard1,
+      icon: "/images/flashcards/flashcard1.png",
       info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     },
     {
       title: "Rebuilding Families",
-      icon: Flashcard2,
+      icon: "/images/flashcards/flashcard2.png",
       info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     },
     {
       title: "Supporting the Community",
-      icon: Flashcard3,
+      icon: "/images/flashcards/flashcard3.png",
       info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     },
     {
       title: "Participating in Civic Engagement",
-      icon: Flashcard4,
+      icon: "/images/flashcards/flashcard4.png",
       info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     },
     {
       title: "Entering the Union",
-      icon: Flashcard5,
+      icon: "/images/flashcards/flashcard5.png",
       info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     },
     {
       title: "Joining the Homework Family",
-      icon: Flashcard6,
+      icon: "/images/flashcards/flashcard6.png",
       info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     },
   ];
