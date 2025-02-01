@@ -1,4 +1,5 @@
 "use client";
+import { StaticImageData } from "next/image";
 import React from "react";
 
 import Flashcard from "./Flashcard";
@@ -9,7 +10,6 @@ import Flashcard3 from "@/../public/images/flashcards/flashcard3.png";
 import Flashcard4 from "@/../public/images/flashcards/flashcard4.png";
 import Flashcard5 from "@/../public/images/flashcards/flashcard5.png";
 import Flashcard6 from "@/../public/images/flashcards/flashcard6.png";
-import { StaticImageData } from "next/image";
 
 type FlashcardType = {
   title: string;
