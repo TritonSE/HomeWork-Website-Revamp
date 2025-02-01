@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import nodemailer from "nodemailer";
 
-import validationErrorParser from "../../src/util/validationErrorParser";
+import validationErrorParser from "../util/validationErrorParser";
 
 export type ContactRequest = {
   fullName: string;
