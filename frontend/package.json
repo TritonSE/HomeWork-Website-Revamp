@@ -14,7 +14,7 @@
     "prepare": "cd .. && husky"
   },
   "dependencies": {
-    "@tritonse/tse-constellation": "^0.0.8",
+    "@tritonse/tse-constellation": "^0.0.10",
     "email-validator": "^2.0.4",
     "next": "^15.1.6",
     "phone": "^3.1.57",
