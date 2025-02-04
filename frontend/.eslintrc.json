@@ -61,7 +61,8 @@
     {
       "files": ["*.js"],
       "rules": {
-        "@typescript-eslint/switch-exhaustiveness-check": "off"
+        "@typescript-eslint/switch-exhaustiveness-check": "off",
+        "@typescript-eslint/parser": "off"
       }
     }
   ]
