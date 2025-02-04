@@ -145,14 +145,14 @@ export const Footer = () => {
 
   const getInvolvedLinks: LinkProps[] = [
     { text: "Get Involved", url: "#", isHeader: true },
-    { text: "Upcoming Events", url: "/calendar" },
+    { text: "Upcoming Events", url: "#" },
     { text: "Donate", url: "#" },
   ];
 
   const stayConnectedLinks: LinkProps[] = [
     { text: "Stay Connected", url: "#", isHeader: true },
     { text: "News & Past Events", url: "#" },
-    { text: "Contact Us", url: "/contact" },
+    { text: "Contact Us", url: "#" },
   ];
 
   // Placeholder for social media links
