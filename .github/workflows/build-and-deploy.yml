@@ -21,7 +21,7 @@ jobs:
         run: | 
             cd backend 
             touch .env
-            echo PORT=${{secrets.APP_PORT}} >> .env
+            echo APP_PORT=${{secrets.APP_PORT}} >> .env
             echo MONGO_URI=${{secrets.MONGO_URI}} >> .env
             echo SERVICE_ACCOUNT_KEY=${{secrets.SERVICE_ACCOUNT_KEY}} >> .env
             echo EMAIL=${{secrets.EMAIL}} >> .env
