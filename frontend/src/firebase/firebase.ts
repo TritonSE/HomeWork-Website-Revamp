@@ -7,15 +7,15 @@ export const initFirebase = () => {
     throw new Error("Firebase configuration not found.");
   }
 
-    const firebaseConfig = JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_APP_CONFIG) as FirebaseOptions;
+  const firebaseConfig = JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_APP_CONFIG) as FirebaseOptions;
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const storage = getStorage(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const storage = getStorage(app);
 
-    return { app, auth, storage };
+  return { app, auth, storage };
 };
 
 const { app, auth, storage } = initFirebase();
 
-export { app, auth, storage }; 
+export { app, auth, storage };

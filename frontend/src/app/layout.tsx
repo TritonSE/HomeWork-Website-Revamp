@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "@tritonse/tse-constellation";
+
 import "../global.css";
 import { Footer } from "@/components/Footer";
 

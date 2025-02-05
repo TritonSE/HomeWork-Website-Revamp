@@ -1,8 +1,8 @@
 import express from "express";
 
 import * as UserController from "../controllers/user";
-import * as UserValidator from "../validators/userValidation";
 import { verifyAuthToken } from "../validators/auth";
+import * as UserValidator from "../validators/userValidation";
 
 const router = express.Router();
 

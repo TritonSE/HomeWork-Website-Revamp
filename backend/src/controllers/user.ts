@@ -1,16 +1,21 @@
 import { RequestHandler } from "express";
 import { validationResult } from "express-validator";
 
+import { AuthError } from "../errors/auth";
 import UserModel from "../models/user";
 import { firebaseAdminAuth } from "../util/firebase";
 import validationErrorParser from "../util/validationErrorParser";
-import { AuthError } from "../errors/auth";
 
 export type CreateRequest = {
   name: string;
   email: string;
   password: string;
 };
+
+export type LoginRequest = {
+  uid: string;
+};
+
 export const createUser: RequestHandler = async (req, res, next) => {
   const errors = validationResult(req);
   try {
@@ -39,7 +44,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
   const errors = validationResult(req);
   try {
     validationErrorParser(errors);
-    const uid = req.body.uid;
+    const { uid } = req.body as LoginRequest;
     const user = await UserModel.findById(uid);
     if (!user) {
       throw AuthError.INVALID_AUTH_TOKEN;
@@ -49,5 +54,3 @@ export const loginUser: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-
-
