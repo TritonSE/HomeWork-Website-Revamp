@@ -76,7 +76,6 @@ const LoginForm: React.FC = () => {
           alt="Homework Admin"
           fill
           style={{ objectFit: "cover" }}
-          loading="eager"
         />
       </div>
 
