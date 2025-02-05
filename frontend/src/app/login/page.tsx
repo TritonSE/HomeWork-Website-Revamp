@@ -1,7 +1,7 @@
-import ContactForm from "../../components/loginForm";
+import LoginForm from "../../components/LoginForm";
 
-const ContactPage = () => {
-  return <ContactForm />;
+const LoginPage = () => {
+  return <LoginForm />;
 };
 
-export default ContactPage;
+export default LoginPage;

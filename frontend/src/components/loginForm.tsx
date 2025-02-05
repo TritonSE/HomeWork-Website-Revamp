@@ -1,8 +1,13 @@
 "use client";
 import { Button, TextField, Icon } from "@tritonse/tse-constellation";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+
+import { verifyUser } from "../api/user";
+import { auth } from "../firebase/firebase";
 
 const LoginForm: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -11,15 +16,50 @@ const LoginForm: React.FC = () => {
     });
 
     const [emailError, setEmailError] = useState<string>("");
+    const [passwordError, setPasswordError] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const router = useRouter();
 
     const handleInputChange = (name: string, value: string) => {
         setFormData({ ...formData, [name]: value });
+        // Clear errors when user types
+        if (name === "email") setEmailError("");
+        if (name === "password") setPasswordError("");
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // Add Later
+        setIsSubmitting(true);
+        
+        try {
+            // Sign in with Firebase
+            const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+            const token = await userCredential.user.getIdToken();
+            
+            // Verify with backend
+            const result = await verifyUser(token);
+            if (result.success) {
+                console.log("User verified", result.data);
+            } else {
+                setEmailError("Authentication failed. Please try again.");
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                // Handle Firebase auth errors
+                if (error.message.includes("auth/invalid-email")) {
+                    setEmailError("Invalid email address");
+                } else if (error.message.includes("auth/wrong-password")) {
+                    setPasswordError("Incorrect password");
+                } else if (error.message.includes("auth/user-not-found")) {
+                    setEmailError("No account found with this email");
+                } else {
+                    setEmailError("Login failed. Please try again.");
+                }
+
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -29,13 +69,14 @@ const LoginForm: React.FC = () => {
                 <Image
                     src="/images/homeworkAdmin.png"
                     alt="Homework Admin"
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    style={{objectFit:"cover"}}
+                    loading="eager"
                 />
             </div>
 
             {/* Right side - Login Form */}
-            <div className="w-full md:w-1/2 flex flex-col items-center justify-center px-8">
+            <div className="w-full md:w-1/2 flex flex-col items-center justify-center">
                 <div className="w-full max-w-md">
                     <div className="flex items-start">
                         <Link href="/" className="text-[#B4B4B4] hover:underline flex items-start gap-2">
@@ -44,7 +85,7 @@ const LoginForm: React.FC = () => {
                         </Link>
                     </div>
                     {/* Logo */}
-                    <div className="mb-8 flex justify-left">
+                    <div className="mt-10 mb-5 flex justify-left">
                         <Image
                             src="/images/homeworkLogo.png"
                             alt="Homework Logo"
@@ -54,14 +95,14 @@ const LoginForm: React.FC = () => {
                     </div>
 
                     <h1 className="text-3xl mb-2">Log In</h1>
-                    <p className="mb-8 text-[#909090]">
+                    <p className="mb-10 text-[#909090]">
                         Don't have an account?{" "}
                         <Link href="/signup" className="text-[#F26522] hover:underline">
                             Sign Up
                         </Link>
                     </p>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit}>
                         <TextField
                             label="Email Address"
                             type="email"
@@ -72,7 +113,7 @@ const LoginForm: React.FC = () => {
                             errorText={emailError}
                         />
 
-                        <div>
+                        <div className="flex flex-col mb-8">
                             <TextField
                                 label="Password"
                                 type="password"
@@ -80,8 +121,9 @@ const LoginForm: React.FC = () => {
                                 value={formData.password}
                                 onChange={(v) => handleInputChange("password", v)}
                                 placeholder="Enter password"
+                                errorText={passwordError}
                             />
-                            <div className="flex justify-end mt-1">
+                            <div className="flex justify-end -mt-5">
                                 <Link href="/forgot-password" className="text-[#F26522] text-sm hover:underline">
                                     Forgot Password?
                                 </Link>
@@ -93,7 +135,7 @@ const LoginForm: React.FC = () => {
                             disabled={isSubmitting}
                             className="w-full bg-[#F26522] text-white py-2 rounded-md hover:bg-[#d55416]"
                         >
-                            Continue
+                            {isSubmitting ? "Logging in..." : "Continue"}
                         </Button>
                     </form>
                 </div>
@@ -103,3 +145,4 @@ const LoginForm: React.FC = () => {
 };
 
 export default LoginForm;
+
