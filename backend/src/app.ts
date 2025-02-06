@@ -7,12 +7,14 @@ import { mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
 import contactRoute from "./routes/contactRequest";
+import userRoute from "./routes/user";
 import quoteRoutes from "./routes/quote";
 // Initialize Express App
 const app = express();
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN }));
 app.use(json());
 app.use("/api", contactRoute);
+app.use("/api/users", userRoute);
 app.use("/api/articles", articleRoutes);
 app.use("/api/quotes", quoteRoutes);
 
