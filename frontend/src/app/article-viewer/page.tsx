@@ -48,7 +48,7 @@ const SelectedArticle: React.FC<{ article: Article }> = ({ article }) => {
         </h1>
         <p className="font-golos text-lg sm:text-xl text-orange-500 font-normal">{formattedDate}</p>
         <img src={article.thumbnail} alt={article.header} className="w-full h-auto object-cover" />
-        <p className="font-golos text-lg sm:text-xl leading-8 line-clamp-6">{article.body}</p>
+        <p className="font-golos text-lg sm:text-xl leading-8">{article.body}</p>
       </div>
     </div>
   );
