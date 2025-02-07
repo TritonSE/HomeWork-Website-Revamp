@@ -56,7 +56,7 @@ const FlashcardPage: React.FC = () => {
               <Flashcard {...flashcard} />
               {index < 5 && (
                 <>
-                  <div className={`w-[calc(100%-724.5px)] h-[5px] bg-gray-600`} />
+                  <div className="w-[calc(100%-724.5px)] h-[5px] bg-gray-600" />
                   <div className="h-[206.5px] w-[5px] bg-gray-600 mt-auto" />
                 </>
               )}

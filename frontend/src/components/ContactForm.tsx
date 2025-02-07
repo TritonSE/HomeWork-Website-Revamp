@@ -70,99 +70,89 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        maxWidth: "1000px",
-        margin: "0 auto",
-        gap: "20px",
-      }}
-    >
-      <div style={{ flex: 1, padding: "20px" }}>
-        <h1 className="text-2xl text-[48px] font-golos font-medium text-left">Get in Touch</h1>
-        <p className="text-left mb-2 text-[20px]">
-          Send us a quick message and we&apos;ll reach back out to you soon.
-        </p>
-        <p className="text-left mb-2 text-[20px]">We&apos;re excited to have you here!</p>
-        <form
-          onSubmit={(e) => {
-            void handleSubmit(e);
-          }}
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          <div>
-            <TextField
-              label="Full Name"
-              type="name"
-              name="name"
-              value={formData.fullName}
-              onChange={(v) => {
-                handleInputChange("fullName", v);
-              }}
-              placeholder="Enter your full name"
-              errorText={fullNameError}
-            />
-          </div>
-          <div>
-            <TextField
-              label="Email Address"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={(v) => {
-                handleInputChange("email", v);
-              }}
-              placeholder="Enter email"
-              errorText={emailError}
-            />
-          </div>
-          <div>
-            <TextField
-              label="Phone Number"
-              type="phoneNumber"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={(v) => {
-                handleInputChange("phoneNumber", v);
-              }}
-              placeholder="Enter phone number"
-              errorText={phoneNumberError}
-            />
-          </div>
-          <div>
-            <label>Message</label>
-            <textarea
-              rows={5}
-              placeholder="Write your message (optional)"
-              name="message"
-              value={formData.message}
-              onChange={(e) => {
-                handleInputChange("message", e.target.value);
-              }}
-              className="mt-1 block w-full p-2 border border-[rgba(0,0,0,.4)] text-[16px] rounded-md shadow-sm focus:outline-none focus:border-[var(--tse-constellation-color-secondary-highlight-1)]"
-            ></textarea>
-          </div>
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="mt-4 px-5 py-2.5 text-align w-40"
+    <div className="flex flex-row">
+      <div className="p-8 w-[calc(48%)]">
+        <div className="relative flex flex-col">
+          <h1 className="text-2xl text-[48px] font-golos font-medium text-left pt-8">
+            Get in Touch
+          </h1>
+          <p className="text-left mb-2 text-[20px]">
+            Send us a quick message and we&apos;ll reach back out to you soon.
+          </p>
+          <p className="text-left mb-2 text-[20px]">We&apos;re excited to have you here!</p>
+          <form
+            onSubmit={(e) => {
+              void handleSubmit(e);
+            }}
+            style={{ display: "flex", flexDirection: "column" }}
           >
-            {isSubmitting ? "Sending..." : "Send Message"}
-          </Button>
-        </form>
-        {responseMessage && (
-          <p style={{ marginTop: "15px", fontSize: "16px", color: "#333" }}>{responseMessage}</p>
-        )}
+            <div>
+              <TextField
+                label="Full Name"
+                type="name"
+                name="name"
+                value={formData.fullName}
+                onChange={(v) => {
+                  handleInputChange("fullName", v);
+                }}
+                placeholder="Enter your full name"
+                errorText={fullNameError}
+              />
+            </div>
+            <div>
+              <TextField
+                label="Email Address"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={(v) => {
+                  handleInputChange("email", v);
+                }}
+                placeholder="Enter email"
+                errorText={emailError}
+              />
+            </div>
+            <div>
+              <TextField
+                label="Phone Number"
+                type="phoneNumber"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={(v) => {
+                  handleInputChange("phoneNumber", v);
+                }}
+                placeholder="Enter phone number"
+                errorText={phoneNumberError}
+              />
+            </div>
+            <div>
+              <label>Message</label>
+              <textarea
+                rows={5}
+                placeholder="Write your message (optional)"
+                name="message"
+                value={formData.message}
+                onChange={(e) => {
+                  handleInputChange("message", e.target.value);
+                }}
+                className="mt-1 block w-full p-2 border border-[rgba(0,0,0,.4)] text-[16px] rounded-md shadow-sm focus:outline-none focus:border-[var(--tse-constellation-color-secondary-highlight-1)]"
+              ></textarea>
+            </div>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-4 px-5 py-2.5 text-align w-40"
+            >
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </Button>
+          </form>
+          {responseMessage && (
+            <p style={{ marginTop: "15px", fontSize: "16px", color: "#333" }}>{responseMessage}</p>
+          )}
+        </div>
       </div>
-
-      <div className="flex-row-reverse">
-        <img
-          src="/images/map.png"
-          alt="Map"
-          style={{ maxWidth: "100%", height: "auto", borderRadius: "10px", objectFit: "cover" }}
-        />
+      <div className="w-[calc(52%)] flex justify-end">
+        <img src="/images/map.png" alt="Map" />
       </div>
     </div>
   );
