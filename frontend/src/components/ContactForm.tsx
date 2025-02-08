@@ -73,9 +73,7 @@ const ContactForm: React.FC = () => {
     <div className="flex flex-row">
       <div className="p-8 w-[calc(48%)]">
         <div className="relative flex flex-col">
-          <h1 className="text-2xl text-[48px] font-golos font-medium text-left pt-8">
-            Get in Touch
-          </h1>
+          <h1 className="text-[48px] font-golos font-medium text-left pt-8">Get in Touch</h1>
           <p className="text-left mb-2 text-[20px]">
             Send us a quick message and we&apos;ll reach back out to you soon.
           </p>
@@ -126,7 +124,7 @@ const ContactForm: React.FC = () => {
               />
             </div>
             <div>
-              <label>Message</label>
+              <label className="text-[12px] sm:text-[14px] md:text-[16px]">Message</label>
               <textarea
                 rows={5}
                 placeholder="Write your message (optional)"
@@ -135,7 +133,7 @@ const ContactForm: React.FC = () => {
                 onChange={(e) => {
                   handleInputChange("message", e.target.value);
                 }}
-                className="mt-1 block w-full p-2 border border-[rgba(0,0,0,.4)] text-[16px] rounded-md shadow-sm focus:outline-none focus:border-[var(--tse-constellation-color-secondary-highlight-1)]"
+                className="mt-1 block w-full p-3 border border-[rgba(0,0,0,.4)] text-[12px] sm:text-[14px] md:text-[16px] rounded-md shadow-sm focus:outline-none focus:border-[var(--tse-constellation-color-secondary-highlight-1)]"
               ></textarea>
             </div>
             <Button
