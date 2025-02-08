@@ -100,21 +100,11 @@ const RelatedArticles: React.FC<{ sortedArticles: Article[] }> = ({ sortedArticl
 
 /**
  *
- * @param props Takes a selectedArticle as a prop to highlight the article in the viewer.
+ * @param props Takes a Article as a prop to highlight the article in the viewer.
  * @returns
  */
 const ArticleViewerPage: React.FC<{ selectedArticle: Article }> = ({ selectedArticle }) => {
   const { articles, loading } = useContext(ArticleContext);
-
-  selectedArticle = {
-    _id: "679fd8b0b222101f17087c8e",
-    header: "ABC 10 News Features Community Connection",
-    dateCreated: "2025-01-15T10:30:00.000Z",
-    author: "Jimmy Dough",
-    body: "Heartwarming coverage by ABC 10 News showcased hoMEwork's involvement in a Southern California Union Workers Softball Game. The video captures the spirit of camaraderie and the positive influence of our community-building efforts. Join us in celebrating the shared victories and connections that unfold beyond the softball field, emphasizing the unity fostered by hoMEwork. Watch the segment from ABC 10 News.",
-    thumbnail:
-      "https://s3-alpha-sig.figma.com/img/4210/7486/1ab31a00ba456c367b910180efaa7736?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Nn2zzVD5~IwDrzZ55r02YW94UsEdO5YKSz~B9BrPqQfwy8~Zpv10IBwqJZR8FE4CPKIm-o6IuOeU-7fbONq~OlfuWoI2Qvlfj8bbYnuK0FAJjHBRxtJD3ZdGAJwh~qOMrfOqA2xyR7kbxE~X-fFX~kI08bSmFV594hgej4NY0zsiV65jKj8y2MqjmMdWzYq029n~fvH-OIkEHYBSLjYnaH1r7GlredgkWldEYNKzmrYXRfza~F2pompW09RnC8b-fNSSGU58Rnma6PmJG1CVSneA4DAmUz5AkTFcCRJPqI4jpNCn~j5n6LNTLYDfixHSGOksAf3s1wdoJCRjBuheMA__",
-  };
 
   // Get sorted articles by recent
   const sortedArticles = articles.sort((a, b) => {
