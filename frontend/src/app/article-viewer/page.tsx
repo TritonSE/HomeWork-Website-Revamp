@@ -33,22 +33,22 @@ const SelectedArticle: React.FC<{ article: Article }> = ({ article }) => {
       <div className="hidden md:flex md:flex-row w-full gap-10">
         <img src={article.thumbnail} alt={article.header} className="w-5/12 h-auto object-cover" />
         <div className="flex flex-col w-7/12 justify-center gap-5">
-          <h1 className="mb-2 font-baskerville text-6xl font-bold leading-relaxed">
+          <h1 className="mb-2 font-baskerville text-5xl font-bold leading-relaxed">
             {article.header}
           </h1>
-          <p className="font-golos text-xl text-orange-500 font-semibold">{formattedDate}</p>
-          <p className="font-golos text-xl leading-8">{article.body}</p>
+          <p className="font-golos text-lg text-orange-500 font-semibold">{formattedDate}</p>
+          <p className="font-golos text-lg leading-8">{article.body}</p>
         </div>
       </div>
 
       {/* Tablet/Mobile View */}
       <div className="flex md:hidden flex-col w-full gap-7">
-        <h1 className="font-baskerville text-3xl sm:text-6xl font-bold leading-snug">
+        <h1 className="font-baskerville text-4xl sm:text-5xl font-bold leading-snug">
           {article.header}
         </h1>
-        <p className="font-golos text-lg sm:text-xl text-orange-500 font-normal">{formattedDate}</p>
+        <p className="font-golos sm:text-lg text-orange-500 font-normal">{formattedDate}</p>
         <img src={article.thumbnail} alt={article.header} className="w-full h-auto object-cover" />
-        <p className="font-golos text-lg sm:text-xl leading-8">{article.body}</p>
+        <p className="font-golos sm:text-lg leading-8">{article.body}</p>
       </div>
     </div>
   );
@@ -66,25 +66,33 @@ const ArticleCard: React.FC<{ article: Article; index: number }> = ({ article, i
         alt={article.header}
         className={`w-full h-80 mb-3 object-cover ${article?.thumbnail === null ? "bg-black" : ""}`}
       />
-      <h3 className="mb-1 text-3xl line-clamp-1">{article.header}</h3>
-      <p className="text-lg sm:text-xl text-orange-500">
+      <h3 className="mb-2 text-2xl line-clamp-1">{article.header}</h3>
+      <p className="sm:text-base text-orange-500">
         {convertDateToMonthDayYear(article.dateCreated)}
       </p>
-      <p className="text-lg sm:text-xl line-clamp-4">{article.body}</p>
+      <p className="sm:text-base line-clamp-4 leading-8">{article.body}</p>
     </div>
   );
 };
 
 const RelatedArticles: React.FC<{ sortedArticles: Article[] }> = ({ sortedArticles }) => {
+  const hasArticles = sortedArticles.length > 0;
+
   return (
     <div>
       <h2 className="mt-5 mb-16 text-orange-500 font-semibold text-4xl md:text-5xl">
         Related Articles
       </h2>
       <div className="flex flex-col md:flex-row gap-10 h-full">
-        {sortedArticles.slice(0, 3).map((article, index) => (
-          <ArticleCard key={index} article={article} index={index} />
-        ))}
+        {hasArticles ? (
+          sortedArticles
+            .slice(0, 3)
+            .map((article, index) => <ArticleCard key={index} article={article} index={index} />)
+        ) : (
+          <p className="flex flow justify-center items-center text-3xl text-gray-400">
+            No related articles found.
+          </p>
+        )}
       </div>
     </div>
   );
@@ -123,23 +131,23 @@ const ArticleViewerPage: React.FC<{ selectedArticle: Article }> = ({ selectedArt
           <p className="text-lg sm:text-xl text-gray-400">Back to all articles</p>
         </button>
         {loading ? (
-          <div className="flex flow justify-center items-center text-3xl text-gray-400">
+          <p className="flex flow justify-center items-center h-96 text-3xl text-gray-400">
             Loading article...
-          </div>
+          </p>
         ) : (
           <SelectedArticle article={selectedArticle} />
         )}
       </div>
       <div className="p-10 bg-gray-100">
         {loading ? (
-          <div className="flex flow justify-center items-center text-3xl text-gray-400">
+          <p className="flex flow justify-center items-center h-96 text-3xl text-gray-400">
             Loading related articles...
-          </div>
+          </p>
         ) : (
           <RelatedArticles sortedArticles={sortedArticles} />
         )}
         <div className="flex justify-center items-center w-full mt-10 mb-5">
-          <button className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos text-lg">
+          <button className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos">
             See All Articles
           </button>
         </div>
