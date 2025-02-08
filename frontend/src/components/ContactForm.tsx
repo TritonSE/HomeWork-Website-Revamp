@@ -70,8 +70,8 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row">
-      <div className="p-8 w-[calc(48%)]">
+    <div className="flex flex-col sm:flex-row">
+      <div className="p-8 w-[calc(100%)] sm:w-[calc(48%)]">
         <div className="relative flex flex-col">
           <h1 className="text-[48px] font-golos font-medium text-left pt-8">Get in Touch</h1>
           <p className="text-left mb-2 text-[20px]">
@@ -149,7 +149,7 @@ const ContactForm: React.FC = () => {
           )}
         </div>
       </div>
-      <div className="w-[calc(52%)] flex justify-end">
+      <div className="w-[calc(100%)] sm:w-[calc(52%)] flex justify-end">
         <img src="/images/map.png" alt="Map" />
       </div>
     </div>
