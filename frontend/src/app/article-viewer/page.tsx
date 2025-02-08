@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useContext } from "react";
 
 import backArrow from "@/../public/icons/backArrow.svg";
-import placeholderImage from "@/../public/images/homeworkLogo.png";
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
 
@@ -62,9 +61,9 @@ const ArticleCard: React.FC<{ article: Article; index: number }> = ({ article, i
       className={`flex flex-col w-full h-full gap-2 cursor-pointer font-golos ${index >= numCardLimit ? "hidden md:flex" : ""}`}
     >
       <img
-        src={article?.thumbnail ?? placeholderImage.src}
+        src={article.thumbnail}
         alt={article.header}
-        className={`w-full h-80 mb-3 object-cover ${article?.thumbnail === null ? "bg-black" : ""}`}
+        className={"w-full h-80 mb-3 object-cover"}
       />
       <h3 className="mb-2 text-2xl line-clamp-1">{article.header}</h3>
       <p className="sm:text-base text-orange-500">
