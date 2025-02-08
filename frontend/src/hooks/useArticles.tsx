@@ -27,7 +27,7 @@ export const useArticles = (): [Article[], boolean] => {
     const fetchArticles = async () => {
       try {
         const response = await get("/articles/all");
-        const data = await response.json() as Article[];
+        const data = (await response.json()) as Article[];
         setArticles(data);
       } catch (error) {
         console.error("Error fetching articles: ", error);
