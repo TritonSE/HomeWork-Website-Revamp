@@ -23,7 +23,7 @@ export const EventsCarouselCard: React.FC<EventProps> = ({ event }) => {
   return (
     <div
       className="
-            flex-shrink-0 sm:w-2/5 w-full h-full p-4 pt-5 pb-5 
+            flex-shrink-0 sm:w-2/5 w-full max-w-xl h-full p-4 pt-5 pb-5 
             rounded-lg border border-gray-400 shadow-md 
             snap-normal snap-start"
     >
@@ -37,7 +37,9 @@ export const EventsCarouselCard: React.FC<EventProps> = ({ event }) => {
           />
         </div>
         <h3 className="font-golos md:text-lg text-sm font-medium">{event.header}</h3>
-        <p className="font-manrope md:text-sm text-xs text-gray-400">{event.dateCreated}</p>
+        <p className="font-manrope md:text-sm text-xs text-orange-500 font-bold">
+          {event.dateCreated}
+        </p>
         <p className="font-golos md:text-sm text-xs font-light line-clamp-3">{event.body}</p>
       </div>
 
