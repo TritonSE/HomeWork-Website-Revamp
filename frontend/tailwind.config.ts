@@ -11,7 +11,9 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        NeutralGray4: "909090",
+        primary_dark: "#F05629",
+        secondary_highlight_1: "#F05629",
+        secondary_highlight_2: "#F05629",
       },
       fontFamily: {
         golos: ['"GolosText"', "sans-serif"],
