@@ -6,7 +6,6 @@ import { decodeAuthToken } from "../util/auth";
 
 type RequestBody = {
   uid?: string; // Optional as it is added later
-  accountType?: string; // Optional as it is added later
 };
 
 type RequestWithUserId = Request<object, object, RequestBody> & {
@@ -33,8 +32,7 @@ const verifyAuthToken = async (req: RequestWithUserId, res: Response, next: Next
     const userInfo: DecodedIdToken = await decodeAuthToken(token);
 
     // Add user info to the request body
-    req.body.uid = userInfo.user_id;
-    req.body.accountType = userInfo.accountType;
+    req.body.uid = userInfo.user_id as string;
 
     next(); // Proceed to the next middleware/route handler
   } catch (e) {
