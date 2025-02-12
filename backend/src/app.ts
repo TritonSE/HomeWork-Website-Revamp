@@ -10,7 +10,6 @@ import articleRoutes from "./routes/article";
 import contactRoute from "./routes/contactRequest";
 import quoteRoutes from "./routes/quote";
 import userRoute from "./routes/user";
-import quoteRoutes from "./routes/quote";
 // Initialize Express App
 const app = express();
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN }));
