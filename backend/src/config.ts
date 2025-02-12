@@ -11,8 +11,8 @@ function throwIfUndefined(envVar: string | undefined, error: InternalError) {
   return envVar;
 }
 
-if (!process.env.PORT) throw InternalError.NO_APP_PORT;
-const port = process.env.PORT;
+if (!process.env.APP_PORT) throw InternalError.NO_APP_PORT;
+const port = process.env.APP_PORT;
 
 //Make sure service account key is in .env
 const serviceAccountKey = throwIfUndefined(

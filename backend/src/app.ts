@@ -1,12 +1,14 @@
 import { json } from "body-parser";
 import cors from "cors";
 import express from "express";
+import { onRequest } from "firebase-functions/v2/https";
 import mongoose from "mongoose";
 
 import { mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
 import contactRoute from "./routes/contactRequest";
+import quoteRoutes from "./routes/quote";
 import userRoute from "./routes/user";
 import quoteRoutes from "./routes/quote";
 // Initialize Express App
@@ -29,3 +31,5 @@ mongoose
     });
   })
   .catch(console.error);
+
+export const backend = onRequest({ region: "us-west1" }, app);
