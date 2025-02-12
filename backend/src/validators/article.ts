@@ -37,7 +37,11 @@ const makeBodyValidator = () =>
   body("body").optional().isString().withMessage("body must be a string");
 
 const makeThumbnailValidator = () =>
-  body("thumbnail").optional().isURL().withMessage("thumbnail must be a url");
+  body("thumbnail")
+    .exists()
+    .withMessage("thumbnail is required")
+    .isURL()
+    .withMessage("thumbnail must be a url");
 
 export const createArticle = [
   makeHeaderValidator(),

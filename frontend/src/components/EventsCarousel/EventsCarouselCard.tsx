@@ -1,7 +1,7 @@
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 
-import learnMoreIcon from "@/../public/icons/learn-more.svg";
+import learnMoreIcon from "@/../public/icons/learnMore.svg";
 
 type Event = {
   header: string;
