@@ -26,3 +26,18 @@
     -ms-overflow-style: none;
   }
 }
+
+/* Swiper */
+.swiper-pagination-bullet {
+  background-color: black !important;
+}
+.swiper-pagination-bullet-active {
+  background-color: black !important;
+}
+
+.swiper-button-next {
+  color: black !important;
+}
+.swiper-button-prev {
+  color: black !important;
+}
