@@ -1,0 +1,43 @@
+name: Build and Deploy
+
+on:
+    workflow_call:
+        inputs:
+            environment:
+                required: true
+                type: string
+            firebaseHostingChannelId:
+                required: false
+                type: string
+
+jobs:
+  build_and_preview:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    environment: ${{inputs.environment}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Backend .env file
+        run: | 
+            cd backend 
+            touch .env
+            echo APP_PORT=${{secrets.APP_PORT}} >> .env
+            echo MONGO_URI=${{secrets.MONGO_URI}} >> .env
+            echo SERVICE_ACCOUNT_KEY=${{secrets.SERVICE_ACCOUNT_KEY}} >> .env
+            echo EMAIL=${{secrets.EMAIL}} >> .env
+            echo EMAIL_PASSWORD=${{secrets.EMAIL_PASSWORD}} >> .env
+      - name: Create Frontend .env file
+        run: |
+            cd frontend 
+            touch .env 
+      - name: Build Backend
+        run: cd backend && npm run build
+      - name: Build Frontend
+        run: cd frontend && npm ci && npm run build
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HOMEWORK_DEV_445619 }}
+          projectId: homework-dev-445619
+          channelId: ${{inputs.firebaseHostingChannelId}}
