@@ -11,8 +11,8 @@ function throwIfUndefined(envVar: string | undefined, error: InternalError) {
   return envVar;
 }
 
-if (!process.env.PORT) throw InternalError.NO_APP_PORT;
-const port = process.env.PORT;
+if (!process.env.APP_PORT) throw InternalError.NO_APP_PORT;
+const port = process.env.APP_PORT;
 
 //Make sure service account key is in .env
 const serviceAccountKey = throwIfUndefined(
@@ -20,9 +20,9 @@ const serviceAccountKey = throwIfUndefined(
   InternalError.NO_SERVICE_ACCOUNT_KEY,
 );
 
-export { serviceAccountKey };
 if (!process.env.EMAIL) throw InternalError.NO_EMAIL;
 if (!process.env.EMAIL_PASSWORD) throw InternalError.NO_EMAIL_PASSWORD;
 if (!process.env.MONGO_URI) throw InternalError.NO_MONGO_URI;
 const mongoUri = process.env.MONGO_URI;
 export { port, mongoUri };
+export { serviceAccountKey };
