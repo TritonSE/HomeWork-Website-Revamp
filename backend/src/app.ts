@@ -6,8 +6,8 @@ import mongoose from "mongoose";
 import { mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
-import subscriptionRoutes from "./routes/subscription";
 import contactRoute from "./routes/contactRequest";
+import subscriptionRoutes from "./routes/subscription";
 
 // Initialize Express App
 const app = express();

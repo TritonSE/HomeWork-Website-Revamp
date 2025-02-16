@@ -4,7 +4,11 @@ import { validationResult } from "express-validator";
 import SubscriptionModel from "../models/subscription";
 import validationErrorParser from "../util/validationErrorParser";
 
-export const createSubscription: RequestHandler = async (req, res, next) => {
+export const createSubscription: RequestHandler = async (
+  req: { body: { email: string; name: string } },
+  res,
+  next,
+) => {
   // extract any errors that were found by the validator
   const errors = validationResult(req);
   const { name, email } = req.body;
@@ -36,7 +40,11 @@ export const getAllSubscriptions: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const removeSubscription: RequestHandler = async (req, res, next) => {
+export const removeSubscription: RequestHandler = async (
+  req: { body: { email: string } },
+  res,
+  next,
+) => {
   const { email } = req.body;
 
   try {
