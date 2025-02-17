@@ -7,6 +7,8 @@ import { useContext } from "react";
 import backArrow from "@/../public/icons/backArrow.svg";
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const convertDateToMonthDayYear = (date: string): string => {
   const textDate = new Date(date).toLocaleDateString("en-US", {
@@ -60,11 +62,7 @@ const ArticleCard: React.FC<{ article: Article; index: number }> = ({ article, i
     <div
       className={`flex flex-col w-full h-full gap-2 cursor-pointer font-golos ${index >= numCardLimit ? "hidden md:flex" : ""}`}
     >
-      <img
-        src={article.thumbnail}
-        alt={article.header}
-        className={"w-full h-80 mb-3 object-cover"}
-      />
+      <img src={article.thumbnail} alt={article.header} className="w-full h-80 mb-3 object-cover" />
       <h3 className="mb-2 text-2xl line-clamp-1">{article.header}</h3>
       <p className="sm:text-base text-orange-500">
         {convertDateToMonthDayYear(article.dateCreated)}
@@ -102,8 +100,11 @@ const RelatedArticles: React.FC<{ sortedArticles: Article[] }> = ({ sortedArticl
  * @param props Takes a Article as a prop to highlight the article in the viewer.
  * @returns
  */
-const ArticleViewerPage: React.FC<{ selectedArticle: Article }> = ({ selectedArticle }) => {
+const ArticleViewerPage: React.FC = () => {
   const { articles, loading } = useContext(ArticleContext);
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("articleId");
 
   // Get sorted articles by recent
   const sortedArticles = articles.sort((a, b) => {
@@ -112,13 +113,35 @@ const ArticleViewerPage: React.FC<{ selectedArticle: Article }> = ({ selectedArt
     return dateA.getTime() - dateB.getTime();
   });
 
+  const filteredArticles = articles.filter((article) => article._id === id);
+  const selectedArticle: Article = filteredArticles[0];
+
+  // 404 Page
+  if (selectedArticle === undefined && !loading) {
+    return (
+      <div className="flex flow justify-center items-center h-96 w-full text-2xl text-gray-400">
+        <Link
+          className="flex flex-row items-center gap-2 mb-10 w-fit border border-transparent hover:border-b-gray-400"
+          href={{ pathname: "/stay-connected" }}
+        >
+          <Image src={backArrow as StaticImport} alt="back arrow icon" />
+          <p className="text-lg sm:text-xl text-gray-400">Back to all articles</p>
+        </Link>
+        <p>404 - Article Not Found.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-10 w-full h-full">
       <div className="p-10 pb-5">
-        <button className="flex flex-row items-center gap-2 mb-10 border border-transparent hover:border-b-gray-400">
+        <Link
+          className="flex flex-row items-center gap-2 mb-10 w-fit border border-transparent hover:border-b-gray-400"
+          href={{ pathname: "/stay-connected" }}
+        >
           <Image src={backArrow as StaticImport} alt="back arrow icon" />
           <p className="text-lg sm:text-xl text-gray-400">Back to all articles</p>
-        </button>
+        </Link>
         {loading ? (
           <p className="flex flow justify-center items-center h-96 text-3xl text-gray-400">
             Loading article...
