@@ -1,13 +1,7 @@
 "use client";
 
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import React from "react";
-
-import AdminLogin from "@/../public/images/adminLogin.svg";
-import Facebook from "@/../public/images/facebook.svg";
-import Logo from "@/../public/images/homeworkLogo.png";
-import Instagram from "@/../public/images/instagram.svg";
 
 type LinkProps = {
   text: string;
@@ -37,7 +31,7 @@ const FooterLink: React.FC<{ links: LinkProps[] }> = ({ links }) => {
 };
 
 type SocialMediaIconProps = {
-  icon: StaticImport;
+  icon: string;
   iconAlt: string;
   iconUrl: string;
 };
@@ -97,7 +91,7 @@ const AdminLoginButton: React.FC<{ handleAdminLogin: () => void }> = ({ handleAd
     >
       <div className="relative w-3 h-3">
         <Image
-          src={AdminLogin as StaticImport}
+          src="/images/adminLogin.svg"
           alt="Admin login logo"
           fill
           className="object-contain"
@@ -111,7 +105,7 @@ const AdminLoginButton: React.FC<{ handleAdminLogin: () => void }> = ({ handleAd
 const HomeworkIcon: React.FC = () => {
   return (
     <div className="relative w-full sm:w-1/3 h-44">
-      <Image src={Logo as StaticImport} alt="Homework logo" fill className="object-contain" />
+      <Image src="/images/homeworkLogo.png" alt="Homework logo" fill className="object-contain" />
     </div>
   );
 };
@@ -157,13 +151,13 @@ export const Footer = () => {
 
   // Placeholder for social media links
   const facebookIcon: SocialMediaIconProps = {
-    icon: Facebook as StaticImport,
+    icon: "/images/facebook.svg",
     iconAlt: "Facebook Icon",
     iconUrl: "#",
   };
 
   const instagramIcon: SocialMediaIconProps = {
-    icon: Instagram as StaticImport,
+    icon: "/images/instagram.svg",
     iconAlt: "Instagram Icon",
     iconUrl: "#",
   };

@@ -20,6 +20,10 @@ export default {
         manrope: ['"Manrope"', "sans-serif"],
       },
     },
+    screens: {
+      sm: "550px",
+      md: "850px",
+    },
   },
   plugins: [],
 } satisfies Config;
