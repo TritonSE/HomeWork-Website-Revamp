@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function OurTeamPage() {
   const teamMembers = [
     {
@@ -42,7 +44,7 @@ export default function OurTeamPage() {
     <div className="min-h-screen bg-white">
       {/* Large Image Section */}
       <div className="relative w-[1440px] h-[940px] mx-auto">
-        <img src="/images/our-team.png" alt="Our Team" className="w-full h-full object-cover" />
+        <Image src="/images/our-team.png" alt="Our Team" layout="fill" objectFit="cover" />
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-start text-white text-left px-20">
           <h1 className="font-[libre-baskerville] font-bold text-[64px] leading-[96px] tracking-normal w-[1195px] h-[96px]">
             Our Team
@@ -72,10 +74,12 @@ export default function OurTeamPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
           {teamMembers.map((member, index) => (
             <div key={index} className="text-center">
-              <img
+              <Image
                 src={member.imageUrl}
                 alt={member.name}
-                className="w-[300px] h-[300px] mx-auto mb-4 object-cover"
+                width={300}
+                height={300}
+                className="mx-auto mb-4 object-cover"
               />
               <h3 className="text-xl font-semibold text-left px-6">{member.name}</h3>
               <p className="text-left px-6">{member.title}</p>
