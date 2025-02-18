@@ -43,13 +43,19 @@ export default function OurTeamPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Large Image Section */}
-      <div className="relative w-[1440px] h-[940px] mx-auto">
-        <Image src="/images/our-team.png" alt="Our Team" layout="fill" objectFit="cover" />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-start text-white text-left px-20">
-          <h1 className="font-[libre-baskerville] font-bold text-[64px] leading-[96px] tracking-normal w-[1195px] h-[96px]">
+      <div className="relative w-full h-[60vh] mx-auto">
+        <Image
+          src="/images/our-team.png"
+          alt="Our Team"
+          layout="fill"
+          objectFit="cover" // Ensures the image covers the area without leaving space
+          priority
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-start text-white text-left px-5 sm:px-10 lg:px-20">
+          <h1 className="font-[libre-baskerville] font-bold text-[3rem] sm:text-[4rem] lg:text-[5rem] leading-[3.5rem] sm:leading-[4.5rem] lg:leading-[5rem] tracking-normal w-full max-w-[90%] sm:max-w-[80%] lg:max-w-[70%]">
             Our Team
           </h1>
-          <p className="max-w-2xl text-lg">
+          <p className="max-w-2xl text-lg mt-4">
             Our incredible staff that drives the spirit of Homework. We’re committed to helping you
             redefine what it means to be formerly incarcerated.
           </p>
@@ -57,15 +63,15 @@ export default function OurTeamPage() {
       </div>
 
       {/* Gap Section */}
-      <div className="h-[10px]"></div>
+      <div className="h-[20px] sm:h-[40px]"></div>
 
       {/* Team Members Section */}
       <div className="max-w-6xl mx-auto px-4 py-12">
-        <h2 className="font-medium text-[48px] leading-[62.4px] tracking-normal w-[1280px] h-[62px] text-left px-5">
+        <h2 className="font-medium text-[2.5rem] sm:text-[3rem] leading-[3rem] sm:leading-[3.5rem] tracking-normal text-left mb-6">
           Our Team
         </h2>
 
-        <p className="text-center mb-12">
+        <p className="text-center mb-12 text-lg">
           We’re a team of XX, XX, and XX, actively changing what it means to be previously
           incarcerated. We’re XX, XX, and XX, and we’re just getting started.
         </p>
@@ -73,7 +79,7 @@ export default function OurTeamPage() {
         {/* Grid Layout */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
           {teamMembers.map((member, index) => (
-            <div key={index} className="text-center">
+            <div key={index} className="text-center flex flex-col items-center">
               <Image
                 src={member.imageUrl}
                 alt={member.name}
