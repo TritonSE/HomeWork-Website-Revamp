@@ -1,8 +1,0 @@
-.container {
-  width: 100%;
-  height: 662px;
-  display: grid; /* Enables grid layout */
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Dynamic column sizing */
-  flex-wrap: wrap; /* Allows wrapping for smaller screens */
-  align-items: end; /* Moves cards to the bottom */
-}
