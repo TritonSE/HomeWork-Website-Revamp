@@ -70,77 +70,89 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "700px" }}>
-      <h1 className="text-2xl text-[48px] font-golos font-medium text-left">Get in Touch</h1>
-      <p className="text-left mb-2 text-[20px]">
-        Send us a quick message and we&apos;ll reach back out to you soon.
-      </p>
-      <p className="text-left mb-2 text-[20px]">We&apos;re excited to have you here!</p>
-      <form
-        onSubmit={(e) => {
-          void handleSubmit(e);
-        }}
-        style={{ display: "flex", flexDirection: "column" }}
-      >
-        <div>
-          <TextField
-            label="Full Name"
-            type="name"
-            name="name"
-            value={formData.fullName}
-            onChange={(v) => {
-              handleInputChange("fullName", v);
+    <div className="flex flex-col sm:flex-row">
+      <div className="p-8 w-[calc(100%)] sm:w-[calc(48%)]">
+        <div className="relative flex flex-col">
+          <h1 className="text-[48px] font-golos font-medium text-left pt-8">Get in Touch</h1>
+          <p className="text-left mb-2 text-[20px]">
+            Send us a quick message and we&apos;ll reach back out to you soon.
+          </p>
+          <p className="text-left mb-2 text-[20px]">We&apos;re excited to have you here!</p>
+          <form
+            onSubmit={(e) => {
+              void handleSubmit(e);
             }}
-            placeholder="Enter your full name"
-            errorText={fullNameError}
-          />
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <div>
+              <TextField
+                label="Full Name"
+                type="name"
+                name="name"
+                value={formData.fullName}
+                onChange={(v) => {
+                  handleInputChange("fullName", v);
+                }}
+                placeholder="Enter your full name"
+                errorText={fullNameError}
+              />
+            </div>
+            <div>
+              <TextField
+                label="Email Address"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={(v) => {
+                  handleInputChange("email", v);
+                }}
+                placeholder="Enter email"
+                errorText={emailError}
+              />
+            </div>
+            <div>
+              <TextField
+                label="Phone Number"
+                type="phoneNumber"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={(v) => {
+                  handleInputChange("phoneNumber", v);
+                }}
+                placeholder="Enter phone number"
+                errorText={phoneNumberError}
+              />
+            </div>
+            <div>
+              <label className="text-[12px] sm:text-[14px] md:text-[16px]">Message</label>
+              <textarea
+                rows={5}
+                placeholder="Write your message (optional)"
+                name="message"
+                value={formData.message}
+                onChange={(e) => {
+                  handleInputChange("message", e.target.value);
+                }}
+                className="mt-1 block w-full p-3 border border-[rgba(0,0,0,.4)] text-[12px] sm:text-[14px] md:text-[16px] rounded-md shadow-sm focus:outline-none focus:border-[var(--tse-constellation-color-secondary-highlight-1)]"
+              ></textarea>
+            </div>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-4 px-5 py-2.5 text-align w-40"
+            >
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </Button>
+          </form>
+          {responseMessage && (
+            <p style={{ marginTop: "15px", fontSize: "16px", color: "#333" }}>{responseMessage}</p>
+          )}
         </div>
-        <div>
-          <TextField
-            label="Email Address"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={(v) => {
-              handleInputChange("email", v);
-            }}
-            placeholder="Enter email"
-            errorText={emailError}
-          />
-        </div>
-        <div>
-          <TextField
-            label="Phone Number"
-            type="phoneNumber"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={(v) => {
-              handleInputChange("phoneNumber", v);
-            }}
-            placeholder="Enter phone number"
-            errorText={phoneNumberError}
-          />
-        </div>
-        <div>
-          <label>Message</label>
-          <textarea
-            rows={5}
-            placeholder="Write your message (optional)"
-            name="message"
-            value={formData.message}
-            onChange={(e) => {
-              handleInputChange("message", e.target.value);
-            }}
-            className="mt-1 block w-full p-2 border border-[rgba(0,0,0,.4)] text-[16px] rounded-md shadow-sm focus:outline-none focus:border-[var(--tse-constellation-color-secondary-highlight-1)]"
-          ></textarea>
-        </div>
-        <Button type="submit" disabled={isSubmitting} className="mt-4 px-5 py-2.5 text-align w-40">
-          {isSubmitting ? "Sending..." : "Send Message"}
-        </Button>
-      </form>
-      {responseMessage && (
-        <p style={{ marginTop: "15px", fontSize: "16px", color: "#333" }}>{responseMessage}</p>
-      )}
+      </div>
+      <div className="w-[calc(100%)] sm:w-[calc(52%)] flex justify-end">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/map.png" alt="Map" />
+      </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "@tritonse/tse-constellation";
+
 import "../global.css";
 import { Footer } from "@/components/Footer";
 
@@ -17,6 +18,12 @@ export default function RootLayout({
         <ThemeProvider
           colors={{
             primary_dark: "#F05629",
+            secondary_highlight_1: "#F05629",
+            secondary_highlight_2: "#F05629",
+          }}
+          fonts={{
+            primary: '"GolosText", sans-serif',
+            secondary: "GolosText",
           }}
         >
           {children}
