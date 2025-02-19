@@ -1,9 +1,9 @@
 // Card.jsx
 import React from "react";
 
-import { BoxLink } from "../components/boxLink";
+import { BoxLink } from "./boxLink";
 
-const Cards = () => {
+const BoxLinkGroup = () => {
   return (
     <div className="w-full h-[662px] grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] flex-wrap items-end">
       <BoxLink
@@ -46,4 +46,4 @@ const Cards = () => {
   );
 };
 
-export default Cards;
+export default BoxLinkGroup;
