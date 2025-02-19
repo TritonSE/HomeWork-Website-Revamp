@@ -11,11 +11,18 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary_dark: "#F05629",
+        secondary_highlight_1: "#F05629",
+        secondary_highlight_2: "#F05629",
       },
       fontFamily: {
         golos: ['"GolosText"', "sans-serif"],
         manrope: ['"Manrope"', "sans-serif"],
       },
+    },
+    screens: {
+      sm: "550px",
+      md: "850px",
     },
   },
   plugins: [],
