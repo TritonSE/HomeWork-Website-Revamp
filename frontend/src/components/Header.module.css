@@ -5,31 +5,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  padding: 20px;
 }
 
 .textContainer {
   max-width: 1336px;
-  height: auto; /* Set height to auto if not needed */
-  gap: 20px; /* This gap property should create space between items */
+  height: auto;
   opacity: 0px;
+  gap: 10px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Changed from 'start' to 'flex-start' */
+  align-items: flex-start;
 }
 
 .header {
   color: white;
   max-width: 1195px;
-  height: 192px;
-  left: 3px;
-  gap: 0px;
-  opacity: 0px;
   font-family: Libre Baskerville;
   font-size: 64px;
   font-weight: 700;
   line-height: 96px;
   text-align: left;
-  text-underline-position: from-font;
   text-decoration-skip-ink: none;
 }
 
@@ -39,12 +36,9 @@
   font-weight: 400;
   line-height: 26px;
   text-align: left;
-  text-underline-position: from-font;
-  text-decoration-skip-ink: none;
   max-width: 790px;
-  height: 78px;
-  gap: 0px;
+  height: auto;
   opacity: 0px;
   color: #ffffff;
-  margin-top: 20px;
+  margin-top: 0px;
 }
