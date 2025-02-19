@@ -1,5 +1,5 @@
-// components/Header.js
 import React from "react";
+
 import styles from "./Header.module.css"; // Import CSS Module for styling
 import "@fontsource/golos-text"; // Defaults to weight 400
 
