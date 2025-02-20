@@ -1,7 +1,6 @@
 // Card.jsx
 import React from "react";
-
-import { BoxLink } from "./boxLink";
+import { BoxLink } from "./BoxLink";
 
 const BoxLinkGroup = () => {
   return (

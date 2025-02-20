@@ -1,4 +1,5 @@
 // Card.jsx
+import Link from "next/link";
 import React from "react";
 
 export interface BoxLinkProps {
@@ -25,7 +26,7 @@ export function BoxLink({
   }
 
   return (
-    <a href={link}>
+    <Link href={link}>
       <div className={contStyle}>
         <img
           src={imgSrc}
@@ -50,6 +51,6 @@ export function BoxLink({
           </span>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
