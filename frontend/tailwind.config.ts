@@ -21,6 +21,10 @@ export default {
         baskerville: ['"Baskerville"', "sans-serif"],
       },
     },
+    screens: {
+      sm: "550px",
+      md: "850px",
+    },
   },
   plugins: [],
 } satisfies Config;
