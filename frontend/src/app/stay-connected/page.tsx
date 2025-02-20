@@ -1,12 +1,13 @@
 "use client";
 
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import Image from "next/image";
+import Link from "next/link";
+import { useContext } from "react";
+
+import LearnMore from "@/../public/icons/learnMoreArrow.svg";
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
-import { useContext } from "react";
-import Link from "next/link";
-import LearnMore from "@/../public/icons/learnMoreArrow.svg";
-import Image from "next/image";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
   const textDate = new Date(article.dateCreated).toLocaleDateString("en-US", {

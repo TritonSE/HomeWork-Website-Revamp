@@ -2,13 +2,13 @@
 
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useContext } from "react";
 
 import backArrow from "@/../public/icons/backArrow.svg";
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 
 const convertDateToMonthDayYear = (date: string): string => {
   const textDate = new Date(date).toLocaleDateString("en-US", {
