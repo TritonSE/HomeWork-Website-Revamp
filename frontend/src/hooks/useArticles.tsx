@@ -28,7 +28,7 @@ export const useArticles = (): [Article[], boolean] => {
       try {
         const response = await get("/articles/all");
         const data = (await response.json()) as Article[];
-        setArticles(data);
+        setArticles(data.reverse());
       } catch (error) {
         console.error("Error fetching articles: ", error);
       } finally {
