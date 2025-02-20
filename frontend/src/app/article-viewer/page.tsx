@@ -1,12 +1,10 @@
 "use client";
 
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useContext } from "react";
 
-import backArrow from "@/../public/icons/backArrow.svg";
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
 
@@ -32,7 +30,11 @@ const SelectedArticle: React.FC<{ article: Article }> = ({ article }) => {
     <div>
       {/* Desktop View */}
       <div className="hidden md:flex md:flex-row w-full gap-10">
-        <img src={article.thumbnail} alt={article.header} className="w-5/12 h-auto object-cover" />
+        <img
+          src={article.thumbnail}
+          alt={article.header}
+          className="w-5/12 h-auto max-h-[800px] object-cover"
+        />
         <div className="flex flex-col w-7/12 justify-center gap-5">
           <h1 className="mb-2 font-baskerville text-5xl font-bold leading-relaxed">
             {article.header}
@@ -124,7 +126,7 @@ const ArticleViewerPage: React.FC = () => {
           className="flex flex-row items-center gap-2 mb-10 w-fit border border-transparent hover:border-b-gray-400"
           href={{ pathname: "/stay-connected" }}
         >
-          <Image src={backArrow as StaticImport} alt="back arrow icon" />
+          <Image src="/icons/backArrow.svg" width={20} height={20} alt="back arrow icon" />
           <p className="text-lg sm:text-xl text-gray-400">Back to all articles</p>
         </Link>
         <p>404 - Article Not Found.</p>
@@ -139,7 +141,7 @@ const ArticleViewerPage: React.FC = () => {
           className="flex flex-row items-center gap-2 mb-10 w-fit border border-transparent hover:border-b-gray-400"
           href={{ pathname: "/stay-connected" }}
         >
-          <Image src={backArrow as StaticImport} alt="back arrow icon" />
+          <Image src="/icons/backArrow.svg" width={20} height={20} alt="back arrow icon" />
           <p className="text-lg sm:text-xl text-gray-400">Back to all articles</p>
         </Link>
         {loading ? (

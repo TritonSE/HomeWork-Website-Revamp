@@ -1,11 +1,9 @@
 "use client";
 
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 import { useContext } from "react";
 
-import LearnMore from "@/../public/icons/learnMoreArrow.svg";
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
 
@@ -27,7 +25,7 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
         href={{ pathname: "/article-viewer", query: { articleId: article._id } }} // id of selected article
       >
         <p>LEARN MORE</p>
-        <Image src={LearnMore as StaticImport} alt="Learn more arrow"></Image>
+        <Image src="/icons/learnMore.svg" width={20} height={20} alt="Learn more arrow"></Image>
       </Link>
     </div>
   );
