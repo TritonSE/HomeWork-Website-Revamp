@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useContext } from "react";
+import { Suspense, useContext } from "react";
 
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
@@ -97,12 +97,18 @@ const RelatedArticles: React.FC<{ sortedArticles: Article[] }> = ({ sortedArticl
   );
 };
 
+const LoadingText: React.FC<{ text: string }> = ({ text }) => {
+  return (
+    <p className="flex flow justify-center items-center h-96 text-3xl text-gray-400">{text}</p>
+  );
+};
+
 /**
  *
  * @param props Takes a Article as a prop to highlight the article in the viewer.
  * @returns
  */
-const ArticleViewerPage: React.FC = () => {
+const ArticleViewerPage = () => {
   const { articles, loading } = useContext(ArticleContext);
 
   const searchParams = useSearchParams();
@@ -111,10 +117,12 @@ const ArticleViewerPage: React.FC = () => {
   const filteredArticles = articles.filter((article) => article._id === id);
   const selectedArticle: Article = filteredArticles[0];
 
+  console.log(selectedArticle);
+
   // 404 Page
   if (selectedArticle === undefined && !loading) {
     return (
-      <div className="flex flow justify-center items-center h-96 w-full text-2xl text-gray-400">
+      <div className="flex flex-col justify-start items-start p-10 w-full h-96 text-2xl text-gray-400">
         <Link
           className="flex flex-row items-center gap-2 mb-10 w-fit border border-transparent hover:border-b-gray-400"
           href={{ pathname: "/stay-connected" }}
@@ -122,7 +130,7 @@ const ArticleViewerPage: React.FC = () => {
           <Image src="/icons/backArrow.svg" width={20} height={20} alt="back arrow icon" />
           <p className="text-lg sm:text-xl text-gray-400">Back to all articles</p>
         </Link>
-        <p>404 - Article Not Found.</p>
+        <p className="w-full h-full text-center p-32">404 - Article Not Found.</p>
       </div>
     );
   }
@@ -138,18 +146,16 @@ const ArticleViewerPage: React.FC = () => {
           <p className="text-lg sm:text-xl text-gray-400">Back to all articles</p>
         </Link>
         {loading ? (
-          <p className="flex flow justify-center items-center h-96 text-3xl text-gray-400">
-            Loading article...
-          </p>
+          <LoadingText text="Loading article..." />
         ) : (
-          <SelectedArticle article={selectedArticle} />
+          <Suspense fallback={<LoadingText text="Loading article..." />}>
+            <SelectedArticle article={selectedArticle} />
+          </Suspense>
         )}
       </div>
       <div className="p-10 bg-gray-100">
         {loading ? (
-          <p className="flex flow justify-center items-center h-96 text-3xl text-gray-400">
-            Loading related articles...
-          </p>
+          <LoadingText text="Loading related articles..." />
         ) : (
           <RelatedArticles sortedArticles={articles} />
         )}

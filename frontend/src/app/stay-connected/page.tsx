@@ -31,7 +31,7 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
   );
 };
 
-const StayConnectedPage = () => {
+const StayConnectedPage: React.FC = () => {
   const { articles, loading } = useContext(ArticleContext);
 
   return (
