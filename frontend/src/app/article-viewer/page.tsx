@@ -108,7 +108,7 @@ const LoadingText: React.FC<{ text: string }> = ({ text }) => {
  * @param props Takes a Article as a prop to highlight the article in the viewer.
  * @returns
  */
-const ArticleViewerPage = () => {
+const ArticleViewerContent: React.FC = () => {
   const { articles, loading } = useContext(ArticleContext);
 
   const searchParams = useSearchParams();
@@ -148,9 +148,7 @@ const ArticleViewerPage = () => {
         {loading ? (
           <LoadingText text="Loading article..." />
         ) : (
-          <Suspense fallback={<LoadingText text="Loading article..." />}>
-            <SelectedArticle article={selectedArticle} />
-          </Suspense>
+          <SelectedArticle article={selectedArticle} />
         )}
       </div>
       <div className="p-10 bg-gray-100">
@@ -166,6 +164,15 @@ const ArticleViewerPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+// Needed to allow pre-rendering to not error for useSearchParams
+const ArticleViewerPage = () => {
+  return (
+    <Suspense>
+      <ArticleViewerContent />
+    </Suspense>
   );
 };
 export default ArticleViewerPage;
