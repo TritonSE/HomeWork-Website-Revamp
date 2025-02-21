@@ -21,7 +21,7 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
       <p className="font-medium text-orange-500">{textDate}</p>
       <p className="line-clamp-3">{article?.body ?? ""}</p>
       <Link
-        className="flex flex-row gap-2 w-fit text-gray-400 border border-transparent hover:border-b-gray-400"
+        className="flex flex-row gap-2 w-fit text-gray-400 border border-transparent cursor-pointer hover:border-b-gray-400"
         href={{ pathname: "/article-viewer", query: { articleId: article._id } }} // id of selected article
       >
         <p>LEARN MORE</p>

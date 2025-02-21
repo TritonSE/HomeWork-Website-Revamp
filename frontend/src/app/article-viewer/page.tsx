@@ -124,7 +124,7 @@ const ArticleViewerContent: React.FC = () => {
     return (
       <div className="flex flex-col justify-start items-start p-10 w-full h-96 text-2xl text-gray-400">
         <Link
-          className="flex flex-row items-center gap-2 mb-10 w-fit border border-transparent hover:border-b-gray-400"
+          className="flex flex-row items-center gap-2 mb-10 w-fit border border-transparent cursor-pointer hover:border-b-gray-400"
           href={{ pathname: "/stay-connected" }}
         >
           <Image src="/icons/backArrow.svg" width={20} height={20} alt="back arrow icon" />
@@ -139,7 +139,7 @@ const ArticleViewerContent: React.FC = () => {
     <div className="flex flex-col gap-10 w-full h-full">
       <div className="p-10 pb-5">
         <Link
-          className="flex flex-row items-center gap-2 mb-10 w-fit border border-transparent hover:border-b-gray-400"
+          className="flex flex-row items-center gap-2 mb-10 w-fit border border-transparent cursor-pointer hover:border-b-gray-400"
           href={{ pathname: "/stay-connected" }}
         >
           <Image src="/icons/backArrow.svg" width={20} height={20} alt="back arrow icon" />
