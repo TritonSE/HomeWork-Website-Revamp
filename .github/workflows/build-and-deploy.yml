@@ -30,6 +30,7 @@ jobs:
         run: |
             cd frontend 
             touch .env 
+            echo NEXT_PUBLIC_FIREBASE_APP_CONFIG=${{secrets.FIREBASE_APP_CONFIG}} >> .env
       - name: Build Backend
         run: cd backend && npm run build
       - name: Build Frontend
