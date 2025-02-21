@@ -1,7 +1,5 @@
 import Image from "next/image";
 
-import GetInvolvedEvent from "@/../public/images/get-involved-event.png";
-
 const Button: React.FC<{ text: string }> = ({ text }) => {
   return (
     <button className="p-3 pr-5 pl-5 w-fit rounded bg-orange-600 text-white font-golos text-xs sm:text-sm hover:bg-orange-500">
@@ -23,10 +21,10 @@ const GetInvolvedPage = () => {
           </p>
           <Button text="Upcoming Events" />
         </div>
-        <Image src={GetInvolvedEvent} alt="get involved event" className="sm:w-5/12"></Image>
+        <Image src="/images/get-involved-event.png" width={500} height={250} alt="get involved event" className="sm:w-5/12"></Image>
       </section>
       <section className="flex flex-col-reverse sm:flex-row justify-between items-center gap-6 w-full p-5">
-        <Image src={GetInvolvedEvent} alt="get involved event" className="sm:w-5/12"></Image>
+        <Image src="/images/get-involved-donate.png" width={500} height={250} alt="get involved event" className="sm:w-5/12"></Image>
         <div className="flex flex-col gap-5 sm:w-7/12 sm:pl-5">
           <h1 className="mb-2 text-2xl sm:text-4xl font-medium font-golos">Donate</h1>
           <p className="text-sm sm:text-base">
