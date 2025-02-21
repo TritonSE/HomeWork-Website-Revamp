@@ -108,13 +108,6 @@ const ArticleViewerPage: React.FC = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("articleId");
 
-  // Get sorted articles by recent
-  const sortedArticles = articles.sort((a, b) => {
-    const dateA = new Date(a.dateCreated);
-    const dateB = new Date(b.dateCreated);
-    return dateA.getTime() - dateB.getTime();
-  });
-
   const filteredArticles = articles.filter((article) => article._id === id);
   const selectedArticle: Article = filteredArticles[0];
 
@@ -158,7 +151,7 @@ const ArticleViewerPage: React.FC = () => {
             Loading related articles...
           </p>
         ) : (
-          <RelatedArticles sortedArticles={sortedArticles} />
+          <RelatedArticles sortedArticles={articles} />
         )}
         <div className="flex justify-center items-center w-full mt-10 mb-5">
           <button className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos">

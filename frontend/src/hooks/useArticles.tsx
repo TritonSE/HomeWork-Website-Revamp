@@ -28,14 +28,10 @@ export const useArticles = (): [Article[], boolean] => {
       try {
         const response = await get("/articles/all");
         const data = (await response.json()) as Article[];
-
-        const byRecentData = data
-          .sort((a, b) => {
-            return new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime();
-          })
-          .reverse();
-
-        setArticles(byRecentData);
+        data.sort((a, b) => {
+          return new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime();
+        });
+        setArticles(data);
       } catch (error) {
         console.error("Error fetching articles: ", error);
       } finally {
