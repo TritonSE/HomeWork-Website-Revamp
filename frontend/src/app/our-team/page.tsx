@@ -42,25 +42,7 @@ export default function OurTeamPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Large Image Section */}
-      <div className="relative w-full h-[60vh] mx-auto">
-        <Image
-          src="/images/our-team.png"
-          alt="Our Team"
-          layout="fill"
-          objectFit="cover" // Ensures the image covers the area without leaving space
-          priority
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-start text-white text-left px-5 sm:px-10 lg:px-20">
-          <h1 className="font-[libre-baskerville] font-bold text-[3rem] sm:text-[4rem] lg:text-[5rem] leading-[3.5rem] sm:leading-[4.5rem] lg:leading-[5rem] tracking-normal w-full max-w-[90%] sm:max-w-[80%] lg:max-w-[70%]">
-            Our Team
-          </h1>
-          <p className="max-w-2xl text-lg mt-4">
-            Our incredible staff that drives the spirit of Homework. We’re committed to helping you
-            redefine what it means to be formerly incarcerated.
-          </p>
-        </div>
-      </div>
+      {/* Header */}
 
       {/* Gap Section */}
       <div className="h-[20px] sm:h-[40px]"></div>
