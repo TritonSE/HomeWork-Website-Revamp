@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useContext } from "react";
 
 import { ArticleContext } from "@/contexts/articleContext";
@@ -117,19 +117,23 @@ const ArticleViewerContent: React.FC = () => {
   const filteredArticles = articles.filter((article) => article._id === id);
   const selectedArticle: Article = filteredArticles[0];
 
-  console.log(selectedArticle);
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.back();
+  }
 
   // 404 Page
   if (selectedArticle === undefined && !loading) {
     return (
       <div className="flex flex-col justify-start items-start p-10 w-full h-96 text-2xl text-gray-400">
-        <Link
+        <button
           className="flex flex-row items-center gap-2 mb-10 w-fit border border-transparent cursor-pointer hover:border-b-gray-400"
-          href={{ pathname: "/stay-connected" }}
+          onClick={handleBack}
         >
           <Image src="/icons/backArrow.svg" width={20} height={20} alt="back arrow icon" />
           <p className="text-lg sm:text-xl text-gray-400">Back to all articles</p>
-        </Link>
+        </button>
         <p className="w-full h-full text-center p-32">404 - Article Not Found.</p>
       </div>
     );
@@ -138,13 +142,13 @@ const ArticleViewerContent: React.FC = () => {
   return (
     <div className="flex flex-col gap-10 w-full h-full">
       <div className="p-10 pb-5">
-        <Link
+        <button
           className="flex flex-row items-center gap-2 mb-10 w-fit border border-transparent cursor-pointer hover:border-b-gray-400"
-          href={{ pathname: "/stay-connected" }}
+          onClick={handleBack}
         >
           <Image src="/icons/backArrow.svg" width={20} height={20} alt="back arrow icon" />
           <p className="text-lg sm:text-xl text-gray-400">Back to all articles</p>
-        </Link>
+        </button>
         {loading ? (
           <LoadingText text="Loading article..." />
         ) : (
@@ -158,9 +162,12 @@ const ArticleViewerContent: React.FC = () => {
           <RelatedArticles sortedArticles={articles} />
         )}
         <div className="flex justify-center items-center w-full mt-10 mb-5">
-          <button className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos">
+          <Link
+            href={"/events-archive"}
+            className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos"
+          >
             See All Articles
-          </button>
+          </Link>
         </div>
       </div>
     </div>
