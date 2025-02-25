@@ -1,7 +1,4 @@
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
-
-import learnMoreIcon from "@/../public/icons/learnMore.svg";
 
 type Event = {
   header: string;
@@ -45,7 +42,7 @@ export const EventsCarouselCard: React.FC<EventProps> = ({ event }) => {
 
       <a href={event.learnMoreUrl} className="flex flex-row justify-end gap-2 w-full mt-6">
         <span className="font-manrope md:text-sm text-xs font-bold text-gray-400">LEARN MORE</span>
-        <Image src={learnMoreIcon as StaticImport} alt="Learn more arrow" />
+        <Image src="/icons/learnMore.svg" alt="Learn more arrow" />
       </a>
     </div>
   );
