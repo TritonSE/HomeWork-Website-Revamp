@@ -1,25 +1,47 @@
 "use client";
 
-export interface QuoteCarouselCardProps {
-  id: number;
+/**
+ * Interface for slide data structure
+ */
+export interface Testimonial {
+  id: number | string;
   image: string;
-  body: string;
-  name: string;
+  quote: string;
+  author: string;
 }
 
-const QuoteCarouselCard: React.FC<QuoteCarouselCardProps> = (testimonial) => {
+/**
+ * Props for the QuoteCarouselCard component
+ */
+interface QuoteCarouselCardProps {
+  slide: Testimonial;
+  position: "center" | "left" | "right" | "hidden";
+}
+
+/**
+ * Quote Carousel Card Component
+ */
+const QuoteCarouselCard: React.FC<QuoteCarouselCardProps> = ({ slide, position }) => {
+  const positionClasses = {
+    center: "left-1/2 -translate-x-1/2 -translate-y-4 z-30 scale-100 opacity-100",
+    left: "left-16 -translate-x-3/4 z-20 scale-85 opacity-60",
+    right: "right-16 translate-x-3/4 z-20 scale-85 opacity-60",
+    hidden: "left-1/2 -translate-x-1/2 z-10 scale-75 opacity-0",
+  };
+  const quote = '"' + slide.quote + '"';
+
   return (
-    <div className="w-[492px] h-[600px] rounded-[10px] overflow-hidden shadow-lg flex flex-col items-center border border-black ml-6 pt-[40px] pb-[40px] pl-[32px] pr-[32px]">
-      <img
-        className="w-[428px] h-[307px] object-cover flex items-center justify-center mt-6"
-        src={testimonial.image}
-        alt="Sunset in the mountains"
-      />
-      <div className="w-[428px] mt-10">
-        <p className="text-gray-700 text-base font-bold mb-5 text-[20px] leading-[26px]">
-          {testimonial.body}
-        </p>
-        <p className="text-gray-700 text-base text-[20px] leading-[26px]">-- {testimonial.name}</p>
+    <div
+      className={`absolute w-full max-w-sm rounded-lg bg-white p-4 border-2 border-black transition-all duration-500 ease-in-out transform ${position === "center" ? "shadow-xl" : "shadow-lg"}
+        ${positionClasses[position]}
+      `}
+    >
+      <div className="flex flex-col items-center">
+        <img src={slide.image} className="w-full h-64 object-cover rounded mb-4" />
+        <div className="text-center p-4">
+          <p className="text-gray-800 mb-4">{quote}</p>
+          <p className="text-gray-600">-- {slide.author}</p>
+        </div>
       </div>
     </div>
   );
