@@ -17,7 +17,7 @@ const app = express();
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN }));
 app.use(json());
 app.use("/api/subscriptions", subscriptionRoutes);
-app.use("/api", contactRoute);
+app.use("/api/contact", contactRoute);
 app.use("/api/users", userRoute);
 app.use("/api/articles", articleRoutes);
 app.use("/api/quotes", quoteRoutes);
