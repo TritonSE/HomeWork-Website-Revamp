@@ -11,3 +11,7 @@
   gap: 24px;
   margin: 12px;
 }
+
+.perspective {
+  perspective: 1000px;
+}
