@@ -88,7 +88,7 @@ const Pagination: React.FC<{ current: number; totalPages: number }> = ({ current
   );
 };
 
-const EventsArchive = () => {
+const EventsArchiveContent = () => {
   // Get articles with the hook
   const { articles, loading } = useContext(ArticleContext);
 
@@ -105,29 +105,36 @@ const EventsArchive = () => {
   const pageArticles = articles.slice(currPage * EVENTS_PER_PAGE, (currPage + 1) * EVENTS_PER_PAGE);
 
   return (
-    <Suspense>
-      <div className="p-5">
-        <section className="flex flex-col gap-5 mb-5 font-golos">
-          <h1 className="text-2xl sm:text-4xl font-medium">Events Archive</h1>
-          <p className="text-sm sm:text-base">
-            Our Past Events archive showcases a rich history of engagement and learning
-            opportunities. From insightful workshops to vibrant community gatherings, explore the
-            impactful activities that have brought people together.
+    <div className="p-5">
+      <section className="flex flex-col gap-5 mb-5 font-golos">
+        <h1 className="text-2xl sm:text-4xl font-medium">Events Archive</h1>
+        <p className="text-sm sm:text-base">
+          Our Past Events archive showcases a rich history of engagement and learning opportunities.
+          From insightful workshops to vibrant community gatherings, explore the impactful
+          activities that have brought people together.
+        </p>
+      </section>
+      <section className="flex flex-col gap-5 mb-5">
+        {loading ? (
+          <p className="flex flow justify-center items-center w-full h-96 text-xl text-gray-400">
+            Loading...
           </p>
-        </section>
-        <section className="flex flex-col gap-5 mb-5">
-          {loading ? (
-            <p className="flex flow justify-center items-center w-full h-96 text-xl text-gray-400">
-              Loading...
-            </p>
-          ) : (
-            pageArticles.map((article, index) => <EventCard article={article} key={index} />)
-          )}
-        </section>
-        <Pagination current={currPage} totalPages={totalPages} />
-      </div>
+        ) : (
+          pageArticles.map((article, index) => <EventCard article={article} key={index} />)
+        )}
+      </section>
+      <Pagination current={currPage} totalPages={totalPages} />
+    </div>
+  );
+};
+
+// Needed to allow pre-rendering to not error for useSearchParams
+const EventsArchivePage = () => {
+  return (
+    <Suspense>
+      <EventsArchiveContent />
     </Suspense>
   );
 };
 
-export default EventsArchive;
+export default EventsArchivePage;
