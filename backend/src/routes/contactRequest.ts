@@ -4,6 +4,6 @@ import { handleContactRequest } from "../controllers/contactRequest";
 import { validateContactRequest } from "../validators/contactRequest";
 const router = express.Router();
 
-router.post("/contact", validateContactRequest, handleContactRequest);
+router.post("/", validateContactRequest, handleContactRequest);
 
 export default router;

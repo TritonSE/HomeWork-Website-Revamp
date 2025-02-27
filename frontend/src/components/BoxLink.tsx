@@ -1,14 +1,13 @@
-// Card.jsx
 import Link from "next/link";
 import React from "react";
 
-export interface BoxLinkProps {
+export type BoxLinkProps = {
   tall: boolean;
   src: string;
   header: string;
   body: string;
   link: string;
-}
+};
 
 export function BoxLink({
   tall: isTall,
@@ -31,6 +30,7 @@ export function BoxLink({
         <img
           src={imgSrc}
           className="absolute top-[0] left-[0] w-full h-full object-cover transition-transform duration-500 ease-in-out scale-100 group-hover:scale-110"
+          alt={"Image Source"}
         />
         <div
           className={
