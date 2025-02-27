@@ -19,7 +19,7 @@ const EventCard: React.FC<{ article: Article }> = ({ article }) => {
 
   return (
     <div className="flex flex-row h-48 sm:h-64 border-2 border-gray-300 font-golos">
-      <div className="flex flex-col gap-3 justify-center p-5 w-7/12">
+      <div className="flex flex-col gap-2 sm:gap-3 justify-center p-5 w-7/12">
         <h3 className="text-base sm:text-2xl">{article.header}</h3>
         <p className="text-xs sm:text-base text-orange-500 font-medium">{textDate}</p>
         <p className="hidden sm:line-clamp-2">{article.body}</p>
