@@ -1,20 +1,43 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100); //header length
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-transparent z-50 flex justify-between items-center px-8 py-4">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-4 transition-all duration-300 ${
+        isScrolled ? "bg-white shadow-md" : "bg-transparent"
+      }`}
+    >
       {/* Logo */}
       <div className="flex items-center">
-        <Image src="/logo.png" alt="Logo" width={176} height={98} priority />
+        <Image
+          src={isScrolled ? "/logo-dark.png" : "/logo.png"} // Changes logo on scroll
+          alt="Logo"
+          width={176}
+          height={98}
+          priority
+        />
       </div>
 
       {/* Navigation Links */}
-      <div className="hidden md:flex space-x-10 text-lg font-semibold text-white ml-auto">
-        {/* Dropdown Structure */}
+      <div
+        className={`hidden md:flex space-x-10 text-[16px] font-GolosText font-semibold ml-auto transition-all duration-300 ${
+          isScrolled ? "text-[#525252EE]" : "text-white"
+        }`}
+      >
         {[
           { title: "About Us", links: [{ label: "Our Team", href: "/our-team" }] },
           { title: "What We Do", links: [{ label: "Resources", href: "/resources" }] },
@@ -35,19 +58,18 @@ const Navbar = () => {
         ].map((item) => (
           <div
             key={item.title}
-            className="relative"
-            onMouseEnter={() => {
-              setActiveDropdown(item.title);
-            }}
-            onMouseLeave={() => {
-              setActiveDropdown(null);
-            }}
+            className="relative group"
+            onMouseEnter={() => setActiveDropdown(item.title)}
+            onMouseLeave={() => setActiveDropdown(null)}
           >
-            <button className="hover:text-gray-300 focus:outline-none">{item.title}</button>
+            <button className="w-full h-full px-6 py-9 hover:text-gray-500 focus:outline-none group-hover:underline decoration-2 underline-offset-4">
+              {item.title}
+            </button>
 
-            {/* Dropdown Menu */}
             {activeDropdown === item.title && (
-              <div className="absolute left-0 mt-2 w-auto min-w-[126px] bg-white text-black shadow-lg py-2 border border-gray-200 rounded-none">
+              <div className="absolute left-0 mt-2 w-auto min-w-[126px] bg-white text-[#525252EE] font-GolosText shadow-lg py-2 border border-gray-200 rounded-none">
+                <div className="absolute -top-2 left-0 w-full h-4"></div>
+
                 {item.links.map((link) => (
                   <Link
                     key={link.label}
@@ -66,7 +88,7 @@ const Navbar = () => {
         <Link
           href="/donate"
           className="w-[120px] h-[48px] flex items-center justify-center px-6 py-3 
-          bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600 transition mt-[-10px]"
+          bg-orange-500 text-white font-GolosText rounded-md hover:bg-orange-600 transition mt-5"
         >
           Donate
         </Link>
