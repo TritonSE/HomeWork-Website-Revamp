@@ -121,7 +121,7 @@ const ArticleViewerContent: React.FC = () => {
 
   const handleBack = () => {
     router.back();
-  }
+  };
 
   // 404 Page
   if (selectedArticle === undefined && !loading) {
