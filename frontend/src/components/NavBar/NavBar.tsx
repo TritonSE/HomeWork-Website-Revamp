@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -12,7 +12,9 @@ const Navbar = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
@@ -59,8 +61,12 @@ const Navbar = () => {
           <div
             key={item.title}
             className="relative group"
-            onMouseEnter={() => setActiveDropdown(item.title)}
-            onMouseLeave={() => setActiveDropdown(null)}
+            onMouseEnter={() => {
+              setActiveDropdown(item.title);
+            }}
+            onMouseLeave={() => {
+              setActiveDropdown(null);
+            }}
           >
             <button className="w-full h-full px-6 py-9 hover:text-gray-500 focus:outline-none group-hover:underline decoration-2 underline-offset-4">
               {item.title}
