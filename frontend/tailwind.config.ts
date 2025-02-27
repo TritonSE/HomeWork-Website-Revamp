@@ -18,6 +18,8 @@ export default {
       fontFamily: {
         golos: ['"GolosText"', "sans-serif"],
         manrope: ['"Manrope"', "sans-serif"],
+        baskerville: ['"Baskerville"', "sans-serif"],
+        "libre-baskerville": ["Libre Baskerville", "serif"],
       },
     },
     screens: {

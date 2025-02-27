@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import nodemailer from "nodemailer";
 
+import { emailPassword as pass, email as user } from "../config";
 import validationErrorParser from "../util/validationErrorParser";
 
 export type ContactRequest = {
@@ -35,13 +36,13 @@ export const handleContactRequest = async (
       host: "smtp.gmail.com",
       secure: true,
       auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
+        user,
+        pass,
       },
     });
     const mailOptions = {
-      from: process.env.EMAIL,
-      to: process.env.EMAIL,
+      from: user,
+      to: user,
       subject: EMAIL_SUBJECT,
       text: EMAIL_BODY,
     };
@@ -53,4 +54,3 @@ export const handleContactRequest = async (
     next(error);
   }
 };
-s;

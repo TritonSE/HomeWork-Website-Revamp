@@ -14,7 +14,7 @@ const articleSchema = new Schema({
   body: { type: String },
 
   // File URL to article image
-  thumbnail: { type: String },
+  thumbnail: { type: String, required: true },
 });
 
 type ArticleItem = InferSchemaType<typeof articleSchema>;

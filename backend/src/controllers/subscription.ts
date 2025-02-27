@@ -4,15 +4,11 @@ import { validationResult } from "express-validator";
 import SubscriptionModel from "../models/subscription";
 import validationErrorParser from "../util/validationErrorParser";
 
-<<<<<<< HEAD
-export const createSubscription: RequestHandler = async (req, res, next) => {
-=======
 export const createSubscription: RequestHandler = async (
   req: { body: { email: string; name: string } },
   res,
   next,
 ) => {
->>>>>>> 9cf0055f12a3fbe7932c1d5efeb848a2bb767a33
   // extract any errors that were found by the validator
   const errors = validationResult(req);
   const { name, email } = req.body;

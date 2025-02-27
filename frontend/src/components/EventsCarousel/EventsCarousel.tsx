@@ -6,8 +6,8 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { EventsCarouselCard } from "./EventsCarouselCard";
 
-import leftArrow from "@/../public/icons/left-arrow.svg";
-import rightArrow from "@/../public/icons/right-arrow.svg";
+import leftArrow from "@/../public/icons/leftArrow.svg";
+import rightArrow from "@/../public/icons/rightArrow.svg";
 
 type EventsCarouselProps = {
   children?:
