@@ -1,4 +1,4 @@
-import Flashcard from "@/components/Flashcard/FlashcardPage";
+import Flashcard from "@/components/Flashcard/WhatWeDoPage";
 const FlashcardPage = () => {
   return <Flashcard />;
 };
