@@ -39,7 +39,7 @@ const FlashcardPage: React.FC = () => {
   return (
     <div>
       <div className="flex md:flex-row flex-col w-full justify-between pt-12">
-        <div className="font-golos  md:w-[calc(40%)] w-full px-8 md:pb-0 pb-20">
+        <div className="font-golos  md:w-[calc(60%)] md:max-w-4xl w-full px-8 md:pb-0 pb-20">
           <div className="text-[32px] mb-8 weight-500 ">
             Transforming Lives, Empowering Communities
           </div>
