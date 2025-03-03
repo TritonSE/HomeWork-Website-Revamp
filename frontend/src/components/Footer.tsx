@@ -18,13 +18,13 @@ const FooterLink: React.FC<{ links: LinkProps[] }> = ({ links }) => {
             text-base"
     >
       {links.map((link, index) => (
-        <a
+        <Link
           key={index}
           href={link.url}
           className={`text-white ${link.isHeader ? "font-semibold" : ""}`}
         >
           {link.text}
-        </a>
+        </Link>
       ))}
     </div>
   );
