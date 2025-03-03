@@ -1,7 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
+import React, { useState } from "react";
+
+import { post } from "@/api/requests";
 
 type LinkProps = {
   text: string;
@@ -44,12 +47,47 @@ const SocialMediaIcon: React.FC<SocialMediaIconProps> = ({ icon, iconAlt, iconUr
   );
 };
 
-const SubscriptionForm: React.FC<{ handleSubmit: React.FormEventHandler<HTMLFormElement> }> = ({
-  handleSubmit,
-}) => {
+const SubscriptionForm: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [formResult, setFormResult] = useState({ success: false, result: "" });
+  const [showMessage, setShowMessage] = useState(false);
+
+  type ErrorMessage = {
+    message: string;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+    try {
+      // response is never used
+      const _ = await post("/subscriptions/create", { email, name });
+      setFormResult({ success: true, result: "Sucessfully subscribed!" });
+      setEmail("");
+      setName("");
+    } catch (error) {
+      const errorText = (error as Error).message;
+      // gets the actual message for cause of errorring
+      const errorJSON = JSON.parse(errorText.split(": ")[1]) as ErrorMessage;
+      console.error("Error creating subscription", errorText);
+      setFormResult({ success: false, result: errorJSON.message });
+    }
+
+    setShowMessage(true);
+
+    setTimeout(() => {
+      setShowMessage(false);
+    }, 5000);
+  };
+
   return (
     <div className="flex flex-col justify-start w-full">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-full">
+      <form
+        onSubmit={(e) => {
+          void handleSubmit(e);
+        }}
+        className="flex flex-col gap-3 w-full"
+      >
         <p className="mb-2">Subscribe to our newsletter to stay updated!</p>
         <label htmlFor="email" className="sr-only">
           Email
@@ -59,6 +97,11 @@ const SubscriptionForm: React.FC<{ handleSubmit: React.FormEventHandler<HTMLForm
           id="email"
           placeholder="Email"
           className="p-2 w-full sm:max-w-md text-black"
+          required
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
         />
         <label htmlFor="fullName" className="sr-only">
           Full Name
@@ -68,13 +111,23 @@ const SubscriptionForm: React.FC<{ handleSubmit: React.FormEventHandler<HTMLForm
           id="fullName"
           placeholder="Full Name"
           className="p-2 mt-2 w-full sm:max-w-md text-black"
+          required
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
         />
-        <button
-          type="submit"
-          className="w-1/3 min-w-fit max-w-32 mt-2 p-2 bg-orange-600 rounded text-white text-sm"
-        >
-          Subscribe
-        </button>
+        <div className="flex flex-row gap-3 items-center">
+          <button
+            type="submit"
+            className="w-1/3 min-w-fit max-w-32 mt-2 p-2 bg-orange-600 rounded text-white text-sm"
+          >
+            Subscribe
+          </button>
+          <p className={`${showMessage ? "opacity-100" : "opacity-0"} transition-opacity text-sm`}>
+            {formResult.result}
+          </p>
+        </div>
       </form>
     </div>
   );
@@ -116,11 +169,6 @@ const HomeworkIcon: React.FC = () => {
  * Needs to be updated to include real social media icons and page links
  */
 export const Footer = () => {
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    console.log("Form button clicked!");
-  };
-
   // Placeholder for admin login functionality
   const handleAdminLogin = () => {
     console.log("Admin login clicked");
@@ -129,7 +177,7 @@ export const Footer = () => {
   // Placeholder links for page links
   const aboutUsLinks: LinkProps[] = [
     { text: "About Us", url: "#", isHeader: true },
-    { text: "Our Team", url: "#" },
+    { text: "Our Team", url: "/our-team" },
   ];
 
   const whatWeDoLinks: LinkProps[] = [
@@ -138,15 +186,15 @@ export const Footer = () => {
   ];
 
   const getInvolvedLinks: LinkProps[] = [
-    { text: "Get Involved", url: "#", isHeader: true },
-    { text: "Upcoming Events", url: "#" },
+    { text: "Get Involved", url: "/get-involved", isHeader: true },
+    { text: "Upcoming Events", url: "/calendar  " },
     { text: "Donate", url: "#" },
   ];
 
   const stayConnectedLinks: LinkProps[] = [
-    { text: "Stay Connected", url: "#", isHeader: true },
+    { text: "Stay Connected", url: "/stay-connected", isHeader: true },
     { text: "News & Past Events", url: "#" },
-    { text: "Contact Us", url: "#" },
+    { text: "Contact Us", url: "/contact" },
   ];
 
   // Placeholder for social media links
@@ -167,7 +215,7 @@ export const Footer = () => {
       {/* Desktop/Tablet layout */}
       <div className="hidden sm:block">
         <div className="w-full h-fit flex flex-row justify-between gap-5 mb-7 text-base">
-          <SubscriptionForm handleSubmit={handleSubmit} />
+          <SubscriptionForm />
           <div className="flex flex-row flex-wrap gap-y-5 justify-evenly gap-2 sm:gap-4 w-full">
             <FooterLink links={aboutUsLinks} />
             <FooterLink links={whatWeDoLinks} />
@@ -197,7 +245,7 @@ export const Footer = () => {
       <div className="block sm:hidden">
         <div className="flex flex-col gap-7">
           <HomeworkIcon />
-          <SubscriptionForm handleSubmit={handleSubmit} />
+          <SubscriptionForm />
           <div className="flex flex-row flex-wrap gap-y-7 justify-around gap-5 w-full">
             <FooterLink links={aboutUsLinks} />
             <FooterLink links={whatWeDoLinks} />
