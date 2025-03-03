@@ -2,7 +2,8 @@
 
 import { ThemeProvider } from "@tritonse/tse-constellation";
 
-import "../global.css";
+import "@/global.css";
+import { Footer } from "@/components/Footer";
 import { ArticleContextProvider } from "@/contexts/articleContext";
 
 export default function RootLayout({
@@ -27,6 +28,7 @@ export default function RootLayout({
           }}
         >
           <ArticleContextProvider>{children}</ArticleContextProvider>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
