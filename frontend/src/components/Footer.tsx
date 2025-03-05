@@ -133,10 +133,10 @@ const SubscriptionForm: React.FC = () => {
   );
 };
 
-const AdminLoginButton: React.FC<{ handleAdminLogin: () => void }> = ({ handleAdminLogin }) => {
+const AdminLoginButton: React.FC = () => {
   return (
-    <button
-      onClick={handleAdminLogin}
+    <Link
+      href={"/admin/login"}
       className="
                 flex flex-row justify-center items-center gap-1 
                 p-1.5 w-fit sm:5/12 border border-gray-400 rounded-2xl 
@@ -151,7 +151,7 @@ const AdminLoginButton: React.FC<{ handleAdminLogin: () => void }> = ({ handleAd
         />
       </div>
       <p>Admin Login</p>
-    </button>
+    </Link>
   );
 };
 
@@ -177,7 +177,7 @@ export const Footer = () => {
   // Placeholder links for page links
   const aboutUsLinks: LinkProps[] = [
     { text: "About Us", url: "#", isHeader: true },
-    { text: "Our Team", url: "/our-team" },
+    { text: "Our Team", url: "/public/our-team" },
   ];
 
   const whatWeDoLinks: LinkProps[] = [
@@ -186,15 +186,15 @@ export const Footer = () => {
   ];
 
   const getInvolvedLinks: LinkProps[] = [
-    { text: "Get Involved", url: "/get-involved", isHeader: true },
-    { text: "Upcoming Events", url: "/calendar  " },
+    { text: "Get Involved", url: "/public/get-involved", isHeader: true },
+    { text: "Upcoming Events", url: "/public/calendar" },
     { text: "Donate", url: "#" },
   ];
 
   const stayConnectedLinks: LinkProps[] = [
-    { text: "Stay Connected", url: "/stay-connected", isHeader: true },
+    { text: "Stay Connected", url: "/public/stay-connected", isHeader: true },
     { text: "News & Past Events", url: "#" },
-    { text: "Contact Us", url: "/contact" },
+    { text: "Contact Us", url: "/public/contact" },
   ];
 
   // Placeholder for social media links

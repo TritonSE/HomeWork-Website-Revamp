@@ -83,7 +83,7 @@ const LoginForm: React.FC = () => {
       <div className="w-full md:w-1/2 flex flex-col items-center justify-center">
         <div className="w-full max-w-md">
           <div className="flex items-start">
-            <Link href="/" className="text-[#B4B4B4] hover:underline flex items-start gap-2">
+            <Link href="/public" className="text-[#B4B4B4] hover:underline flex items-start gap-2">
               <Icon name="ic_arrowback" fill="#B4B4B4" size={16} />
               Back to Homework website
             </Link>
