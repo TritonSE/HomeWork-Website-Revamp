@@ -26,13 +26,7 @@ const ResetForm: React.FC = () => {
       setIsEmailSent(true);
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message.includes("auth/invalid-email")) {
-          setEmailError("Invalid email address");
-        } else if (error.message.includes("auth/user-not-found")) {
-          setEmailError("No account found with this email");
-        } else {
-          setEmailError("Failed to send reset email. Please try again.");
-        }
+        setEmailError("Failed to send reset email. Please try again.");
       }
     } finally {
       setIsSubmitting(false);
@@ -79,7 +73,7 @@ const ResetForm: React.FC = () => {
             <>
               <h1 className="text-3xl mb-2">Forgot Password</h1>
               <p className="mb-4 text-[#909090]">
-                Don't worry. Resetting your password is easy, just tell us the email address you registered.
+                Don&apos;t worry. Resetting your password is easy, just tell us the email address you registered.
               </p>
 
               <form onSubmit={handleSubmit}>
@@ -111,8 +105,8 @@ const ResetForm: React.FC = () => {
               </p>
               
               <div className="mt-4">
-                <p className="text-sm text-[#909090]">Haven't received the email?</p>
-                <p className="text-sm text-[#909090]">
+                <p className="text-sm text-[#000]">Haven&apos;t received the email?</p>
+                <p className="text-sm text-[#000]">
                   Please check your spam folder, or{" "}
                   <button
                     onClick={handleTryAgain}
