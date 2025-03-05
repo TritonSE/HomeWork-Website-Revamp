@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useEffect, useState } from "react";
+
 import QuoteCarouselCard, { Testimonial } from "./QuoteCarouselCard";
 
 /**
  * Props for the QuoteCarousel component
  */
-interface QuoteCarouselProps {
+type QuoteCarouselProps = {
   slides: Testimonial[];
 }
 

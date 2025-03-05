@@ -3,7 +3,7 @@
 /**
  * Interface for slide data structure
  */
-export interface Testimonial {
+export type Testimonial = {
   id: number | string;
   image: string;
   quote: string;
@@ -13,7 +13,7 @@ export interface Testimonial {
 /**
  * Props for the QuoteCarouselCard component
  */
-interface QuoteCarouselCardProps {
+type QuoteCarouselCardProps = {
   slide: Testimonial;
   position: "center" | "left" | "right" | "hidden";
 }
