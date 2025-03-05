@@ -73,7 +73,8 @@ const ResetForm: React.FC = () => {
             <>
               <h1 className="text-3xl mb-2">Forgot Password</h1>
               <p className="mb-4 text-[#909090]">
-                Don&apos;t worry. Resetting your password is easy, just tell us the email address you registered.
+                Don&apos;t worry. Resetting your password is easy, just tell us the email address
+                you registered.
               </p>
 
               <form onSubmit={handleSubmit}>
@@ -103,15 +104,12 @@ const ResetForm: React.FC = () => {
                 We sent a reset password email to <span className="font-semibold">{email}</span>.
                 Please click the reset password link to set your new password.
               </p>
-              
+
               <div className="mt-4">
                 <p className="text-sm text-[#000]">Haven&apos;t received the email?</p>
                 <p className="text-sm text-[#000]">
                   Please check your spam folder, or{" "}
-                  <button
-                    onClick={handleTryAgain}
-                    className="text-[#F26522] hover:underline"
-                  >
+                  <button onClick={handleTryAgain} className="text-[#F26522] hover:underline">
                     try again
                   </button>
                   .
