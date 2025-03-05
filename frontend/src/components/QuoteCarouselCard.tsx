@@ -8,7 +8,7 @@ export type Testimonial = {
   image: string;
   quote: string;
   author: string;
-}
+};
 
 /**
  * Props for the QuoteCarouselCard component
@@ -16,7 +16,7 @@ export type Testimonial = {
 type QuoteCarouselCardProps = {
   slide: Testimonial;
   position: "center" | "left" | "right" | "hidden";
-}
+};
 
 /**
  * Quote Carousel Card Component

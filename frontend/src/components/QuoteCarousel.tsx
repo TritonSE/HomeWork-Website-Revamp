@@ -10,7 +10,7 @@ import QuoteCarouselCard, { Testimonial } from "./QuoteCarouselCard";
  */
 type QuoteCarouselProps = {
   slides: Testimonial[];
-}
+};
 
 /**
  * Quote Carousel Component
