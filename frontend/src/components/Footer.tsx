@@ -169,32 +169,27 @@ const HomeworkIcon: React.FC = () => {
  * Needs to be updated to include real social media icons and page links
  */
 export const Footer = () => {
-  // Placeholder for admin login functionality
-  const handleAdminLogin = () => {
-    console.log("Admin login clicked");
-  };
-
   // Placeholder links for page links
   const aboutUsLinks: LinkProps[] = [
-    { text: "About Us", url: "#", isHeader: true },
+    { text: "About Us", url: "/public/about-us", isHeader: true },
     { text: "Our Team", url: "/public/our-team" },
   ];
 
   const whatWeDoLinks: LinkProps[] = [
-    { text: "What We Do", url: "#", isHeader: true },
-    { text: "Resources", url: "#" },
+    { text: "What We Do", url: "/public/what-we-do", isHeader: true },
+    { text: "Resources", url: "/public/resources" },
   ];
 
   const getInvolvedLinks: LinkProps[] = [
     { text: "Get Involved", url: "/public/get-involved", isHeader: true },
     { text: "Upcoming Events", url: "/public/calendar" },
-    { text: "Donate", url: "#" },
+    { text: "Donate", url: "/public/donate" },
   ];
 
   const stayConnectedLinks: LinkProps[] = [
     { text: "Stay Connected", url: "/public/stay-connected", isHeader: true },
-    { text: "News & Past Events", url: "#" },
-    { text: "Contact Us", url: "/public/contact" },
+    { text: "News & Past Events", url: "/public/events-archive" },
+    { text: "Contact Us", url: "/public/contact-us" },
   ];
 
   // Placeholder for social media links
@@ -235,7 +230,7 @@ export const Footer = () => {
               </p>
             </div>
             <p>Copyright © 2025 Homework - All rights reserved.</p>
-            <AdminLoginButton handleAdminLogin={handleAdminLogin} />
+            <AdminLoginButton />
           </div>
           <HomeworkIcon />
         </div>
@@ -258,7 +253,7 @@ export const Footer = () => {
               <SocialMediaIcon {...facebookIcon} />
               <SocialMediaIcon {...instagramIcon} />
             </div>
-            <AdminLoginButton handleAdminLogin={handleAdminLogin} />
+            <AdminLoginButton />
             <p className="text-center text-xs">
               FKA: Building Justice | DBA: Homework SD | Nonprofit EIN: 84-3930979
             </p>
