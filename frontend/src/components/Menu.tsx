@@ -1,4 +1,5 @@
 import React from "react";
+
 import styles from "./Menu.module.css"; // Assuming you have a separate CSS file
 
 export function Menu() {
