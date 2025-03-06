@@ -29,7 +29,7 @@ export default function RootLayout({
           }}
         >
           <NavBar />
-          <main className="min-h-screen pt-[120px]">
+          <main className="min-h-screen pt-0">
             <ArticleContextProvider>{children}</ArticleContextProvider>
           </main>
           <Footer />
