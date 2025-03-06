@@ -158,7 +158,7 @@ const AdminLoginButton: React.FC = () => {
 const HomeworkIcon: React.FC = () => {
   return (
     <div className="relative w-full sm:w-1/3 h-44">
-      <Image src="/images/homeworkLogo.png" alt="Homework logo" fill className="object-contain" />
+      <Image src="/images/white-logo.png" alt="Homework logo" fill className="object-contain" />
     </div>
   );
 };
