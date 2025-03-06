@@ -5,6 +5,7 @@ import { ThemeProvider } from "@tritonse/tse-constellation";
 import NavBar from "../components/NavBar/NavBar";
 import "../global.css";
 import { Footer } from "@/components/Footer";
+import { ArticleContextProvider } from "@/contexts/articleContext";
 
 export default function RootLayout({
   children,
@@ -29,8 +30,7 @@ export default function RootLayout({
         >
           <NavBar />
           <main className="min-h-screen pt-[120px]">
-            {children}
-            <div className="h-[2000px] bg-gray-900">Temporary Scrollable Content</div>
+            <ArticleContextProvider>{children}</ArticleContextProvider>
           </main>
           <Footer />
         </ThemeProvider>

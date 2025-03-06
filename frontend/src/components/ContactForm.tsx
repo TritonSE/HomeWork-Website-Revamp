@@ -150,6 +150,7 @@ const ContactForm: React.FC = () => {
         </div>
       </div>
       <div className="w-[calc(100%)] sm:w-[calc(52%)] flex justify-end">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/images/map.png" alt="Map" />
       </div>
     </div>
