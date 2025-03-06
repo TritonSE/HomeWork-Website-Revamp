@@ -37,7 +37,7 @@ export default function ScrollThrough({ heading, slidesData }: ScrollThroughProp
           onClick={handleClick}
           className="flex flex-col md:flex-row flex-1 items-stretch gap-8 md:gap-20 cursor-pointer"
         >
-          {/* IMAGE SECTION (fade animation with rounded edges) */}
+          {/* IMAGE SECTION (fade animation) */}
           <div className="relative w-full h-[375px] md:h-full rounded-[20px] overflow-hidden">
             <AnimatePresence mode="popLayout">
               <motion.div
@@ -53,7 +53,7 @@ export default function ScrollThrough({ heading, slidesData }: ScrollThroughProp
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
-                  borderRadius: "20px", // Ensuring rounded edges
+                  borderRadius: "20px",
                 }}
               />
             </AnimatePresence>
