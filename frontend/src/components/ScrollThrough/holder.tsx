@@ -3,29 +3,18 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
-// Example slide data
-const slidesData = [
-  {
-    title: "Self-Awareness",
-    description:
-      "We encourage self-awareness by recognizing the unique challenges individuals face post-incarceration. Understanding oneself is the first step toward meaningful reintegration.",
-    image: "/images/ScrollThroughs/self_awareness.svg", // Replace with your actual path
-  },
-  {
-    title: "Self-Advocacy",
-    description:
-      "We empower individuals to advocate for themselves, emphasizing the importance of asserting one’s needs and aspirations in the journey to rebuilding lives.",
-    image: "/images/ScrollThroughs/self_awareness.svg",
-  },
-  {
-    title: "Resilience",
-    description:
-      "Embracing the inherent strength and resilience within each person, we foster an environment that encourages growth and transformation beyond past challenges.",
-    image: "/images/ScrollThroughs/self_awareness.svg",
-  },
-];
+type Slide = {
+  title: string;
+  description: string | string[];
+  image: string;
+};
 
-export default function OurValues() {
+type ScrollThroughProps = {
+  heading: string;
+  slidesData: Slide[];
+};
+
+export default function ScrollThrough({ heading, slidesData }: ScrollThroughProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleClick = () => {
@@ -38,9 +27,9 @@ export default function OurValues() {
     <section className="w-full py-8 flex justify-center">
       {/* Main container */}
       <div className="w-full max-w-[1336px] h-auto md:h-[742px] flex flex-col px-4 md:px-0">
-        {/* Heading */}
+        {/* Heading (left-aligned) */}
         <h2 className="text-left font-golos text-[32px] md:text-[48px] font-medium leading-[130%] text-[#1B1B1B] mb-6">
-          Our Values
+          {heading}
         </h2>
 
         {/* Image + Text Card Wrapper */}
@@ -48,7 +37,7 @@ export default function OurValues() {
           onClick={handleClick}
           className="flex flex-col md:flex-row flex-1 items-stretch gap-8 cursor-pointer"
         >
-          {/* IMAGE SECTION (fades) */}
+          {/* IMAGE SECTION (fade animation) */}
           <div className="relative w-full h-[300px] md:h-full">
             <AnimatePresence mode="popLayout">
               <motion.div
@@ -69,7 +58,7 @@ export default function OurValues() {
             </AnimatePresence>
           </div>
 
-          {/* TEXT CARD SECTION (scroll-wheel style with gap) */}
+          {/* TEXT CARD SECTION (scroll up/down animation) */}
           <div className="relative w-full min-h-[300px] md:h-full overflow-hidden">
             <AnimatePresence mode="popLayout">
               <motion.div
@@ -79,56 +68,52 @@ export default function OurValues() {
                 exit={{ y: "calc(-100% - 20px)" }}
                 transition={{ duration: 0.5 }}
                 className="
-                    absolute 
-                    top-0 
-                    left-0 
-                    w-full 
-                    h-full 
-                    bg-[#F3F3F3] 
-                    rounded-[20px]
-                    flex 
-                    flex-col 
-                    items-center 
-                    justify-center 
-                    text-center 
-                    p-10
-                  "
+                  absolute 
+                  top-0 
+                  left-0 
+                  w-full 
+                  h-full 
+                  bg-[#F3F3F3] 
+                  rounded-[20px]
+                  flex 
+                  items-center
+                  justify-center 
+                  p-10
+                "
               >
                 {/* 
-                    Title (responsive):
-                    - 32px on mobile
-                    - 64px on md+
-                  */}
-                <h3
-                  style={{ fontFamily: "Libre Baskerville" }}
-                  className="
+                  Inner container: 
+                  - Keeps the text left-aligned 
+                  - Ensures both the title and paragraph start at the same point 
+                */}
+                <div className="flex flex-col items-start text-left max-w-[600px] w-full">
+                  <h3
+                    style={{ fontFamily: "Libre Baskerville" }}
+                    className="
                       font-normal 
                       text-[#1B1B1B]
-                      text-[32px] md:text-[64px]
-                      leading-[42px] md:leading-[96px]
+                      text-[40px] md:text-[72px]
+                      leading-[48px] md:leading-[80px]
+                      text-left
                     "
-                >
-                  {currentSlide.title}
-                </h3>
+                  >
+                    {currentSlide.title}
+                  </h3>
 
-                {/*
-                    Paragraph (responsive):
-                    - 16px on mobile
-                    - 20px on md+
-                  */}
-                <p
-                  className="
+                  <p
+                    className="
                       font-golos
                       text-[#1B1B1B]
                       text-[16px] md:text-[20px]
                       leading-[22px] md:leading-[26px]
                       font-normal
-                      max-w-[80%]
-                      mt-4
+                      mt-0 md:mt-6   /* <-- No extra space on mobile, added space on desktop */
+                      text-left
                     "
-                >
-                  {currentSlide.description}
-                </p>
+                  >
+                    {currentSlide.description}
+                  </p>
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>

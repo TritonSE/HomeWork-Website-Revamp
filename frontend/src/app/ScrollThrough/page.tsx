@@ -1,7 +1,5 @@
-import ScrollThrough from "../../components/ScrollThrough";
+import ScrollThroughPage from "../../components/ScrollThrough/ScrollThroughPage";
 
-const ScrollThroughPage = () => {
-  return <ScrollThrough />;
-};
-
-export default ScrollThroughPage;
+export default function Page() {
+  return <ScrollThroughPage />;
+}
