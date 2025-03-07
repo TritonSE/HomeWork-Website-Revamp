@@ -2,25 +2,21 @@
 import { stripe } from "@/stripe/stripe";
 import { redirect } from "next/navigation";
 
-// Remove the export default parameter
-export const dynamic = "force-dynamic"; // This tells Next.js this page should be rendered dynamically
+export const dynamic = "force-dynamic";
 
-// Notice searchParams is a prop, not from a hook
-export default async function Return({
-  searchParams,
-}: {
-  searchParams: Promise<{ session_id: string }>;
-}) {
-  const { session_id } = await searchParams;
+export default async function Return({ searchParams }: { searchParams: { session_id?: string } }) {
+  const session_id = searchParams.session_id;
 
   if (!session_id) throw new Error("Please provide a valid session_id (`cs_test_...`)");
 
-  const {
-    status,
-    customer_details: { email: customerEmail },
-  } = await stripe.checkout.sessions.retrieve(session_id, {
+  // Get the session from Stripe
+  const session = await stripe.checkout.sessions.retrieve(session_id, {
     expand: ["line_items", "payment_intent"],
   });
+
+  // Get status and customer details separately
+  const { status } = session;
+  const customerEmail = session.customer_details?.email ?? "customer";
 
   if (status === "open") {
     return redirect("/");
@@ -37,4 +33,6 @@ export default async function Return({
       </section>
     );
   }
+
+  return null;
 }
