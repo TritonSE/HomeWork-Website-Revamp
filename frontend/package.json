@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@firebase/storage": "^0.13.5",
-    "@tailwindcss/postcss": "^4.0.9",
     "@tritonse/tse-constellation": "^0.0.11",
     "email-validator": "^2.0.4",
     "firebase": "^11.2.0",
