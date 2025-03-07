@@ -136,7 +136,7 @@ const SubscriptionForm: React.FC = () => {
 const AdminLoginButton: React.FC = () => {
   return (
     <Link
-      href={"/admin/login"}
+      href="/login"
       className="
                 flex flex-row justify-center items-center gap-1 
                 p-1.5 w-fit sm:5/12 border border-gray-400 rounded-2xl 
@@ -171,25 +171,25 @@ const HomeworkIcon: React.FC = () => {
 export const Footer = () => {
   // Placeholder links for page links
   const aboutUsLinks: LinkProps[] = [
-    { text: "About Us", url: "/public/about-us", isHeader: true },
-    { text: "Our Team", url: "/public/our-team" },
+    { text: "About Us", url: "/about-us", isHeader: true },
+    { text: "Our Team", url: "/our-team" },
   ];
 
   const whatWeDoLinks: LinkProps[] = [
-    { text: "What We Do", url: "/public/what-we-do", isHeader: true },
-    { text: "Resources", url: "/public/resources" },
+    { text: "What We Do", url: "/what-we-do", isHeader: true },
+    { text: "Resources", url: "/resources" },
   ];
 
   const getInvolvedLinks: LinkProps[] = [
-    { text: "Get Involved", url: "/public/get-involved", isHeader: true },
-    { text: "Upcoming Events", url: "/public/calendar" },
-    { text: "Donate", url: "/public/donate" },
+    { text: "Get Involved", url: "/get-involved", isHeader: true },
+    { text: "Upcoming Events", url: "/calendar" },
+    { text: "Donate", url: "/donate" },
   ];
 
   const stayConnectedLinks: LinkProps[] = [
-    { text: "Stay Connected", url: "/public/stay-connected", isHeader: true },
-    { text: "News & Past Events", url: "/public/events-archive" },
-    { text: "Contact Us", url: "/public/contact-us" },
+    { text: "Stay Connected", url: "/stay-connected", isHeader: true },
+    { text: "News & Past Events", url: "/events-archive" },
+    { text: "Contact Us", url: "/contact-us" },
   ];
 
   // Placeholder for social media links
