@@ -127,7 +127,7 @@ const LoginForm: React.FC = () => {
                 errorText={passwordError}
               />
               <div className="flex justify-end -mt-5">
-                <Link href="/forgot-password" className="text-[#F26522] text-sm hover:underline">
+                <Link href="/reset-password" className="text-[#F26522] text-sm hover:underline">
                   Forgot Password?
                 </Link>
               </div>
