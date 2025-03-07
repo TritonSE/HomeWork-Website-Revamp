@@ -2,6 +2,8 @@
 
 import { ThemeProvider } from "@tritonse/tse-constellation";
 
+import NavBar from "../components/NavBar/NavBar";
+
 import "../global.css";
 import { Footer } from "@/components/Footer";
 import { ArticleContextProvider } from "@/contexts/articleContext";
@@ -15,7 +17,7 @@ export default function RootLayout({
   // This will be populated with nested layouts or pages
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-screen overflow-y-auto">
         <ThemeProvider
           colors={{
             primary_dark: "#F05629",
@@ -27,7 +29,10 @@ export default function RootLayout({
             secondary: "GolosText",
           }}
         >
-          <ArticleContextProvider>{children}</ArticleContextProvider>
+          <NavBar />
+          <main className="min-h-screen pt-0">
+            <ArticleContextProvider>{children}</ArticleContextProvider>
+          </main>
           <Footer />
         </ThemeProvider>
       </body>

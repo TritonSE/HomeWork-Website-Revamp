@@ -7,3 +7,4 @@ out/
 public/
 next.config.ts
 vite.config.ts
+tailwind.config.js
