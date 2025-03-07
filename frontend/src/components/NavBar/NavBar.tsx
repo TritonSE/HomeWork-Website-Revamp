@@ -25,13 +25,15 @@ const Navbar = () => {
     >
       {/* Logo */}
       <div className="flex items-center">
-        <Image
-          src={isScrolled ? "/logo-dark.png" : "/logo.png"} // Changes logo on scroll
-          alt="Logo"
-          width={176}
-          height={98}
-          priority
-        />
+        <Link href="/">
+          <Image
+            src={isScrolled ? "/logo-dark.png" : "/logo.png"} // Changes logo on scroll
+            alt="Logo"
+            width={176}
+            height={98}
+            priority
+          />
+        </Link>
       </div>
 
       {/* Navigation Links */}
@@ -41,10 +43,19 @@ const Navbar = () => {
         }`}
       >
         {[
-          { title: "About Us", links: [{ label: "Our Team", href: "/our-team" }] },
-          { title: "What We Do", links: [{ label: "Resources", href: "/resources" }] },
+          {
+            title: "About Us",
+            href: "/about-us",
+            links: [{ label: "Our Team", href: "/our-team" }],
+          },
+          {
+            title: "What We Do",
+            href: "/what-we-do",
+            links: [{ label: "Resources", href: "/resources" }],
+          },
           {
             title: "Get Involved",
+            href: "/get-involved",
             links: [
               { label: "Upcoming Events", href: "/events" },
               { label: "Donate", href: "/donate" },
@@ -52,6 +63,7 @@ const Navbar = () => {
           },
           {
             title: "Stay Connected",
+            href: "/stay-connected",
             links: [
               { label: "News & Past Events", href: "/news" },
               { label: "Contact", href: "/contact" },
@@ -68,9 +80,11 @@ const Navbar = () => {
               setActiveDropdown(null);
             }}
           >
-            <button className="w-full h-full px-6 py-9 hover:text-gray-500 focus:outline-none group-hover:underline decoration-2 underline-offset-4">
-              {item.title}
-            </button>
+            <Link href={item.href}>
+              <button className="w-full h-full px-6 py-9 hover:text-gray-500 focus:outline-none group-hover:underline decoration-2 underline-offset-4">
+                {item.title}
+              </button>
+            </Link>
 
             {activeDropdown === item.title && (
               <div className="absolute left-0 mt-2 w-auto min-w-[126px] bg-white text-[#525252EE] font-GolosText shadow-lg py-2 border border-gray-200 rounded-none">
