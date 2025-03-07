@@ -26,16 +26,16 @@ export default function ScrollThrough({ heading, slidesData }: ScrollThroughProp
   return (
     <section className="w-full py-8 flex justify-center">
       {/* Main container */}
-      <div className="w-full max-w-[1700px] h-auto md:h-[947px] flex flex-col px-4 md:px-0">
+      <div className="w-full max-w-[1336px] h-auto md:h-[742px] flex flex-col px-4 md:px-0">
         {/* Heading (left-aligned) */}
-        <h2 className="text-left font-golos text-[40px] md:text-[60px] font-medium leading-[130%] text-[#1B1B1B] mb-6">
+        <h2 className="text-left font-golos text-[32px] md:text-[48px] font-medium leading-[130%] text-[#1B1B1B] mb-6">
           {heading}
         </h2>
 
         {/* Image + Text Card Wrapper */}
         <div
           onClick={handleClick}
-          className="flex flex-col md:flex-row flex-1 items-stretch gap-8 md:gap-20 cursor-pointer"
+          className="flex flex-col md:flex-row flex-1 items-stretch gap-8 md:gap-14 cursor-pointer"
         >
           {/* IMAGE SECTION (fade animation) */}
           <div className="relative w-full h-[375px] md:h-full rounded-[20px] overflow-hidden">
@@ -93,10 +93,10 @@ export default function ScrollThrough({ heading, slidesData }: ScrollThroughProp
                     className="
                       font-normal 
                       text-[#1B1B1B]
-                      text-[40px] md:text-[92px]
+                      text-[40px] md:text-[75px]
                       leading-[48px] md:leading-[80px]
                       text-left
-                      mb-4 md:mb-16
+                      mb-4 md:mb-12
                     "
                   >
                     {currentSlide.title}
@@ -110,7 +110,7 @@ export default function ScrollThrough({ heading, slidesData }: ScrollThroughProp
                         className="
                           font-golos
                           text-[#1B1B1B]
-                          text-[14px] md:text-[24px]
+                          text-[14px] md:text-[20px]
                           leading-[22px] md:leading-[26px]
                           font-normal
                           text-left
@@ -125,7 +125,7 @@ export default function ScrollThrough({ heading, slidesData }: ScrollThroughProp
                       className="
                         font-golos
                         text-[#1B1B1B]
-                        text-[14px] md:text-[24px]
+                        text-[14px] md:text-[20px]
                         leading-[22px] md:leading-[26px]
                         font-normal
                         text-left
