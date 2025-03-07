@@ -11,6 +11,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary_orange: "#F05629",
         primary_dark: "#F05629",
         secondary_highlight_1: "#F05629",
         secondary_highlight_2: "#F05629",
@@ -26,6 +27,8 @@ export default {
     screens: {
       sm: "550px",
       md: "850px",
+      md2: "900px",
+      md3: "1005px",
       pillars: "1200px",
     },
   },

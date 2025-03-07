@@ -22,7 +22,7 @@ const ContactForm: React.FC = () => {
   const [phoneNumberError, setPhoneNumberError] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
-
+  const [isHovered, setIsHovered] = useState<boolean>(false);
   const handleInputChange = (name: string, value: string) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -70,8 +70,8 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row">
-      <div className="p-8 w-[calc(100%)] sm:w-[calc(48%)]">
+    <div className="flex flex-col md2:flex-row">
+      <div className="p-8 md2:w-[calc(48%)]">
         <div className="relative flex flex-col">
           <h1 className="text-[48px] font-golos font-medium text-left pt-8">Get in Touch</h1>
           <p className="text-left mb-2 text-[20px]">
@@ -149,9 +149,32 @@ const ContactForm: React.FC = () => {
           )}
         </div>
       </div>
-      <div className="w-[calc(100%)] sm:w-[calc(52%)] flex justify-end">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/map.png" alt="Map" />
+      <div className="w-full md2:flex justify-center relative md2:w-[52%] md2:justify-end">
+        <div className="relative">
+          <img src="/images/map.png" alt="Map" className="w-full h-auto" />
+          <div
+            className="absolute top-[67%] left-[63%] w-[6%] h-[5%] cursor-pointer"
+            onMouseEnter={() => {
+              setIsHovered(true);
+            }}
+            onMouseLeave={() => {
+              setIsHovered(false);
+            }}
+          ></div>
+
+          {isHovered && (
+            <div className="absolute md3:top-[55%] md3:left-[58%] md2:top-[58%] md2:left-[56%] top-[55%] left-[58%] bg-white transition-opacity rounded-md">
+              <div className="md3:p-4 md2:p-4 p-4">
+                <div className="font-golos text-primary_dark text-[24px] pb-4 pl-4 pr-2">
+                  Our location
+                </div>
+                <div className="max-w-48 text-black pl-4 pr-6">
+                  151 YMCA Way, San Diego, CA 92102
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
