@@ -1,10 +1,16 @@
 "use client";
 
+//import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
 import { post } from "@/api/requests";
+
+//import AdminLogin from "@/../public/images/adminLogin.svg";
+//import Facebook from "@/../public/images/facebook.svg";
+//import Logo from "@/../public/images/homeworkLogo.png";
+//import Instagram from "@/../public/images/instagram.svg";
 
 type LinkProps = {
   text: string;
