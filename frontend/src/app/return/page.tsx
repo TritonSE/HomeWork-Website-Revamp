@@ -1,5 +1,5 @@
 // app/return/page.tsx
-import { stripe } from "@/stripe/stripe";
+import { stripe } from "../../stripe/stripe";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
