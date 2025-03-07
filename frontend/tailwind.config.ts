@@ -14,6 +14,7 @@ export default {
         primary_dark: "#F05629",
         secondary_highlight_1: "#F05629",
         secondary_highlight_2: "#F05629",
+        text_bg: "#F3F3F3",
       },
       fontFamily: {
         golos: ['"GolosText"', "sans-serif"],
@@ -25,6 +26,7 @@ export default {
     screens: {
       sm: "550px",
       md: "850px",
+      pillars: "1200px",
     },
   },
   plugins: [],
