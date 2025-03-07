@@ -13,10 +13,23 @@ if (!stripePublishableKey) {
 
 const stripePromise = loadStripe(stripePublishableKey);
 
+const fetchClientSecretWrapper = async () => {
+  const clientSecret = await fetchClientSecret();
+
+  if (!clientSecret) {
+    throw new Error("Failed to obtain client secret");
+  }
+
+  return clientSecret; // Now TypeScript knows this can't be null
+};
+
 export default function Checkout() {
   return (
     <div id="checkout">
-      <EmbeddedCheckoutProvider stripe={stripePromise} options={{ fetchClientSecret }}>
+      <EmbeddedCheckoutProvider
+        stripe={stripePromise}
+        options={{ fetchClientSecret: fetchClientSecretWrapper }}
+      >
         <EmbeddedCheckout />
       </EmbeddedCheckoutProvider>
     </div>
