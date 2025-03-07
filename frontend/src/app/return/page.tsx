@@ -4,8 +4,24 @@ import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function Return({ searchParams }: { searchParams: { session_id?: string } }) {
-  const session_id = searchParams.session_id;
+// Define searchParams as a Promise
+interface SearchParamsProps {
+  searchParams: Promise<{
+    session_id?: string | string[];
+  }>;
+}
+
+export default async function Return({ searchParams }: SearchParamsProps) {
+  // Await the searchParams
+  const resolvedParams = await searchParams;
+
+  // Use type assertion since searchParams.session_id could be a string or string[] or undefined
+  const session_id =
+    typeof resolvedParams.session_id === "string"
+      ? resolvedParams.session_id
+      : Array.isArray(resolvedParams.session_id)
+        ? resolvedParams.session_id[0]
+        : undefined;
 
   if (!session_id) throw new Error("Please provide a valid session_id (`cs_test_...`)");
 
