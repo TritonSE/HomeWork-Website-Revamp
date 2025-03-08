@@ -76,9 +76,10 @@ const AboutUsPage = () => {
           </div>
           <div className="text-[32px] font-medium pb-[20px]">Our Pillars</div>
           <div className="text-[20px] font-normal pb-[60px]">
-            This isn't employment assistance; we're a close-knit family dedicated to your journey.
-            Our Friday night meetings go beyond careers—they're chances for us to connect, share,
-            and grow together. These are the 4 pillars that our organization prides ourself on.
+            This isn&apos;t employment assistance; we&apos;re a close-knit family dedicated to your
+            journey. Our Friday night meetings go beyond careers—they&apos;re chances for us to
+            connect, share, and grow together.&nbsp;These are the 4 pillars that our organization
+            prides ourself on.
           </div>
         </div>
         <div className="flex flex-wrap pillars:justify-between justify-center md:gap-8 gap-y-12">
@@ -116,7 +117,9 @@ const AboutUsPage = () => {
           </div>
           <Button
             className="max-w-[calc(25%)] md:mx-0 mx-auto mb-8"
-            onClick={() => router.push("/our-team")}
+            onClick={() => {
+              router.push("/our-team");
+            }}
           >
             Meet Our Team
           </Button>
