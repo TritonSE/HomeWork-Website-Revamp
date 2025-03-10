@@ -2,7 +2,7 @@
 
 import { Button, Checkbox, Radio, TextField } from "@tritonse/tse-constellation";
 
-import TextArea from "../../components/TextArea";
+import TextArea from "../../../components/TextArea";
 
 export default function GeneralComponentTest() {
   return (
