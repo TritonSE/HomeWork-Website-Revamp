@@ -11,6 +11,7 @@ import contactRoute from "./routes/contactRequest";
 import quoteRoutes from "./routes/quote";
 import subscriptionRoutes from "./routes/subscription";
 import userRoute from "./routes/user";
+import stripeRoutes from "./routes/stripe";
 
 // Initialize Express App
 const app = express();
@@ -21,6 +22,7 @@ app.use("/api/contact", contactRoute);
 app.use("/api/users", userRoute);
 app.use("/api/articles", articleRoutes);
 app.use("/api/quotes", quoteRoutes);
+app.use("/api/stripe", stripeRoutes);
 
 app.use(errorHandler);
 mongoose
