@@ -51,7 +51,7 @@ const Navbar = () => {
           {
             title: "What We Do",
             href: "/what-we-do",
-            links: [{ label: "Resources", href: "/resources" }],
+            //links: [{ label: "Resources", href: "/resources" }],
           },
           {
             title: "Get Involved",
@@ -91,11 +91,7 @@ const Navbar = () => {
                 <div className="absolute -top-2 left-0 w-full h-4"></div>
 
                 {item.links.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  >
+                  <Link key={link.label} href={link.href} className="block px-4 py-2">
                     {link.label}
                   </Link>
                 ))}
