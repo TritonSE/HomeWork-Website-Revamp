@@ -81,7 +81,7 @@ const Navbar = () => {
             }}
           >
             <Link href={item.href}>
-              <button className="w-full h-full px-6 py-9 hover:text-gray-500 focus:outline-none group-hover:underline decoration-2 underline-offset-4">
+              <button className="w-full h-full px-6 py-9 focus:outline-none group-hover:underline decoration-2 underline-offset-4">
                 {item.title}
               </button>
             </Link>

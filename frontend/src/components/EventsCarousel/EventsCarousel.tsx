@@ -83,11 +83,11 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ children }) => {
   return (
     <div className={`flex flex-row ${carouselFormat}`}>
       <Image
-        src={leftArrow as StaticImport}
+        src={(leftArrow as StaticImport) || null}
         alt="Event carousel left arrow"
         onClick={scrollleft}
         className="cursor-pointer"
-        layout="intrinsic"
+        //layout="intrinsic"
         width={15}
         height={15}
       ></Image>
@@ -101,11 +101,11 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ children }) => {
         {children}
       </div>
       <Image
-        src={rightArrow as StaticImport}
+        src={(rightArrow as StaticImport) || null}
         alt="Event carousel right arrow"
         onClick={scrollRight}
         className="cursor-pointer"
-        layout="intrinsic"
+        //layout="intrinsic"
         width={15}
         height={15}
       ></Image>
