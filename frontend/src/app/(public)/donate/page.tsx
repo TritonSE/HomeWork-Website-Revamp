@@ -32,8 +32,8 @@ const DonationPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 pt-24 max-w-7xl">
-      <div className="grid md:grid-cols-2 gap-8">
+    <div className="pt-24">
+      <div className="px-8 grid md:grid-cols-2 gap-8 mb-16">
         {/* Left Column - Impact Information */}
         <div className="space-y-6">
           <h1 className="text-4xl mb-4">Make an Impact With Your Donation</h1>
@@ -91,7 +91,7 @@ const DonationPage = () => {
                   onChange={(e) => {
                     handleInputChange("isAnonymous", e.target.checked);
                   }}
-                  className="form-checkbox accent-[#F26522] outline outline-2 outline-[#F26522]"
+                  className="form-checkbox accent-[#F26522]"
                 />
                 <span>Keep my donation anonymous</span>
               </label>
@@ -222,6 +222,31 @@ const DonationPage = () => {
               Give Securely
             </Button>
           </form>
+        </div>
+      </div>
+
+      {/* Thank You Section */}
+      <div className="grid md:grid-cols-2 bg-[#F26522] overflow-hidden">
+        <div className="p-12 text-white">
+          <h2 className="text-6xl font-libre-baskerville mb-8">Thank you</h2>
+          <div className="space-y-6">
+            <p className="text-xl">
+              Every donation directly contributes to empowering individuals to thrive beyond the challenges
+              of incarceration, providing them with the tools for lasting success.
+            </p>
+            <p className="text-xl">
+              Your support helps us create resilient communities, breaking down barriers and fostering
+              understanding for a brighter future. Thank you!
+            </p>
+          </div>
+        </div>
+        <div className="relative h-[400px]">
+          <Image
+            src="/images/donateside.jpeg"
+            alt="Homework Community Impact"
+            fill
+            style={{ objectFit: "cover" }}
+          />
         </div>
       </div>
     </div>
