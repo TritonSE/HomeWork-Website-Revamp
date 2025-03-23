@@ -2,7 +2,8 @@
 //skip our history & our values
 import { Button } from "@tritonse/tse-constellation";
 import { useRouter } from "next/navigation";
-
+import Image from "next/image";
+import Header from "../../components/Header";
 const InfoCard: React.FC<{ title: string; icon: string; description: string }> = ({
   title,
   icon,
@@ -10,7 +11,14 @@ const InfoCard: React.FC<{ title: string; icon: string; description: string }> =
 }) => {
   return (
     <div className="relative flex flex-col items-center justify-center bg-text_bg rounded-xl p-8 pillars:w-[20%] md:w-[45%] w-full h-auto">
-      <img src={icon} alt={title} className="w-[30%] h-auto mx-auto" />
+      <Image
+        src={icon}
+        alt={title}
+        className="w-[30%] h-auto mx-auto"
+        width={312}
+        height={238}
+      ></Image>
+
       <div className="text-center font-golos font-medium mt-2 text-[20px] max-w-xs">{title}</div>
       <div className="text-center font-golos font-normal mt-2 text-[16px]">{description}</div>
     </div>
@@ -34,6 +42,11 @@ const AboutUsPage = () => {
   const router = useRouter();
   return (
     <div className="flex flex-col ">
+      <Header
+        imageUrl="/images/about_us_header_img.png"
+        header="About Us"
+        subheader="We’re a groundbreaking initiative changing what it means to be formerly incarcerated, changing the stigma of criminal history through recognizing resilience, rehabilitation, and capacity for positive change."
+      ></Header>
       {/*our impact */}
       <div className="px-[50px]">
         <div className="font-golos py-[60px]">
@@ -50,7 +63,7 @@ const AboutUsPage = () => {
       </div>
       {/*our mission */}
       <div>
-        <div className="flex md:flex-row flex-col md:justify-between bg-text_bg py-[50px]">
+        <div className="flex md:flex-row flex-col md:justify-between bg-text_bg py-[50px] items-center">
           <div className="font-golos w-full max-w-[calc(80%)] md:max-w-[calc(50%)] ml-[50px] mr-4">
             <div className="text-[48px] font-medium pb-4">Our Mission</div>
             <div className="text-[20px] font-normal max-w-auto">
@@ -58,10 +71,13 @@ const AboutUsPage = () => {
               what it means to be formerly incarcerated.
             </div>
           </div>
-          <img
+          <Image
             className="md:pt-0 pt-8 md:mr-[50px] md:max-w-[calc(50%)] max-w-[calc(80%)] mx-auto"
             src="/images/our-mission.png"
-          ></img>
+            alt="Our Mission"
+            width={628}
+            height={400}
+          ></Image>
         </div>
       </div>
       {/**our vision */}
@@ -124,10 +140,13 @@ const AboutUsPage = () => {
             Meet Our Team
           </Button>
         </div>
-        <img
+        <Image
           className="md:max-w-[calc(50%)] max-w-[calc(80%)] md:mx-0 mx-auto"
           src="/images/our-team2.png/"
-        ></img>
+          alt="Our Team"
+          width={628}
+          height={471}
+        ></Image>
       </div>
     </div>
   );
