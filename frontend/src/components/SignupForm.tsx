@@ -1,61 +1,62 @@
 "use client";
 import { Button, Icon, TextField } from "@tritonse/tse-constellation";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
-import { verifyUser } from "../api/user";
-import { auth } from "../firebase/firebase";
+import { createUser } from "../api/user";
 
-const LoginForm: React.FC = () => {
+const SignupForm: React.FC = () => {
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [emailError, setEmailError] = useState<string>("");
+  const [nameError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleInputChange = (name: string, value: string) => {
     setFormData({ ...formData, [name]: value });
     // Clear errors when user types
     if (name === "email") setEmailError("");
-    if (name === "password") setPasswordError("");
+    if (name === "password") {
+      setPasswordError("");
+      if (value.length > 0 && value.length < 6) {
+        setPasswordError("Password must be at least 6 characters long");
+      }
+    }
+    if (name === "confirmPassword") setConfirmPasswordError("");
   };
 
   const submitForm = async () => {
     setIsSubmitting(true);
 
-    try {
-      // Sign in with Firebase
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password,
-      );
-      const token = await userCredential.user.getIdToken();
+    // Validate password length
+    if (formData.password.length < 6) {
+      setPasswordError("Password must be at least 6 characters long");
+      setIsSubmitting(false);
+      return;
+    }
 
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
       // Verify with backend
-      const result = await verifyUser(token);
+      const result = await createUser(formData.name, formData.email, formData.password);
       if (result.success) {
-        console.log("User verified", result.data);
+        console.log("User created successfully", result.data);
       } else {
-        setEmailError("Authentication failed. Please try again.");
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        // Handle Firebase auth errors
-        if (error.message.includes("auth/invalid-email")) {
-          setEmailError("Invalid email address");
-        } else if (error.message.includes("auth/wrong-password")) {
-          setPasswordError("Incorrect password");
-        } else if (error.message.includes("auth/user-not-found")) {
-          setEmailError("No account found with this email");
-        } else {
-          setEmailError("Login failed. Please try again.");
-        }
+        setEmailError("Email address already in use.");
       }
     } finally {
       setIsSubmitting(false);
@@ -72,8 +73,8 @@ const LoginForm: React.FC = () => {
       {/* Left side - Image */}
       <div className="hidden md:block w-1/2 relative">
         <Image
-          src="/images/homeworkAdmin.png"
-          alt="Homework Admin"
+          src="/images/homeworksignup.png"
+          alt="Homework Signup"
           fill
           style={{ objectFit: "cover" }}
         />
@@ -93,15 +94,26 @@ const LoginForm: React.FC = () => {
             <Image src="/images/homeworkLogo.png" alt="Homework Logo" width={155} height={86} />
           </div>
 
-          <h1 className="text-3xl mb-2">Log In</h1>
+          <h1 className="text-3xl mb-2">Create An Account</h1>
           <p className="mb-10 text-[#909090]">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-[#F26522] hover:underline">
-              Sign Up
+            Already have an account?{" "}
+            <Link href="/login" className="text-[#F26522] hover:underline">
+              Log In
             </Link>
           </p>
 
           <form onSubmit={handleSubmit}>
+            <TextField
+              label="Full Name"
+              type="full-name"
+              name="full-name"
+              value={formData.name}
+              onChange={(v) => {
+                handleInputChange("name", v);
+              }}
+              placeholder="Enter your full name"
+              errorText={nameError}
+            />
             <TextField
               label="Email Address"
               type="email"
@@ -113,25 +125,28 @@ const LoginForm: React.FC = () => {
               placeholder="Enter email"
               errorText={emailError}
             />
-
-            <div className="flex flex-col mb-8">
-              <TextField
-                label="Password"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={(v) => {
-                  handleInputChange("password", v);
-                }}
-                placeholder="Enter password"
-                errorText={passwordError}
-              />
-              <div className="flex justify-end -mt-5">
-                <Link href="/reset-password" className="text-[#F26522] text-sm hover:underline">
-                  Forgot Password?
-                </Link>
-              </div>
-            </div>
+            <TextField
+              label="Password"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={(v) => {
+                handleInputChange("password", v);
+              }}
+              placeholder="Enter password"
+              errorText={passwordError}
+            />
+            <TextField
+              label="Confirm Password"
+              type="password"
+              name="confirm-password"
+              value={formData.confirmPassword}
+              onChange={(v) => {
+                handleInputChange("confirmPassword", v);
+              }}
+              placeholder="Re-enter password"
+              errorText={confirmPasswordError}
+            />
 
             <Button
               type="submit"
@@ -147,4 +162,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default SignupForm;

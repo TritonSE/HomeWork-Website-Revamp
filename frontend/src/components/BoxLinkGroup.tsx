@@ -4,7 +4,7 @@ import { BoxLink } from "./BoxLink";
 
 const BoxLinkGroup = () => {
   return (
-    <div className="w-full h-[662px] grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] flex-wrap items-end">
+    <div className="w-full flex-col md:grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] flex-wrap items-end">
       <BoxLink
         tall={false}
         src={
