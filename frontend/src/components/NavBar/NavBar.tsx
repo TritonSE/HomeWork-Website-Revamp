@@ -65,7 +65,7 @@ const Navbar = () => {
             title: "Stay Connected",
             href: "/stay-connected",
             links: [
-              { label: "News & Past Events", href: "/news" },
+              { label: "News & Past Events", href: "/events-archive" },
               { label: "Contact", href: "/contact" },
             ],
           },
