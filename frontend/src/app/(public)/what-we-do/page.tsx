@@ -1,6 +1,7 @@
 "use client";
-import Flashcard from "@/components/Flashcard/Flashcard";
 import React from "react";
+
+import Flashcard from "@/components/Flashcard/Flashcard";
 
 const WhatWeDoPage: React.FC = () => {
   const flashcards = [
