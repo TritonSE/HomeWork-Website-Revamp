@@ -56,9 +56,12 @@ const StayConnectedPage = () => {
 
       {/* TODO: LINK TO THE NEWS AND PAST EVENTS PAGE */}
       <div className="flex justify-start items-center w-full mt-10 mb-5">
-        <button className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos">
+        <Link
+          href={"/events-archive"}
+          className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos"
+        >
           See All Articles
-        </button>
+        </Link>
       </div>
     </div>
   );
