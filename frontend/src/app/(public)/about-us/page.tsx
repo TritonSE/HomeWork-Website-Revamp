@@ -1,9 +1,15 @@
 "use client";
 //skip our history & our values
 import { Button } from "@tritonse/tse-constellation";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Header from "../../components/Header";
+import { useRouter } from "next/navigation";
+
+import Header from "../../../components/Header";
+
+import { ourHistorySlides, ourValuesSlides } from "./ScrollThroughData";
+
+import ScrollThrough from "@/components/ScrollThrough/ScrollThrough";
+
 const InfoCard: React.FC<{ title: string; icon: string; description: string }> = ({
   title,
   icon,
@@ -61,6 +67,8 @@ const AboutUsPage = () => {
           </div>
         </div>
       </div>
+      {/*our history*/}
+      <ScrollThrough heading="Our History" slidesData={ourHistorySlides} />
       {/*our mission */}
       <div>
         <div className="flex md:flex-row flex-col md:justify-between bg-text_bg py-[50px] items-center">
@@ -121,6 +129,8 @@ const AboutUsPage = () => {
           ></InfoCard>
         </div>
       </div>
+      {/* our values*/}
+      <ScrollThrough heading="Our Values" slidesData={ourValuesSlides} />
       {/**our team */}
       <div className="mx-[50px] flex md:flex-row flex-col md:justify-between md:items-center pt-16 mb-16">
         <div className="flex flex-col md:max-w-[calc(50%)]">
