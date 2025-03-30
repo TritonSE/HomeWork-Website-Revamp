@@ -152,7 +152,7 @@ const AboutUsPage = () => {
         </div>
         <Image
           className="md:max-w-[calc(50%)] max-w-[calc(80%)] md:mx-0 mx-auto"
-          src="/images/our-team2.png/"
+          src="/images/our-team2.png"
           alt="Our Team"
           width={628}
           height={471}
