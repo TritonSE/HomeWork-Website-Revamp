@@ -1,10 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "@tritonse/tse-constellation";
-
-import "../global.css";
-import { Footer } from "@/components/Footer";
-import { ArticleContextProvider } from "@/contexts/articleContext";
+import "@/global.css";
 
 export default function RootLayout({
   children,
@@ -15,7 +12,7 @@ export default function RootLayout({
   // This will be populated with nested layouts or pages
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-screen overflow-y-auto">
         <ThemeProvider
           colors={{
             primary_dark: "#F05629",
@@ -27,8 +24,7 @@ export default function RootLayout({
             secondary: "GolosText",
           }}
         >
-          <ArticleContextProvider>{children}</ArticleContextProvider>
-          <Footer />
+          {children}
         </ThemeProvider>
       </body>
     </html>
