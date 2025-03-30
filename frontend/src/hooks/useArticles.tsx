@@ -10,7 +10,7 @@ export type Article = {
   dateCreated: string;
   author: string;
   body?: string | null;
-  thumbnail?: string;
+  thumbnail: string;
 };
 
 /**

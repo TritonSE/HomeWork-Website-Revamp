@@ -51,7 +51,7 @@ const Navbar = () => {
           {
             title: "What We Do",
             href: "/what-we-do",
-            links: [{ label: "Resources", href: "/resources" }],
+            links: [],
           },
           {
             title: "Get Involved",
@@ -65,7 +65,7 @@ const Navbar = () => {
             title: "Stay Connected",
             href: "/stay-connected",
             links: [
-              { label: "News & Past Events", href: "/news" },
+              { label: "News & Past Events", href: "/events-archive" },
               { label: "Contact", href: "/contact" },
             ],
           },
@@ -81,12 +81,12 @@ const Navbar = () => {
             }}
           >
             <Link href={item.href}>
-              <button className="w-full h-full px-6 py-9 hover:text-gray-500 focus:outline-none group-hover:underline decoration-2 underline-offset-4">
+              <button className="w-full h-full px-6 py-9 focus:outline-none group-hover:underline decoration-2 underline-offset-4">
                 {item.title}
               </button>
             </Link>
 
-            {activeDropdown === item.title && (
+            {activeDropdown === item.title && item.links.length > 0 && (
               <div className="absolute left-0 mt-2 w-auto min-w-[126px] bg-white text-[#525252EE] font-GolosText shadow-lg py-2 border border-gray-200 rounded-none">
                 <div className="absolute -top-2 left-0 w-full h-4"></div>
 
