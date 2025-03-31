@@ -32,7 +32,7 @@ const verifyAuthToken = async (req: RequestWithUserId, res: Response, next: Next
     const userInfo: DecodedIdToken = await decodeAuthToken(token);
 
     // Add user info to the request body
-    req.body.uid = userInfo.user_id as string;
+    req.body.uid = userInfo.uid;
 
     next(); // Proceed to the next middleware/route handler
   } catch (e) {
