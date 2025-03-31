@@ -6,7 +6,12 @@ import * as UserValidator from "../validators/userValidation";
 
 const router = express.Router();
 
-router.post("/create", UserValidator.createUserValidation, UserController.createUser);
+router.post(
+  "/create",
+  [verifyAuthToken],
+  UserValidator.createUserValidation,
+  UserController.createUser,
+);
 router.get("/login", [verifyAuthToken], UserController.loginUser);
 
 export default router;
