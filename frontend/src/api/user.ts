@@ -13,7 +13,7 @@ export type UserCreate = {
 
 export async function verifyUser(token: string): Promise<APIResult<User>> {
   try {
-    const response = await get("/users/login", {
+    const response = await get("/users/whoami", {
       Authorization: `Bearer ${token}`,
     });
     const data = (await response.json()) as User;

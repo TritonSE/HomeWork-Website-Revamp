@@ -12,6 +12,6 @@ router.post(
   UserValidator.createUserValidation,
   UserController.createUser,
 );
-router.get("/login", [verifyAuthToken], UserController.loginUser);
+router.get("/whoami", [verifyAuthToken], UserController.loginUser);
 
 export default router;
