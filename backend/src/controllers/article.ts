@@ -7,17 +7,19 @@ import validationErrorParser from "../util/validationErrorParser";
 
 type ArticleUpdate = {
   header: string;
-  dateCreated: Date;
   author: string;
   body?: string | null;
-  thumbnail?: string | null;
+  thumbnail: string;
 };
 
 export const createArticle: RequestHandler = async (req, res, next) => {
   const errors = validationResult(req);
   try {
     validationErrorParser(errors);
-    const article = await ArticleModel.create(req.body);
+    const article = await ArticleModel.create({
+      ...req.body,
+      dateCreated: new Date().toISOString(),
+    });
     res.status(201).json(article);
   } catch (error) {
     next(error);

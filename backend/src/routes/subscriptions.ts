@@ -1,6 +1,7 @@
 import express from "express";
 
 import * as SubscriptionController from "../controllers/subscription";
+import { verifyAuthToken } from "../validators/auth";
 import * as SubscriptionValidator from "../validators/subscription";
 
 const router = express.Router();
@@ -11,8 +12,8 @@ router.post(
   SubscriptionController.createSubscription,
 );
 
-router.get("/", SubscriptionController.getAllSubscriptions);
+router.get("/", [verifyAuthToken], SubscriptionController.getAllSubscriptions);
 
-router.delete("/", SubscriptionController.removeSubscription);
+router.delete("/", [verifyAuthToken], SubscriptionController.removeSubscription);
 
 export default router;

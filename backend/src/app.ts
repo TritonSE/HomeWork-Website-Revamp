@@ -9,7 +9,7 @@ import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
 import contactRoute from "./routes/contactRequest";
 import quoteRoutes from "./routes/quote";
-import subscriptionRoutes from "./routes/subscription";
+import subscriptionRoutes from "./routes/subscriptions";
 import userRoute from "./routes/user";
 
 // Initialize Express App
