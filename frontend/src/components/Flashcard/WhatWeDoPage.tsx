@@ -163,23 +163,23 @@ const FlashcardPage: React.FC = () => {
                 <Flashcard {...flashcard} />
                 {index === 0 && (
                   <div>
-                    {reachedBlock == index + 1 && (
+                    {reachedBlock === index + 1 && (
                       <>
-                        {index == 0 && (
+                        {index === 0 && (
                           <div
                             className="lineX"
                             style={{
-                              left: `525px`,
-                              width: `${ballXPos - 500}px`,
+                              left: 525,
+                              width: ballXPos - 500,
                             }}
                           ></div>
                         )}
-                        {index != 0 && (
+                        {index !== 0 && (
                           <div
                             className="lineX"
                             style={{
                               left: maxLeftPosition + 25,
-                              width: `${ballXPos - (maxLeftPosition + 25)}px`,
+                              width: ballXPos - (maxLeftPosition + 25),
                             }}
                           ></div>
                         )}
@@ -187,33 +187,33 @@ const FlashcardPage: React.FC = () => {
                     )}
                     {reachedBlock > index + 1 && (
                       <>
-                        {index == 0 && (
+                        {index === 0 && (
                           <div
                             className="lineX"
                             style={{
                               left: `525px`,
-                              width: `${maxRightPosition - 500}px`,
+                              width: maxRightPosition - 500,
                             }}
                           ></div>
                         )}
-                        {index != 0 && (
+                        {index !== 0 && (
                           <div
                             className="lineX"
                             style={{
                               left: maxLeftPosition + 25,
-                              width: `${maxRightPosition - (maxLeftPosition + 25)}px`,
+                              width: maxRightPosition - (maxLeftPosition + 25),
                             }}
                           ></div>
                         )}
                       </>
                     )}
 
-                    {!isMaxPositionReached && reachedBlock == index + 1 && (
+                    {!isMaxPositionReached && reachedBlock === index + 1 && (
                       <>
                         <div
                           className="circle"
                           style={{
-                            left: `${ballXPos}px`, // Ball moves along the line
+                            left: ballXPos, // Ball moves along the line
                           }}
                         ></div>
                       </>
@@ -225,7 +225,7 @@ const FlashcardPage: React.FC = () => {
                           <div
                             className="lineY"
                             style={{
-                              left: `${ballXPos + 25}px`,
+                              left: ballXPos + 25,
                               top: `204px`,
                               height: `408px`,
                             }}
@@ -236,16 +236,16 @@ const FlashcardPage: React.FC = () => {
                             <div
                               className="lineY"
                               style={{
-                                left: `${screenWidth - 360 + 25}px`,
+                                left: screenWidth - 360 + 25,
                                 top: `204px`,
-                                height: `${ballYPosition - 204}px`,
+                                height: ballYPosition - 204,
                               }}
                             ></div>
                             <div
                               className="circle"
                               style={{
-                                left: `${screenWidth - 360}px`,
-                                top: `${ballYPosition}px`,
+                                left: screenWidth - 360,
+                                top: ballYPosition,
                               }}
                             ></div>
                           </>
@@ -254,7 +254,7 @@ const FlashcardPage: React.FC = () => {
                           <div
                             className="lineY"
                             style={{
-                              left: `${screenWidth - 360 + 25}px`,
+                              left: screenWidth - 360 + 25,
                               top: `204px`,
                               height: 413,
                             }}
@@ -266,9 +266,9 @@ const FlashcardPage: React.FC = () => {
                       <div
                         className="lineY"
                         style={{
-                          left: `${screenWidth - 360 + 25}px`,
+                          left: screenWidth - 360 + 25,
                           top: `204px`,
-                          height: `${413}px`,
+                          height: 413,
                         }}
                       ></div>
                     )}
@@ -277,7 +277,7 @@ const FlashcardPage: React.FC = () => {
 
                 {(index === 1 || index === 3) && (
                   <div>
-                    {reachedBlock == index + 1 && (
+                    {reachedBlock === index + 1 && (
                       <>
                         <div
                           className="lineX"
@@ -294,7 +294,7 @@ const FlashcardPage: React.FC = () => {
                         }}
                       ></div>
                     )}
-                    {!isMinPositionReached && reachedBlock == index + 1 && (
+                    {!isMinPositionReached && reachedBlock === index + 1 && (
                       <>
                         <div className="circle" style={{ left: ballXPos }}></div>
                       </>
@@ -302,7 +302,7 @@ const FlashcardPage: React.FC = () => {
 
                     {isMinPositionReached && (
                       <>
-                        {reachedBlock == index + 1 && (
+                        {reachedBlock === index + 1 && (
                           <>
                             <div
                               className="lineY"
@@ -334,14 +334,14 @@ const FlashcardPage: React.FC = () => {
                 )}
                 {(index === 2 || index === 4) && (
                   <div>
-                    {reachedBlock == index + 1 && (
+                    {reachedBlock === index + 1 && (
                       <>
                         <div
                           className="lineX"
                           style={{
                             left: maxLeftPosition + 25,
 
-                            width: `${ballXPos - maxLeftPosition}px`,
+                            width: ballXPos - maxLeftPosition,
                           }}
                         ></div>
                       </>
@@ -352,18 +352,18 @@ const FlashcardPage: React.FC = () => {
                           className="lineX"
                           style={{
                             left: maxLeftPosition + 25,
-                            width: `${maxRightPosition - maxLeftPosition}px`,
+                            width: maxRightPosition - maxLeftPosition,
                           }}
                         ></div>
                       </>
                     )}
 
-                    {!isMaxPositionReached && reachedBlock == index + 1 && (
+                    {!isMaxPositionReached && reachedBlock === index + 1 && (
                       <>
                         <div
                           className="circle"
                           style={{
-                            left: `${ballXPos}px`, // Ball moves along the line
+                            left: ballXPos, // Ball moves along the line
                           }}
                         ></div>
                       </>
@@ -375,27 +375,27 @@ const FlashcardPage: React.FC = () => {
                           <div
                             className="lineY"
                             style={{
-                              left: `${ballXPos + 25}px`,
+                              left: ballXPos + 25,
                               top: `204px`,
                               height: `408px`,
                             }}
                           ></div>
                         )}
-                        {reachedBlock == index + 1 && (
+                        {reachedBlock === index + 1 && (
                           <>
                             <div
                               className="lineY"
                               style={{
-                                left: `${screenWidth - 360 + 25}px`,
+                                left: screenWidth - 360 + 25,
                                 top: `204px`,
-                                height: `${ballYPosition - 204 - index * 408}px`,
+                                height: ballYPosition - 204 - index * 408,
                               }}
                             ></div>
                             <div
                               className="circle"
                               style={{
-                                left: `${screenWidth - 360}px`,
-                                top: `${ballYPosition - index * 408}px`,
+                                left: screenWidth - 360,
+                                top: ballYPosition - index * 408,
                               }}
                             ></div>
                           </>
@@ -404,7 +404,7 @@ const FlashcardPage: React.FC = () => {
                           <div
                             className="lineY"
                             style={{
-                              left: `${screenWidth - 360 + 25}px`,
+                              left: screenWidth - 360 + 25,
                               top: `204px`,
                               height: 413,
                             }}
@@ -416,9 +416,9 @@ const FlashcardPage: React.FC = () => {
                       <div
                         className="lineY"
                         style={{
-                          left: `${screenWidth - 360 + 25}px`,
+                          left: screenWidth - 360 + 25,
                           top: `204px`,
-                          height: `${413}px`,
+                          height: 413,
                         }}
                       ></div>
                     )}
