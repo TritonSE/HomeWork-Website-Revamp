@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
-  output: "export",
+  output: "standalone",
   images: {
     unoptimized: true,
   },

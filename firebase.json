@@ -14,7 +14,7 @@
     }
   ],
   "hosting": {
-    "public": "frontend/out",
+    "public": "frontend/.next",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
