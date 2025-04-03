@@ -17,11 +17,11 @@ export function BoxLink({
   link: link,
 }: BoxLinkProps) {
   let contStyle =
-    'group relative overflow-hidden cursor-pointer flex after:content-[""] after:absolute after:bottom-[0] after:left-[0] after:w-[0] after:h-[6px] after:bg-blue-500 after:transition-all after:duration-300 after:ease-in-out after:z-20 hover:after:w-full before:content-[""] before:absolute before:top-[0] before:left-[0] before:w-full before:h-full before:bg-[rgba(0,_0,_0,_0.5)] before:z-10 hover:before:bg-[rgba(0,_0,_0,_0.2)]';
+    'group relative overflow-hidden cursor-pointer flex md:flex-row w-full h-[400px] after:content-[""] after:absolute after:bottom-[0] after:left-[0] after:w-[0] after:h-[6px] after:bg-blue-500 after:transition-all after:duration-300 after:ease-in-out after:z-20 hover:after:w-full before:content-[""] before:absolute before:top-[0] before:left-[0] before:w-full before:h-full before:bg-[rgba(0,_0,_0,_0.5)] before:z-10 hover:before:bg-[rgba(0,_0,_0,_0.2)]';
   if (isTall) {
-    contStyle += " h-[598px]";
+    contStyle += " md:h-[598px]";
   } else {
-    contStyle += " h-[539px]";
+    contStyle += " md:h-[539px]";
   }
 
   return (
@@ -34,7 +34,7 @@ export function BoxLink({
         />
         <div
           className={
-            'absolute left-0 bottom-0 w-full h-[186px] pl-[24px] pr-[24px] pb-[40px] text-[#f9f9f9] font-["GolosText"] z-20 text-left justify-between flex-col'
+            'absolute left-0 bottom-0 w-full h-2/3 md:h-[186px] pl-[24px] pr-[24px] pb-[40px] text-[#f9f9f9] font-["GolosText"] z-20 text-left justify-between flex-col'
           }
         >
           <div className={"mb-auto"}>

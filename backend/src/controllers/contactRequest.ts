@@ -25,7 +25,6 @@ export const handleContactRequest = async (
     message = "No Message Provided",
   } = req.body as ContactRequest;
 
-  console.log("Contact request received:", { fullName, email, phoneNumber, message });
   const EMAIL_SUBJECT = `Contact Request from ${fullName}`;
   const EMAIL_BODY = `Name: ${fullName}\nEmail: ${email}\nPhone: ${phoneNumber}\nMessage: ${message}`;
 
@@ -47,7 +46,6 @@ export const handleContactRequest = async (
       text: EMAIL_BODY,
     };
     await transporter.sendMail(mailOptions);
-    console.log("Contact email sent successfully");
     res.status(200).json({ message: "Contact request submitted successfully." });
   } catch (error) {
     console.error("Error sending email:", error);

@@ -3,9 +3,9 @@ export default function Mission() {
   return (
     <section className="flex flex-col md:flex-row items-center justify-between px-8 md:px-16 py-12">
       <div className="md:w-1/2">
-        <h2 className="text-3xl font-bold">Our Mission</h2>
+        <h2 className="text-[48px] font-bold">Our Mission</h2>
         <p className="mt-4 text-lg text-gray-700">
-          We're Homework. We want to reduce recidivism, increase public safety, and change the
+          We&apos;re Homework. We want to reduce recidivism, increase public safety, and change the
           narrative around what it means to be formerly incarcerated.
         </p>
         <Link href="/our-team">

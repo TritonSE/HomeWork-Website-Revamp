@@ -1,13 +1,9 @@
 "use client";
 
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 import { EventsCarouselCard } from "./EventsCarouselCard";
-
-import leftArrow from "@/../public/icons/leftArrow.svg";
-import rightArrow from "@/../public/icons/rightArrow.svg";
 
 type EventsCarouselProps = {
   children?:
@@ -83,14 +79,13 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ children }) => {
   return (
     <div className={`flex flex-row ${carouselFormat}`}>
       <Image
-        src={(leftArrow as StaticImport) || null}
+        src="/icons/leftArrow.svg"
         alt="Event carousel left arrow"
         onClick={scrollleft}
         className="cursor-pointer"
-        //layout="intrinsic"
         width={15}
         height={15}
-      ></Image>
+      />
       <div
         ref={carouselRef}
         className="
@@ -101,14 +96,13 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ children }) => {
         {children}
       </div>
       <Image
-        src={(rightArrow as StaticImport) || null}
+        src="/icons/rightArrow.svg"
         alt="Event carousel right arrow"
         onClick={scrollRight}
         className="cursor-pointer"
-        //layout="intrinsic"
         width={15}
         height={15}
-      ></Image>
+      />
     </div>
   );
 };
