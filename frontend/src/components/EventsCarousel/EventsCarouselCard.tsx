@@ -42,7 +42,7 @@ export const EventsCarouselCard: React.FC<EventProps> = ({ event }) => {
 
       <a href={event.learnMoreUrl} className="flex flex-row justify-end gap-2 w-full mt-6">
         <span className="font-manrope md:text-sm text-xs font-bold text-gray-400">LEARN MORE</span>
-        <Image src="/icons/learnMore.svg" alt="Learn more arrow" />
+        <Image src="/icons/learnMore.svg" alt="Learn more arrow" width={24} height={24} />
       </a>
     </div>
   );
