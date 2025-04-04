@@ -1,11 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "@tritonse/tse-constellation";
-
-import NavBar from "../components/NavBar/NavBar";
-
 import "@/global.css";
-import { ArticleContextProvider } from "@/contexts/articleContext";
 
 export default function RootLayout({
   children,
@@ -28,10 +24,7 @@ export default function RootLayout({
             secondary: "GolosText",
           }}
         >
-          <NavBar />
-          <main className="min-h-screen pt-0">
-            <ArticleContextProvider>{children}</ArticleContextProvider>
-          </main>
+          {children}
         </ThemeProvider>
       </body>
     </html>
