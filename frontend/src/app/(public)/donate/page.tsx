@@ -49,8 +49,8 @@ const DonationPage = () => {
                 312
               </span>
               <p className="text-[#1b1b1b]">
-                Homework events have been held in total, since the organization&apos;s formation 6 years
-                ago!
+                Homework events have been held in total, since the organization&apos;s formation 6
+                years ago!
               </p>
             </div>
 
@@ -231,12 +231,12 @@ const DonationPage = () => {
           <h2 className="text-6xl font-libre-baskerville mb-8">Thank you</h2>
           <div className="space-y-6">
             <p className="text-xl">
-              Every donation directly contributes to empowering individuals to thrive beyond the challenges
-              of incarceration, providing them with the tools for lasting success.
+              Every donation directly contributes to empowering individuals to thrive beyond the
+              challenges of incarceration, providing them with the tools for lasting success.
             </p>
             <p className="text-xl">
-              Your support helps us create resilient communities, breaking down barriers and fostering
-              understanding for a brighter future. Thank you!
+              Your support helps us create resilient communities, breaking down barriers and
+              fostering understanding for a brighter future. Thank you!
             </p>
           </div>
         </div>
