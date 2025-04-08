@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import Flashcard from "../../../components/Flashcard/Flashcard";
-
+import Header from "../../../components/Header";
 const FlashcardPage: React.FC = () => {
   const flashcards = [
     {
@@ -130,6 +130,11 @@ const FlashcardPage: React.FC = () => {
   }, [isMaxPositionReached, isMinPositionReached]);
   return (
     <div>
+      <Header
+        imageUrl="/images/what-we-do_header_img.png"
+        header="What We Do"
+        subheader="Prioritizing life skills, our goal extends beyond job placement to ensure excellence and leadership in chosen careers. "
+      ></Header>
       <div className="flex md:flex-row flex-col w-full justify-between pt-12">
         <div className="font-golos  md:w-[calc(60%)] md:max-w-4xl w-full px-8 md:pb-0 pb-20">
           <div className="text-[32px] mb-8 weight-500">
