@@ -17,21 +17,21 @@ const BoxLinkGroup = () => {
         src={"/images/boxlink2.png"}
         header={"About Us"}
         body={"Learn about our history, mission, vision and our incredible team."}
-        link={"/what-we-do"}
+        link={"/about-us"}
       />
       <BoxLink
         tall={false}
         src={"/images/boxlink3.png"}
         header={"Get Involved"}
         body={"Join us on our mission and check out upcoming events."}
-        link={"/what-we-do"}
+        link={"/get-involved"}
       />
       <BoxLink
         tall={true}
         src={"/images/boxlink4.png"}
         header={"Stay Connected"}
         body={"Stay informed about our past events and get in touch with us."}
-        link={"/what-we-do"}
+        link={"/stay-connected"}
       />
     </div>
   );
