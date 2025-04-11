@@ -1,23 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
 import Flashcard from "../../../components/Flashcard/Flashcard";
 import Header from "../../../components/Header";
 
-/**
- * FlashcardPage – responsive flash‑card experience
- *
- * Desktop (≥ 800 px):
- *   – Flashcards alternate left/right with a zig‑zag connecting line that animates on scroll.
- *
- * Mobile (< 800 px):
- *   – Flashcards stack in a single neat column.
- *   – Connecting line becomes a single vertical line straight down the page with the same scroll‑progress animation.
- */
 const FlashcardPage: React.FC = () => {
-  /* ------------------------------------------------------------------
-   * Static flash‑card data
-   * ----------------------------------------------------------------*/
   const flashcards = [
     {
       title: "Attending a Life Skills Workshop",
@@ -55,16 +42,11 @@ const FlashcardPage: React.FC = () => {
   const [viewport, setViewport] = useState(getViewport());
 
   useEffect(() => {
-    const onResize = () => setViewport(getViewport());
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  const [scrollY, setScrollY] = useState(0);
-  useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const handleResize = () => {
+      setViewport(getViewport());
+    };
+    window.addEventListener("resize", handleResize);
+    window.removeEventListener("resize", handleResize);
   }, []);
   const [screenWidth, setScreenWidth] = useState<number>(
     typeof window === "undefined" ? 1200 : window.innerWidth,
@@ -73,9 +55,13 @@ const FlashcardPage: React.FC = () => {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const handleResize = () => setScreenWidth(window.innerWidth);
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
   const flashcardsRef = useRef<HTMLDivElement | null>(null);
   const [flashcardsTop, setFlashcardsTop] = useState(0);
@@ -90,7 +76,9 @@ const FlashcardPage: React.FC = () => {
     };
     measure();
     window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    return () => {
+      window.removeEventListener("resize", measure);
+    };
   }, []);
   const [progress, setProgress] = useState(0);
   useEffect(() => {
@@ -105,7 +93,9 @@ const FlashcardPage: React.FC = () => {
     };
     onScroll();
     window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [flashcardsTop, flashcardsHeight, viewport.h]);
 
   const SEG = 0.1;
