@@ -2,7 +2,7 @@
 
 import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { createCheckoutSession } from "../api/stripe";
 
@@ -14,25 +14,34 @@ if (!stripePublishableKey) {
 
 const stripePromise = loadStripe(stripePublishableKey);
 
+// Define debug info type
+type DebugInfo = {
+  apiBaseUrl?: string;
+  stripeKey?: string;
+  apiResult?: unknown;
+  fetchError?: string;
+  outerError?: string;
+};
+
 export default function Checkout() {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [debugInfo, setDebugInfo] = useState<any>({
+  const [_debugInfo, setDebugInfo] = useState<DebugInfo>({
     apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL ?? "/api",
-    stripeKey: stripePublishableKey?.substring(0, 5) + "..." 
+    stripeKey: stripePublishableKey ? stripePublishableKey.substring(0, 5) + "..." : undefined,
   });
 
   useEffect(() => {
-    const fetchClientSecret = async () => {
+    const fetchClientSecret = async (): Promise<void> => {
       try {
         setLoading(true);
         console.log("Attempting API call to:", process.env.NEXT_PUBLIC_API_BASE_URL ?? "/api");
-        
+
         try {
           const result = await createCheckoutSession();
-          setDebugInfo(prev => ({ ...prev, apiResult: result }));
-          
+          setDebugInfo((prev) => ({ ...prev, apiResult: result }));
+
           if (result.success && result.data.client_secret) {
             setClientSecret(result.data.client_secret);
           } else {
@@ -41,19 +50,19 @@ export default function Checkout() {
           }
         } catch (fetchErr) {
           console.error("Fetch failed:", fetchErr);
-          setDebugInfo(prev => ({ ...prev, fetchError: String(fetchErr) }));
+          setDebugInfo((prev) => ({ ...prev, fetchError: String(fetchErr) }));
           throw fetchErr;
         }
       } catch (err) {
         setError("An error occurred while setting up payment");
         console.error("Checkout error (outer):", err);
-        setDebugInfo(prev => ({ ...prev, outerError: String(err) }));
+        setDebugInfo((prev) => ({ ...prev, outerError: String(err) }));
       } finally {
         setLoading(false);
       }
     };
 
-    fetchClientSecret();
+    void fetchClientSecret();
   }, []);
 
   if (loading) {
@@ -70,10 +79,7 @@ export default function Checkout() {
 
   return (
     <div id="checkout">
-      <EmbeddedCheckoutProvider
-        stripe={stripePromise}
-        options={{ clientSecret }}
-      >
+      <EmbeddedCheckoutProvider stripe={stripePromise} options={{ clientSecret }}>
         <EmbeddedCheckout />
       </EmbeddedCheckoutProvider>
     </div>
