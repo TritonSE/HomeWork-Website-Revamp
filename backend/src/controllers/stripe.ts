@@ -22,14 +22,12 @@ interface StripeCheckoutSession {
   object: "checkout.session";
   status: "open" | "complete" | "expired";
   customer_details?: StripeCustomerDetails;
-  client_secret?: string;
   // Add other properties as needed
 }
 
 interface StripeCheckoutAPI {
   sessions: {
     retrieve(sessionId: string, options?: { expand?: string[] }): Promise<StripeCheckoutSession>;
-    create(params: any): Promise<StripeCheckoutSession>;
   };
 }
 
@@ -93,53 +91,5 @@ export const getCheckoutSession: RequestHandler = async (req, res, next) => {
 
     // Fallback for completely unknown errors
     next(createHttpError(500, "An unknown error occurred"));
-  }
-};
-
-/**
- * Create a new checkout session
- * @route POST /api/checkout/create-session
- */
-export const createCheckoutSession: RequestHandler = async (req, res, next) => {
-  try {
-    const origin = req.headers.origin ?? req.headers.referer ?? "http://localhost:3000";
-
-    // Create Checkout Sessions from body params
-    const session = await stripe.checkout.sessions.create({
-      ui_mode: "embedded",
-      line_items: [
-        {
-          // Provide the exact Price ID of the product you want to sell
-          price: "price_1Qzk82FzkyJsiGOj7SwJUIHn",
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      return_url: `${origin}/return?session_id={CHECKOUT_SESSION_ID}`,
-    });
-
-    if (!session?.client_secret) {
-      throw createHttpError(500, "Failed to create checkout session");
-    }
-
-    res.status(200).json({
-      success: true,
-      client_secret: session.client_secret,
-    });
-  } catch (error: unknown) {
-    // Check if it's a Stripe error
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "type" in error &&
-      typeof (error as StripeError).type === "string" &&
-      (error as StripeError).type.startsWith("Stripe")
-    ) {
-      next(createHttpError(400, (error as StripeError).message ?? "Stripe error occurred"));
-    } else if (error instanceof Error) {
-      next(createHttpError(500, error.message));
-    } else {
-      next(createHttpError(500, "An unknown error occurred"));
-    }
   }
 };
