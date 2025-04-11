@@ -35,10 +35,75 @@ const FlashcardPage: React.FC = () => {
       info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     },
   ];
+  // run once and on resize
+  const getViewport = () => ({
+    w: window.innerWidth,
+    h: window.innerHeight,
+  });
+  const [viewport, setViewport] = useState(getViewport());
 
-  const [scrollPosition, setScrollPosition] = useState<number>(0);
-  const [screenWidth, setScreenWidth] = useState(20000);
-  const prevScrollY = useRef<number>(0);
+  useEffect(() => {
+    const onResize = () => setViewport(getViewport());
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  const [scrollY, setScrollY] = useState(0);
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  const [flashcardsTop, setFlashcardsTop] = useState(0);
+
+  useEffect(() => {
+    const measure = () => {
+      if (flashcardsRef.current) {
+        setFlashcardsTop(flashcardsRef.current.offsetTop);
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+  const [progress, setProgress] = useState(0);
+  const [flashcardsHeight, setFlashcardsHeight] = useState(1);
+
+  useEffect(() => {
+    const measure = () => {
+      if (flashcardsRef.current) {
+        setFlashcardsTop(flashcardsRef.current.offsetTop);
+        setFlashcardsHeight(flashcardsRef.current.offsetHeight);
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  useEffect(() => {
+    if (!flashcardsHeight) return;
+    if (!flashcardsTop) return;
+    const START_DELAY = flashcardsTop / 8;
+
+    const onScroll = () => {
+      const bottom = window.scrollY + viewport.h;
+      const startLine = flashcardsTop + START_DELAY;
+      const pxPast = Math.max(0, bottom - startLine);
+      const current = Math.min(pxPast / flashcardsHeight, 1);
+      setProgress((prev) => (current > prev ? current : prev)); // so doesnt undo animation
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [flashcardsTop, flashcardsHeight, viewport.h]);
+
+  const SEG = 0.1;
+  const segIndex = Math.min(Math.floor(progress / SEG), 9);
+  const segT = (progress - segIndex * SEG) / SEG;
+
+  const [screenWidth, setScreenWidth] = useState(20000); //arbitrary big
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       setScreenWidth(window.innerWidth);
@@ -47,87 +112,48 @@ const FlashcardPage: React.FC = () => {
         setScreenWidth(window.innerWidth);
       };
 
-      const handleScroll = () => {
-        const currentScrollY = window.scrollY;
-        if (currentScrollY > prevScrollY.current) {
-          setScrollPosition(currentScrollY);
-          prevScrollY.current = currentScrollY;
-        }
-      };
-
       window.addEventListener("resize", handleResize);
-      window.addEventListener("scroll", handleScroll);
 
       return () => {
         window.removeEventListener("resize", handleResize);
-        window.removeEventListener("scroll", handleScroll);
       };
     }
   }, []);
 
-  const [numReached, setNumReached] = useState(1); //reached as in got to above this box and will trigger vertical
-  const [ballXPos, setBallXPos] = useState(500);
-  const [ballYPosition, setBallYPosition] = useState(204);
-
   const maxRightPosition = screenWidth - 360;
   const maxLeftPosition = 223;
+  const cardOpacity = (idx: number) => Math.min(Math.max((progress - (idx - 1) * SEG) / SEG, 0), 1);
 
-  useEffect(() => {
-    console.log(
-      // ballXPos,
-      // "scrollPosition:",
-      scrollPosition,
-    );
-    if (horizontalDir) {
-      if (numReached % 2 === 1) {
-        if (numReached === 1) {
-          let newX = 500 + scrollPosition * 5;
-          if (newX > maxRightPosition) newX = maxRightPosition;
-          setBallXPos(newX);
-        } else {
-          let newX = maxLeftPosition + (scrollPosition - horizontalPlace) * 5;
-          if (newX > maxRightPosition) newX = maxRightPosition;
-          setBallXPos(newX);
-        }
-      } else {
-        let newX = maxRightPosition - (scrollPosition - horizontalPlace) * 5;
-        if (newX < maxLeftPosition) newX = maxLeftPosition;
-        setBallXPos(newX);
-      }
+  const [ballXPos, ballYPosition] = (() => {
+    switch (segIndex) {
+      case 0:
+        return [500 + segT * (maxRightPosition - 500), 204];
+      case 1:
+        return [maxRightPosition, 204 + segT * 408];
+      case 2:
+        return [maxRightPosition - segT * (maxRightPosition - maxLeftPosition), 204 + 408];
+      case 3:
+        return [maxLeftPosition, 204 + 408 + segT * 408];
+      case 4:
+        return [maxLeftPosition + segT * (maxRightPosition - maxLeftPosition), 204 + 2 * 408];
+      case 5:
+        return [maxRightPosition, 204 + 408 + 408 + segT * 408];
+      case 6:
+        return [maxRightPosition - segT * (maxRightPosition - maxLeftPosition), 204 + 3 * 408];
+      case 7:
+        return [maxLeftPosition, 204 + 408 + 408 + 408 + segT * 408];
+      case 8:
+        return [maxLeftPosition + segT * (maxRightPosition - maxLeftPosition), 204 + 4 * 408];
+      case 9:
+        return [maxRightPosition, 204 + 4 * 408 + segT * 408];
+      default:
+        return [maxLeftPosition + segT * (maxRightPosition - maxLeftPosition), 204 + 2 * 408];
     }
-    if (verticalDir) {
-      setBallYPosition(204 + 408 * (numReached - 2) + (scrollPosition - verticalPlace) * 2);
-    }
-  }, [scrollPosition, numReached]); // Recalculate when scrolling or direction changes
+  })();
+  const fill = (seg: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9) =>
+    Math.min(Math.max((progress - seg * SEG) / SEG, 0), 1);
 
-  const isMaxPositionReached = ballXPos === maxRightPosition;
-  const isMinPositionReached = ballXPos === maxLeftPosition;
-  const [horizontalDir, setHorizontalDir] = useState(true);
-  const verticalDir = !horizontalDir;
-
-  // need to have when reaches 612 or 204, horizontal is true. if x becomes max/min then becomes vertical
-  const reachedBlock = Math.max(1, Math.floor((ballYPosition - 204) / 408) + 1); // actually reached the midpoint of the block
-  const [horizontalPlace, setHorizontalPlace] = useState(0);
-  const [verticalPlace, setVerticalPlace] = useState(0);
-
-  //probably need more of these scrolls for the other vertical scrolls
-  useEffect(() => {
-    if (!horizontalDir) {
-      setHorizontalDir(true);
-      // console.log("reached");
-      setHorizontalPlace(scrollPosition);
-    }
-  }, [reachedBlock]);
-  useEffect(() => {
-    if (horizontalDir && (isMaxPositionReached || isMinPositionReached)) {
-      //console.log("changed");
-      setHorizontalDir(false);
-    }
-    if (isMaxPositionReached || isMinPositionReached) {
-      setNumReached(numReached + 1);
-      setVerticalPlace(scrollPosition);
-    }
-  }, [isMaxPositionReached, isMinPositionReached]);
+  const flashcardsRef = useRef<HTMLDivElement | null>(null);
   return (
     <div>
       <Header
@@ -155,281 +181,91 @@ const FlashcardPage: React.FC = () => {
           <img src="/images/whatwedo.png" className="h-[calc(100%)] object-contain w-full" />
         </div>
       </div>
-
       <div className="px-8">
         <div className="text-5xl font-golos pb-8 mt-20">Our Model</div>
-
-        <div className="relative flex flex-col">
+        <div ref={flashcardsRef} className="relative flex flex-col">
+          <div
+            className="lineX absolute"
+            style={{
+              left: 525,
+              top: 204,
+              width: fill(0) * (maxRightPosition - 500),
+            }}
+          />
+          <div
+            className="lineY absolute"
+            style={{
+              left: maxRightPosition + 25,
+              top: 204,
+              height: fill(1) * 408,
+            }}
+          />
+          <div
+            className="lineX absolute"
+            style={{
+              left: maxRightPosition + 25 - fill(2) * (maxRightPosition - maxLeftPosition),
+              top: 204 + 408,
+              width: fill(2) * (maxRightPosition - maxLeftPosition),
+            }}
+          />
+          <div
+            className="lineY absolute"
+            style={{
+              left: maxLeftPosition + 25,
+              top: 204 + 408,
+              height: fill(3) * 408,
+            }}
+          />
+          <div
+            className="lineX absolute"
+            style={{
+              left: maxLeftPosition + 25,
+              top: 204 + 2 * 408,
+              width: fill(4) * (maxRightPosition - maxLeftPosition),
+            }}
+          />
+          <div
+            className="lineY absolute"
+            style={{ left: maxRightPosition + 25, top: 204 + 816, height: fill(5) * 408 }}
+          />
+          <div
+            className="lineX absolute"
+            style={{
+              left: maxRightPosition + 25 - fill(6) * (maxRightPosition - maxLeftPosition),
+              top: 204 + 3 * 408,
+              width: fill(6) * (maxRightPosition - maxLeftPosition),
+            }}
+          />
+          <div
+            className="lineY absolute"
+            style={{
+              left: maxLeftPosition + 25,
+              top: 204 + 1224,
+              height: fill(7) * 408,
+            }}
+          />
+          <div
+            className="lineX absolute"
+            style={{
+              left: maxLeftPosition + 25,
+              top: 204 + 4 * 408,
+              width: fill(8) * (maxRightPosition - maxLeftPosition),
+            }}
+          />
+          <div
+            className="lineY absolute"
+            style={{ left: maxRightPosition + 25, top: 204 + 1632, height: fill(9) * 408 }}
+          />
+          <div className="circle absolute" style={{ left: ballXPos, top: ballYPosition }} />
           {flashcards.map((flashcard, index) => (
-            <div key={index} className="relative flex flex-col">
-              <div
-                className={`flex ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"} w-full items-center`}
-              >
-                <Flashcard {...flashcard} />
-                {index === 0 && (
-                  <div>
-                    {reachedBlock === index + 1 && (
-                      <>
-                        {index === 0 && (
-                          <div
-                            className="lineX"
-                            style={{
-                              left: 525,
-                              width: ballXPos - 500,
-                            }}
-                          ></div>
-                        )}
-                        {index !== 0 && (
-                          <div
-                            className="lineX"
-                            style={{
-                              left: maxLeftPosition + 25,
-                              width: ballXPos - (maxLeftPosition + 25),
-                            }}
-                          ></div>
-                        )}
-                      </>
-                    )}
-                    {reachedBlock > index + 1 && (
-                      <>
-                        {index === 0 && (
-                          <div
-                            className="lineX"
-                            style={{
-                              left: `525px`,
-                              width: maxRightPosition - 500,
-                            }}
-                          ></div>
-                        )}
-                        {index !== 0 && (
-                          <div
-                            className="lineX"
-                            style={{
-                              left: maxLeftPosition + 25,
-                              width: maxRightPosition - (maxLeftPosition + 25),
-                            }}
-                          ></div>
-                        )}
-                      </>
-                    )}
-
-                    {!isMaxPositionReached && reachedBlock === index + 1 && (
-                      <>
-                        <div
-                          className="circle"
-                          style={{
-                            left: ballXPos, // Ball moves along the line
-                          }}
-                        ></div>
-                      </>
-                    )}
-
-                    {isMaxPositionReached && (
-                      <>
-                        {reachedBlock === index + 2 && (
-                          <div
-                            className="lineY"
-                            style={{
-                              left: ballXPos + 25,
-                              top: `204px`,
-                              height: `408px`,
-                            }}
-                          ></div>
-                        )}
-                        {reachedBlock < index + 2 && (
-                          <>
-                            <div
-                              className="lineY"
-                              style={{
-                                left: screenWidth - 360 + 25,
-                                top: `204px`,
-                                height: ballYPosition - 204,
-                              }}
-                            ></div>
-                            <div
-                              className="circle"
-                              style={{
-                                left: screenWidth - 360,
-                                top: ballYPosition,
-                              }}
-                            ></div>
-                          </>
-                        )}
-                        {reachedBlock > index + 2 && (
-                          <div
-                            className="lineY"
-                            style={{
-                              left: screenWidth - 360 + 25,
-                              top: `204px`,
-                              height: 413,
-                            }}
-                          ></div>
-                        )}
-                      </>
-                    )}
-                    {reachedBlock > index + 1 && !isMaxPositionReached && (
-                      <div
-                        className="lineY"
-                        style={{
-                          left: screenWidth - 360 + 25,
-                          top: `204px`,
-                          height: 413,
-                        }}
-                      ></div>
-                    )}
-                  </div>
-                )}
-
-                {(index === 1 || index === 3) && (
-                  <div>
-                    {reachedBlock === index + 1 && (
-                      <>
-                        <div
-                          className="lineX"
-                          style={{ left: ballXPos + 25, width: maxRightPosition - ballXPos }}
-                        ></div>
-                      </>
-                    )}
-                    {reachedBlock > index + 1 && (
-                      <div
-                        className="lineX"
-                        style={{
-                          left: maxLeftPosition + 25,
-                          width: maxRightPosition - maxLeftPosition,
-                        }}
-                      ></div>
-                    )}
-                    {!isMinPositionReached && reachedBlock === index + 1 && (
-                      <>
-                        <div className="circle" style={{ left: ballXPos }}></div>
-                      </>
-                    )}
-
-                    {isMinPositionReached && (
-                      <>
-                        {reachedBlock === index + 1 && (
-                          <>
-                            <div
-                              className="lineY"
-                              style={{
-                                left: maxLeftPosition + 25,
-                                top: 204,
-                                height: ballYPosition - (204 + 408 * index),
-                              }}
-                            ></div>
-                            <div
-                              className="circle"
-                              style={{ left: maxLeftPosition, top: ballYPosition - index * 408 }}
-                            ></div>
-                          </>
-                        )}
-                      </>
-                    )}
-                    {reachedBlock >= index + 2 && (
-                      <div
-                        className="lineY"
-                        style={{
-                          left: maxLeftPosition + 25,
-                          top: 204,
-                          height: 413,
-                        }}
-                      ></div>
-                    )}
-                  </div>
-                )}
-                {(index === 2 || index === 4) && (
-                  <div>
-                    {reachedBlock === index + 1 && (
-                      <>
-                        <div
-                          className="lineX"
-                          style={{
-                            left: maxLeftPosition + 25,
-
-                            width: ballXPos - maxLeftPosition,
-                          }}
-                        ></div>
-                      </>
-                    )}
-                    {reachedBlock > index + 1 && (
-                      <>
-                        <div
-                          className="lineX"
-                          style={{
-                            left: maxLeftPosition + 25,
-                            width: maxRightPosition - maxLeftPosition,
-                          }}
-                        ></div>
-                      </>
-                    )}
-
-                    {!isMaxPositionReached && reachedBlock === index + 1 && (
-                      <>
-                        <div
-                          className="circle"
-                          style={{
-                            left: ballXPos, // Ball moves along the line
-                          }}
-                        ></div>
-                      </>
-                    )}
-
-                    {isMaxPositionReached && (
-                      <>
-                        {reachedBlock === index + 2 && (
-                          <div
-                            className="lineY"
-                            style={{
-                              left: ballXPos + 25,
-                              top: `204px`,
-                              height: `408px`,
-                            }}
-                          ></div>
-                        )}
-                        {reachedBlock === index + 1 && (
-                          <>
-                            <div
-                              className="lineY"
-                              style={{
-                                left: screenWidth - 360 + 25,
-                                top: `204px`,
-                                height: ballYPosition - 204 - index * 408,
-                              }}
-                            ></div>
-                            <div
-                              className="circle"
-                              style={{
-                                left: screenWidth - 360,
-                                top: ballYPosition - index * 408,
-                              }}
-                            ></div>
-                          </>
-                        )}
-                        {reachedBlock > index + 2 && (
-                          <div
-                            className="lineY"
-                            style={{
-                              left: screenWidth - 360 + 25,
-                              top: `204px`,
-                              height: 413,
-                            }}
-                          ></div>
-                        )}
-                      </>
-                    )}
-                    {reachedBlock > index + 1 && !isMaxPositionReached && (
-                      <div
-                        className="lineY"
-                        style={{
-                          left: screenWidth - 360 + 25,
-                          top: `204px`,
-                          height: 413,
-                        }}
-                      ></div>
-                    )}
-                  </div>
-                )}
-              </div>
+            <div
+              key={index}
+              className={`relative flex ${
+                index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+              } items-center`}
+              style={{ opacity: cardOpacity(index), transition: "opacity 2s linear" }}
+            >
+              <Flashcard {...flashcard} />
             </div>
           ))}
         </div>
