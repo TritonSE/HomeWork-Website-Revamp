@@ -1,29 +1,6 @@
-"use server";
+// This file is deprecated - using client-side API calls instead
+// See frontend/src/api/stripe.ts for the new implementation
+"use client";
 
-import { stripe } from "../../stripe/stripe";
-import { headers } from "next/headers";
-
-export async function fetchClientSecret() {
-  const origin = (await headers()).get("origin");
-
-  if (origin === null) {
-    throw new Error("Origin header is missing");
-  }
-
-  // Create Checkout Sessions from body params.
-  const session = await stripe.checkout.sessions.create({
-    ui_mode: "embedded",
-    line_items: [
-      {
-        // Provide the exact Price ID (for example, pr_1234) of
-        // the product you want to sell
-        price: "price_1Qzk82FzkyJsiGOj7SwJUIHn",
-        quantity: 1,
-      },
-    ],
-    mode: "payment",
-    return_url: `${origin}/return?session_id={CHECKOUT_SESSION_ID}`,
-  });
-
-  return session.client_secret;
-}
+// This is now an empty client-side file
+// The server-side logic has been moved to backend/src/controllers/stripe.ts

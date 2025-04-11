@@ -15,7 +15,22 @@ import stripeRoutes from "./routes/stripe";
 
 // Initialize Express App
 const app = express();
-app.use(cors({ origin: process.env.FRONTEND_ORIGIN }));
+// Configure CORS to handle multiple origins properly
+let corsOrigin = 'http://localhost:3000';
+
+// If FRONTEND_ORIGIN is defined, use the first origin (in case it's a comma-separated list)
+if (process.env.FRONTEND_ORIGIN) {
+  corsOrigin = process.env.FRONTEND_ORIGIN.split(',')[0].trim();
+}
+
+const corsOptions = {
+  origin: corsOrigin,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(json());
 app.use("/api/subscriptions", subscriptionRoutes);
 app.use("/api/contact", contactRoute);
