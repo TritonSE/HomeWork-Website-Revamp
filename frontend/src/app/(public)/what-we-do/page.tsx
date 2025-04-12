@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 
+import Image from "next/image";
+
 import Flashcard from "../../../components/Flashcard/Flashcard";
 import Header from "../../../components/Header";
 
@@ -38,19 +40,20 @@ const FlashcardPage: React.FC = () => {
     },
   ];
   const flashcardHeight = 408;
-  const getViewport = () => ({ h: window.innerHeight });
-  const [viewport, setViewport] = useState(getViewport());
+  const [viewport, setViewport] = useState({ h: 1000 }); // default placeholder
 
   useEffect(() => {
+    const getViewport = () => ({ h: window.innerHeight });
+    setViewport(getViewport());
     const handleResize = () => {
       setViewport(getViewport());
     };
     window.addEventListener("resize", handleResize);
-    window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
-  const [screenWidth, setScreenWidth] = useState<number>(
-    typeof window === "undefined" ? 1200 : window.innerWidth,
-  );
+  const [screenWidth, setScreenWidth] = useState<number>(1200);
   const isMobile = screenWidth < 1200;
 
   useEffect(() => {
@@ -58,6 +61,7 @@ const FlashcardPage: React.FC = () => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
     };
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -98,7 +102,7 @@ const FlashcardPage: React.FC = () => {
     };
   }, [flashcardsTop, flashcardsHeight, viewport.h]);
 
-  const SEG = 0.1;
+  const SEG = 0.08;
   const segIndex = Math.min(Math.floor(progress / SEG), 9);
   const segT = (progress - segIndex * SEG) / SEG;
 
@@ -107,7 +111,7 @@ const FlashcardPage: React.FC = () => {
   const [ballXPosDesktop, ballYPositionDesktop] = (() => {
     switch (segIndex) {
       case 0:
-        return [500 + segT * (maxRightPosition - 500), flashcardHeight * 2];
+        return [500 + segT * (maxRightPosition - 500), flashcardHeight * 0.5];
       case 1:
         return [maxRightPosition, flashcardHeight * (0.5 + segT)];
       case 2:
@@ -176,7 +180,14 @@ const FlashcardPage: React.FC = () => {
           </div>
         </div>
         <div className="md:px-8">
-          <img src="/images/whatwedo.png" className="h-[calc(100%)] object-contain w-full" />
+          <Image
+            src="/images/whatwedo.png"
+            alt="Illustration of our program"
+            width={800}
+            height={600}
+            className="h-full w-full object-contain"
+            priority
+          />
         </div>
       </div>
 
@@ -189,7 +200,7 @@ const FlashcardPage: React.FC = () => {
               <div
                 className="lineX absolute"
                 style={{
-                  left: 525,
+                  left: 525 + 5,
                   top: flashcardHeight * 0.5,
                   width: fill(0) * (maxRightPosition - 500),
                 }}
@@ -198,7 +209,7 @@ const FlashcardPage: React.FC = () => {
                 className="lineY absolute"
                 style={{
                   left: maxRightPosition + 25,
-                  top: flashcardHeight * 0.5,
+                  top: flashcardHeight * 0.5 + 5,
                   height: fill(1) * flashcardHeight,
                 }}
               />
@@ -214,14 +225,14 @@ const FlashcardPage: React.FC = () => {
                 className="lineY absolute"
                 style={{
                   left: maxLeftPosition + 25,
-                  top: flashcardHeight * 1.5,
+                  top: flashcardHeight * 1.5 + 5,
                   height: fill(3) * flashcardHeight,
                 }}
               />
               <div
                 className="lineX absolute"
                 style={{
-                  left: maxLeftPosition + 25,
+                  left: maxLeftPosition + 25 + 5,
                   top: flashcardHeight * 2.5,
                   width: fill(4) * (maxRightPosition - maxLeftPosition),
                 }}
@@ -230,7 +241,7 @@ const FlashcardPage: React.FC = () => {
                 className="lineY absolute"
                 style={{
                   left: maxRightPosition + 25,
-                  top: flashcardHeight * 2.5,
+                  top: flashcardHeight * 2.5 + 5,
                   height: fill(5) * flashcardHeight,
                 }}
               />
