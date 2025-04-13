@@ -10,6 +10,11 @@ import { ourHistorySlides, ourValuesSlides } from "./ScrollThroughData";
 
 import ScrollThrough from "@/components/ScrollThrough/ScrollThrough";
 
+import {
+  NotificationProvider,
+  useNotification,
+} from "@/components/Notifications/NotificationProvider";
+import DemoButton from "@/components/Notifications/DemoButtonTest";
 const InfoCard: React.FC<{ title: string; icon: string; description: string }> = ({
   title,
   icon,
@@ -67,6 +72,9 @@ const AboutUsPage = () => {
           </div>
         </div>
       </div>
+      <NotificationProvider>
+        <DemoButton />
+      </NotificationProvider>
       {/*our history*/}
       <ScrollThrough heading="Our History" slidesData={ourHistorySlides} />
       {/*our mission */}
