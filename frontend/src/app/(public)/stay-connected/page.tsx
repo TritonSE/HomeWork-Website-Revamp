@@ -41,7 +41,14 @@ const StayConnectedPage = () => {
         imageUrl="/images/stay-connected-header.jpg"
         header="Stay Connected"
         subheader="Make a difference today! Your generous support helps us continue empowering families and creating meaningful change in our community. Every contribution, big or small, fuels our mission and brings us closer to a brighter future."
-      ></Header>
+      >
+        <Link
+          href="/contact"
+          className="w-[25%] border rounded-lg px-6 py-3 bg-transparent hover:bg-white/25"
+        >
+          Send us a Message
+        </Link>
+      </Header>
       <div className="p-10 font-golos">
         <h1 className="mb-5 text-3xl sm:text-5xl font-golos font-medium">News & Past Events</h1>
         <p>
