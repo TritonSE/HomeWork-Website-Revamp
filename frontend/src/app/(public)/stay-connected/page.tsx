@@ -4,9 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useContext } from "react";
 
+import Header from "@/components/Header";
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
-import Header from "@/components/Header";
 
 const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
   const textDate = new Date(article.dateCreated).toLocaleDateString("en-US", {

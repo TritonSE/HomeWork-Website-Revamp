@@ -1,5 +1,6 @@
-import Header from "@/components/Header";
 import Image from "next/image";
+
+import Header from "@/components/Header";
 
 const Button: React.FC<{ text: string }> = ({ text }) => {
   return (
