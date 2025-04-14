@@ -141,7 +141,7 @@ const FlashcardPage: React.FC = () => {
           4.5 * flashcardHeight,
         ];
       case 9:
-        return [maxRightPosition, flashcardHeight * (4.5 + segT)];
+        return [maxRightPosition, flashcardHeight * (4.5 + Math.min(1, segT))];
       default:
         return [maxLeftPosition, flashcardHeight * 0.5];
     }
