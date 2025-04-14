@@ -61,7 +61,8 @@ const ArticleCard: React.FC<{ article: Article; index: number }> = ({ article, i
   const numCardLimit = 2;
   return (
     // Removes the third card in mobile screen
-    <div
+    <Link
+      href={{ pathname: "/article-viewer", query: { articleId: article._id } }}
       className={`flex flex-col w-full h-full gap-2 cursor-pointer font-golos ${index >= numCardLimit ? "hidden md:flex" : ""}`}
     >
       <img src={article.thumbnail} alt={article.header} className="w-full h-80 mb-3 object-cover" />
@@ -70,7 +71,7 @@ const ArticleCard: React.FC<{ article: Article; index: number }> = ({ article, i
         {convertDateToMonthDayYear(article.dateCreated)}
       </p>
       <p className="sm:text-base line-clamp-4 leading-8">{article.body}</p>
-    </div>
+    </Link>
   );
 };
 
