@@ -5,6 +5,7 @@ import phone from "phone";
 import React, { useState } from "react";
 
 import { post } from "../api/requests";
+import Header from "./Header";
 type ErrorResponse = {
   error?: string;
   message?: string;
@@ -70,113 +71,122 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col md2:flex-row">
-      <div className="p-8 md2:w-[calc(48%)]">
-        <div className="relative flex flex-col">
-          <h1 className="text-[48px] font-golos font-medium text-left pt-8">Get in Touch</h1>
-          <p className="text-left mb-2 text-[20px]">
-            Send us a quick message and we&apos;ll reach back out to you soon.
-          </p>
-          <p className="text-left mb-2 text-[20px]">We&apos;re excited to have you here!</p>
-          <form
-            onSubmit={(e) => {
-              void handleSubmit(e);
-            }}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            <div>
-              <TextField
-                label="Full Name"
-                type="name"
-                name="name"
-                value={formData.fullName}
-                onChange={(v) => {
-                  handleInputChange("fullName", v);
-                }}
-                placeholder="Enter your full name"
-                errorText={fullNameError}
-              />
-            </div>
-            <div>
-              <TextField
-                label="Email Address"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={(v) => {
-                  handleInputChange("email", v);
-                }}
-                placeholder="Enter email"
-                errorText={emailError}
-              />
-            </div>
-            <div>
-              <TextField
-                label="Phone Number"
-                type="phoneNumber"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={(v) => {
-                  handleInputChange("phoneNumber", v);
-                }}
-                placeholder="Enter phone number"
-                errorText={phoneNumberError}
-              />
-            </div>
-            <div>
-              <label className="text-[12px] sm:text-[14px] md:text-[16px]">Message</label>
-              <textarea
-                rows={5}
-                placeholder="Write your message (optional)"
-                name="message"
-                value={formData.message}
-                onChange={(e) => {
-                  handleInputChange("message", e.target.value);
-                }}
-                className="mt-1 block w-full p-3 border border-[rgba(0,0,0,.4)] text-[12px] sm:text-[14px] md:text-[16px] rounded-md shadow-sm focus:outline-none focus:border-[var(--tse-constellation-color-secondary-highlight-1)]"
-              ></textarea>
-            </div>
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="mt-4 px-5 py-2.5 text-align w-40"
+    <>
+      <Header
+        imageUrl="/images/contact-us-header.jpg"
+        header="Contact Us"
+        subheader="Have questions or want to get involved? We’re here to help! Reach out to our team for more information about our programs, events, or ways to contribute."
+      />
+      <div className="flex flex-col md2:flex-row">
+        <div className="p-8 md2:w-[calc(48%)]">
+          <div className="relative flex flex-col">
+            <h1 className="text-[48px] font-golos font-medium text-left pt-8">Get in Touch</h1>
+            <p className="text-left mb-2 text-[20px]">
+              Send us a quick message and we&apos;ll reach back out to you soon.
+            </p>
+            <p className="text-left mb-2 text-[20px]">We&apos;re excited to have you here!</p>
+            <form
+              onSubmit={(e) => {
+                void handleSubmit(e);
+              }}
+              style={{ display: "flex", flexDirection: "column" }}
             >
-              {isSubmitting ? "Sending..." : "Send Message"}
-            </Button>
-          </form>
-          {responseMessage && (
-            <p style={{ marginTop: "15px", fontSize: "16px", color: "#333" }}>{responseMessage}</p>
-          )}
+              <div>
+                <TextField
+                  label="Full Name"
+                  type="name"
+                  name="name"
+                  value={formData.fullName}
+                  onChange={(v) => {
+                    handleInputChange("fullName", v);
+                  }}
+                  placeholder="Enter your full name"
+                  errorText={fullNameError}
+                />
+              </div>
+              <div>
+                <TextField
+                  label="Email Address"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={(v) => {
+                    handleInputChange("email", v);
+                  }}
+                  placeholder="Enter email"
+                  errorText={emailError}
+                />
+              </div>
+              <div>
+                <TextField
+                  label="Phone Number"
+                  type="phoneNumber"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={(v) => {
+                    handleInputChange("phoneNumber", v);
+                  }}
+                  placeholder="Enter phone number"
+                  errorText={phoneNumberError}
+                />
+              </div>
+              <div>
+                <label className="text-[12px] sm:text-[14px] md:text-[16px]">Message</label>
+                <textarea
+                  rows={5}
+                  placeholder="Write your message (optional)"
+                  name="message"
+                  value={formData.message}
+                  onChange={(e) => {
+                    handleInputChange("message", e.target.value);
+                  }}
+                  className="mt-1 block w-full p-3 border border-[rgba(0,0,0,.4)] text-[12px] sm:text-[14px] md:text-[16px] rounded-md shadow-sm focus:outline-none focus:border-[var(--tse-constellation-color-secondary-highlight-1)]"
+                ></textarea>
+              </div>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="mt-4 px-5 py-2.5 text-align w-40"
+              >
+                {isSubmitting ? "Sending..." : "Send Message"}
+              </Button>
+            </form>
+            {responseMessage && (
+              <p style={{ marginTop: "15px", fontSize: "16px", color: "#333" }}>
+                {responseMessage}
+              </p>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="w-full md2:flex justify-center relative md2:w-[52%] md2:justify-end">
-        <div className="relative">
-          <img src="/images/map.png" alt="Map" className="w-full h-auto" />
-          <div
-            className="absolute top-[67%] left-[63%] w-[6%] h-[5%] cursor-pointer"
-            onMouseEnter={() => {
-              setIsHovered(true);
-            }}
-            onMouseLeave={() => {
-              setIsHovered(false);
-            }}
-          ></div>
+        <div className="w-full md2:flex justify-center relative md2:w-[52%] md2:justify-end">
+          <div className="relative">
+            <img src="/images/map.png" alt="Map" className="w-full h-auto" />
+            <div
+              className="absolute top-[67%] left-[63%] w-[6%] h-[5%] cursor-pointer"
+              onMouseEnter={() => {
+                setIsHovered(true);
+              }}
+              onMouseLeave={() => {
+                setIsHovered(false);
+              }}
+            ></div>
 
-          {isHovered && (
-            <div className="absolute md3:top-[55%] md3:left-[58%] md2:top-[58%] md2:left-[56%] top-[55%] left-[58%] bg-white transition-opacity rounded-md">
-              <div className="md3:p-4 md2:p-4 p-4">
-                <div className="font-golos text-primary_dark text-[24px] pb-4 pl-4 pr-2">
-                  Our location
-                </div>
-                <div className="max-w-48 text-black pl-4 pr-6">
-                  151 YMCA Way, San Diego, CA 92102
+            {isHovered && (
+              <div className="absolute md3:top-[55%] md3:left-[58%] md2:top-[58%] md2:left-[56%] top-[55%] left-[58%] bg-white transition-opacity rounded-md">
+                <div className="md3:p-4 md2:p-4 p-4">
+                  <div className="font-golos text-primary_dark text-[24px] pb-4 pl-4 pr-2">
+                    Our location
+                  </div>
+                  <div className="max-w-48 text-black pl-4 pr-6">
+                    151 YMCA Way, San Diego, CA 92102
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
