@@ -1,5 +1,4 @@
 "use client";
-//skip our history & our values
 import { Button } from "@tritonse/tse-constellation";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -8,6 +7,8 @@ import Header from "../../../components/Header";
 
 import { ourHistorySlides, ourValuesSlides } from "./ScrollThroughData";
 
+import DemoButton from "@/components/Notifications/DemoButton";
+import { NotificationProvider } from "@/components/Notifications/NotificationProvider";
 import ScrollThrough from "@/components/ScrollThrough/ScrollThrough";
 
 const InfoCard: React.FC<{ title: string; icon: string; description: string }> = ({
@@ -67,9 +68,10 @@ const AboutUsPage = () => {
           </div>
         </div>
       </div>
-      {/*our history*/}
+      <NotificationProvider>
+        <DemoButton />
+      </NotificationProvider>
       <ScrollThrough heading="Our History" slidesData={ourHistorySlides} />
-      {/*our mission */}
       <div>
         <div className="flex md:flex-row flex-col md:justify-between bg-text_bg py-[50px] items-center">
           <div className="font-golos w-full max-w-[calc(80%)] md:max-w-[calc(50%)] ml-[50px] mr-4">
