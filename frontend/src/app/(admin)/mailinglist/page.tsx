@@ -3,8 +3,7 @@
 import { Icon, Table } from "@tritonse/tse-constellation";
 import React, { useState } from "react";
 
-import type { RowSelectionState } from "@tanstack/react-table";
-import type { ColumnDef } from "@tanstack/react-table"; // ADD THIS
+import type { ColumnDef, Row, RowSelectionState } from "@tanstack/react-table";
 
 type User = {
   firstName: string;
@@ -176,8 +175,11 @@ const MailingList: React.FC = () => {
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ row }) => {
+      cell: ({ row }: { row: Row<User> }) => {
         const status = row.getValue("status");
+
+        if (typeof status !== "string") return null;
+
         return (
           <span
             className={`px-2 py-1 rounded-sm text-sm ${
