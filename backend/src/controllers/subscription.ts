@@ -5,13 +5,13 @@ import SubscriptionModel from "../models/subscription";
 import validationErrorParser from "../util/validationErrorParser";
 
 export const createSubscription: RequestHandler = async (
-  req: { body: { email: string; name: string } },
+  req: { body: { email: string; firstname: string; lastname: string; joined: Date } },
   res,
   next,
 ) => {
   // extract any errors that were found by the validator
   const errors = validationResult(req);
-  const { name, email } = req.body;
+  const { firstname, lastname, email, joined } = req.body;
 
   try {
     validationErrorParser(errors);
@@ -19,8 +19,10 @@ export const createSubscription: RequestHandler = async (
     const subscription = await SubscriptionModel.findOne({ email });
     if (!subscription) {
       const newSubscription = await SubscriptionModel.create({
-        name: String(name),
+        firstname: String(firstname),
+        lastname: String(lastname),
         email: String(email),
+        joined,
       });
       res.status(201).json(newSubscription);
     } else {
