@@ -131,7 +131,8 @@ const MailingList: React.FC = () => {
   const filteredUsers = users.filter(
     (user) =>
       user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.lastName.toLowerCase().includes(searchQuery.toLowerCase()),
+      user.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.emailAdd.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
@@ -248,7 +249,7 @@ const MailingList: React.FC = () => {
             />
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search by first name, last name, or email"
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);

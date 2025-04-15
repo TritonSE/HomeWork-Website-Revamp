@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useContext } from "react";
 
+import Header from "@/components/Header";
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
-import Header from "@/components/Header";
 
 const EVENTS_PER_PAGE = 8;
 
