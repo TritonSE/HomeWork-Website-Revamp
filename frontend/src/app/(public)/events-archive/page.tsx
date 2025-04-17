@@ -1,11 +1,13 @@
+// app/events-archive/page.tsx
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useContext } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 
 import { ArticleContext } from "@/contexts/articleContext";
+import { PageDataContext } from "@/contexts/pageDataContext";
 import { Article } from "@/hooks/useArticles";
 
 const EVENTS_PER_PAGE = 8;
@@ -25,10 +27,10 @@ const EventCard: React.FC<{ article: Article }> = ({ article }) => {
         <p className="hidden sm:line-clamp-2">{article.body}</p>
         <Link
           className="flex flex-row gap-2 w-fit text-gray-400 border border-transparent cursor-pointer hover:border-b-gray-400"
-          href={{ pathname: "/article-viewer", query: { articleId: article._id } }} // id of selected article
+          href={{ pathname: "/article-viewer", query: { articleId: article._id } }}
         >
           <p className="text-xs sm:text-base">LEARN MORE</p>
-          <Image src="/icons/learnMore.svg" width={20} height={20} alt="Learn more arrow"></Image>
+          <Image src="/icons/learnMore.svg" width={20} height={20} alt="Learn more arrow" />
         </Link>
       </div>
       <img src={article.thumbnail} alt="" className="w-5/12 h-auto object-cover" />
@@ -51,29 +53,28 @@ const Pagination: React.FC<{ current: number; totalPages: number }> = ({ current
             src="/icons/nextPage.svg"
             width={20}
             height={20}
-            alt="Next page arrow"
+            alt="Previous page arrow"
             className="rotate-180"
           />
           <p className="hidden sm:block">PREVIOUS PAGE</p>
         </Link>
       )}
 
-      {[...Array(totalPages).keys()].map((num) => {
-        const isCurrentDot = num === current;
-        return (
-          <Link
-            key={num}
-            href={{ query: { page: num } }}
-            className={isCurrentDot ? "pointer-events-none cursor-default" : ""}
+      {[...Array(totalPages).keys()].map((num) => (
+        <Link
+          key={num}
+          href={{ query: { page: num } }}
+          className={num === current ? "pointer-events-none cursor-default" : ""}
+        >
+          <p
+            className={`flex justify-center items-center rounded-full w-10 h-10 text-white font-golos font-medium ${
+              num === current ? "bg-orange-600" : "bg-gray-400 cursor-pointer"
+            }`}
           >
-            <p
-              className={`flex justify-center items-center rounded-full w-10 h-10 text-white font-golos font-medium ${isCurrentDot ? "bg-orange-600" : "bg-gray-400 cursor-pointer"}`}
-            >
-              {num + 1}
-            </p>
-          </Link>
-        );
-      })}
+            {num + 1}
+          </p>
+        </Link>
+      ))}
 
       {showNextPage && (
         <Link
@@ -89,13 +90,41 @@ const Pagination: React.FC<{ current: number; totalPages: number }> = ({ current
 };
 
 const EventsArchiveContent = () => {
-  // Get articles with the hook
-  const { articles, loading } = useContext(ArticleContext);
+  const searchParams = useSearchParams();
+  const pageContext = useContext(PageDataContext);
+  const articleContext = useContext(ArticleContext);
+  const [isVisible, setIsVisible] = useState(false);
 
+  useEffect(() => {
+    if (pageContext?.pageData && !pageContext.loading) {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 50);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [pageContext]);
+
+  if (!pageContext) return <div>Error: Page data not available.</div>;
+  const { pageData, loading } = pageContext;
+  if (loading) return null;
+
+  const eventPageData = pageData.find((data) => data.pagename === "events-archive");
+  if (!eventPageData) return <div>No event archive data found.</div>;
+
+  const headerField = eventPageData.fields.find((field) => field.name === "header");
+  const descriptionField = eventPageData.fields.find((field) => field.name === "description");
+
+  const headerData = headerField?.data as {
+    imageUrl: string;
+    header: string;
+  };
+  const descriptionData = descriptionField?.data as { title: string; description: string };
+
+  const { articles } = articleContext;
   const totalPages = Math.ceil(articles.length / EVENTS_PER_PAGE);
 
-  const searchParams = useSearchParams();
-  // Defaults to home page
   const pageParam = searchParams.get("page");
   const currPage =
     !Number.isNaN(Number(pageParam)) && 0 < Number(pageParam) && Number(pageParam) < totalPages
@@ -107,28 +136,24 @@ const EventsArchiveContent = () => {
   return (
     <div className="p-5">
       <section className="flex flex-col gap-5 mb-5 font-golos">
-        <h1 className="text-2xl sm:text-4xl font-medium">Events Archive</h1>
-        <p className="text-sm sm:text-base">
-          Our Past Events archive showcases a rich history of engagement and learning opportunities.
-          From insightful workshops to vibrant community gatherings, explore the impactful
-          activities that have brought people together.
-        </p>
+        <h1 className="text-2xl sm:text-4xl font-medium">{headerData.header}</h1>
+        <p className="text-sm sm:text-base pt-4">{descriptionData.description}</p>
       </section>
-      <section className="flex flex-col gap-5 mb-5">
-        {loading ? (
-          <p className="flex flow justify-center items-center w-full h-96 text-xl text-gray-400">
-            Loading...
-          </p>
-        ) : (
-          pageArticles.map((article, index) => <EventCard article={article} key={index} />)
-        )}
+
+      <section
+        className="flex flex-col gap-5 mb-5 transition-opacity duration-700"
+        style={{ opacity: isVisible ? 1 : 0 }}
+      >
+        {pageArticles.map((article, index) => (
+          <EventCard article={article} key={index} />
+        ))}
       </section>
+
       <Pagination current={currPage} totalPages={totalPages} />
     </div>
   );
 };
 
-// Needed to allow pre-rendering to not error for useSearchParams
 const EventsArchivePage = () => {
   return (
     <Suspense>

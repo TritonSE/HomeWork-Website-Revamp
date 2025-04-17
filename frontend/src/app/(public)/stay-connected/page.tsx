@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { ArticleContext } from "@/contexts/articleContext";
+import { PageDataContext } from "@/contexts/pageDataContext";
 import { Article } from "@/hooks/useArticles";
 
 const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
@@ -22,10 +23,10 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
       <p className="line-clamp-3">{article?.body ?? ""}</p>
       <Link
         className="flex flex-row gap-2 w-fit text-gray-400 border border-transparent cursor-pointer hover:border-b-gray-400"
-        href={{ pathname: "/article-viewer", query: { articleId: article._id } }} // id of selected article
+        href={{ pathname: "/article-viewer", query: { articleId: article._id } }}
       >
         <p>LEARN MORE</p>
-        <Image src="/icons/learnMore.svg" width={20} height={20} alt="Learn more arrow"></Image>
+        <Image src="/icons/learnMore.svg" width={20} height={20} alt="Learn more arrow" />
       </Link>
     </div>
   );
@@ -33,15 +34,36 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
 
 const StayConnectedPage = () => {
   const { articles, loading } = useContext(ArticleContext);
+  const context = useContext(PageDataContext);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (context?.pageData && !context.loading) {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 50);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [context]);
+
+  if (!context) return <div>Error: Page data not available.</div>;
+  const { pageData } = context;
+  const page = pageData.find((entry) => entry.pagename === "stay-connected");
+  if (!page) return <div>No Stay Connected page data found.</div>;
+
+  const headerField = page.fields.find((field) => field.name === "header");
+  const headerData = headerField?.data as { title: string; description: string };
 
   return (
-    <div className="p-10 font-golos">
-      <h1 className="mb-5 text-3xl sm:text-5xl font-golos font-medium">News & Past Events</h1>
-      <p>
-        Our Past Events archive showcases a rich history of engagement and learning opportunities.
-        From insightful workshops to vibrant community gatherings, explore the impactful activities
-        that have brought people together.
-      </p>
+    <div
+      className={`p-10 font-golos transition-opacity duration-700 ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <h1 className="mb-5 text-3xl sm:text-5xl font-golos font-medium">{headerData.title}</h1>
+      <p>{headerData.description}</p>
 
       {/* 4 article cards */}
       <div className="flex flex-row flex-wrap gap-5 gap-y-10 mt-10">
@@ -54,10 +76,9 @@ const StayConnectedPage = () => {
         )}
       </div>
 
-      {/* TODO: LINK TO THE NEWS AND PAST EVENTS PAGE */}
       <div className="flex justify-start items-center w-full mt-10 mb-5">
         <Link
-          href={"/events-archive"}
+          href="/events-archive"
           className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos"
         >
           See All Articles

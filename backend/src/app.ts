@@ -8,6 +8,7 @@ import { mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
 import contactRoute from "./routes/contactRequest";
+import pageDataRoutes from "./routes/pageData";
 import quoteRoutes from "./routes/quote";
 import subscriptionRoutes from "./routes/subscriptions";
 import userRoute from "./routes/user";
@@ -21,6 +22,7 @@ app.use("/api/contact", contactRoute);
 app.use("/api/users", userRoute);
 app.use("/api/articles", articleRoutes);
 app.use("/api/quotes", quoteRoutes);
+app.use("/api/pageData", pageDataRoutes);
 
 app.use(errorHandler);
 mongoose
