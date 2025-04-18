@@ -93,6 +93,9 @@ const EventsTable: React.FC = () => {
           :global(.tse-table td) {
             border-bottom: 1px solid #e5e7eb !important;
           }
+          :global(._sortToggleContainer_1autq_41 svg) {
+            fill: #ffffff !important;
+          }
         `}</style>
 
         <h1 className="text-4xl font-medium mb-8">Event Manager</h1>
