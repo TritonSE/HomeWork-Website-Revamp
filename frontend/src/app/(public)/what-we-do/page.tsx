@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-
 import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
 
 import Flashcard from "../../../components/Flashcard/Flashcard";
 import Header from "../../../components/Header";
@@ -170,12 +169,13 @@ const FlashcardPage: React.FC = () => {
           </div>
           <div className="text-[20px] weight-400">
             <div>
-              By leveraging community resources, we establish a supportive peer mentoring
-              environment that empowers San Diegans towards lasting change and success.
+              We create a supportive peer mentoring environment that empowers San Diegans after
+              incarceration, focusing on continued support during employment—not just before it.
             </div>
             <div className="mt-6">
-              Our transformative approach to post-incarceration support emphasizes continuous
-              assistance during employment rather than solely focusing on pre-employment readiness.
+              Our Friday night classes open pathways to Union careers, and six times a year, we host
+              in-person events with Trade Union reps and formerly incarcerated individuals to
+              explore high-wage jobs, apprenticeships, and skills training.
             </div>
           </div>
         </div>

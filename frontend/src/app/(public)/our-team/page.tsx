@@ -4,33 +4,38 @@ export default function OurTeamPage() {
   const teamMembers = [
     {
       name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
+      title: "President & Founder",
+      imageUrl: "/images/jason-shanley.jpeg",
     },
     {
-      name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
+      name: "Tom Lemmon",
+      title: "Founding Board Member & Treasurer",
+      imageUrl: "/images/tom-lemmon.jpg",
     },
     {
-      name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
+      name: "Geneviéve Jones-Wright",
+      title: "Secretary",
+      imageUrl: "/images/gen-jones-wright.png",
     },
     {
-      name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
+      name: "Amanda Cave",
+      title: "Board member",
+      imageUrl: "/images/amanda-cave.jpg",
     },
     {
-      name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
+      name: "Desirae Sanders",
+      title: "Board member",
+      imageUrl: "/images/desirae-sanders.jpeg",
     },
     {
-      name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
+      name: "Matt Edwards",
+      title: "Facilitator, Mentor, & Leader",
+      imageUrl: "/images/matt-edwards.png",
+    },
+    {
+      name: "Christina Perry",
+      title: "Executive Assistant",
+      imageUrl: "/images/christina-perry.png",
     },
   ];
 
@@ -48,8 +53,8 @@ export default function OurTeamPage() {
         </h2>
 
         <p className="mb-12 text-lg">
-          We’re a team of XX, XX, and XX, actively changing what it means to be previously
-          incarcerated. We’re XX, XX, and XX, and we’re just getting started.
+          We’re a team of 7 board members and 100+ members redefining what it means to be formerly
+          incarcerated.
         </p>
 
         {/* Grid Layout */}
