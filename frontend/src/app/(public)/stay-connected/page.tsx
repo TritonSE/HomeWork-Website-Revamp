@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useContext } from "react";
 
+import Header from "@/components/Header";
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
 
@@ -35,35 +36,51 @@ const StayConnectedPage = () => {
   const { articles, loading } = useContext(ArticleContext);
 
   return (
-    <div className="p-10 font-golos">
-      <h1 className="mb-5 text-3xl sm:text-5xl font-golos font-medium">News & Past Events</h1>
-      <p>
-        Our Past Events archive showcases a rich history of engagement and learning opportunities.
-        From insightful workshops to vibrant community gatherings, explore the impactful activities
-        that have brought people together.
-      </p>
-
-      {/* 4 article cards */}
-      <div className="flex flex-row flex-wrap gap-5 gap-y-10 mt-10">
-        {loading ? (
-          <p className="flex flow justify-center items-center w-full h-96 text-xl text-gray-400">
-            Loading...
-          </p>
-        ) : (
-          articles.slice(0, 4).map((article) => <ArticleCard key={article._id} article={article} />)
-        )}
-      </div>
-
-      {/* TODO: LINK TO THE NEWS AND PAST EVENTS PAGE */}
-      <div className="flex justify-start items-center w-full mt-10 mb-5">
+    <>
+      <Header
+        imageUrl="/images/stay-connected-header.jpg"
+        header="Stay Connected"
+        subheader="Make a difference today! Your generous support helps us continue empowering families and creating meaningful change in our community. Every contribution, big or small, fuels our mission and brings us closer to a brighter future."
+      >
         <Link
-          href={"/events-archive"}
-          className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos"
+          href="/contact"
+          className="w-[25%] border rounded-lg px-6 py-3 bg-transparent hover:bg-white/25"
         >
-          See All Articles
+          Send us a Message
         </Link>
+      </Header>
+      <div className="p-10 font-golos">
+        <h1 className="mb-5 text-3xl sm:text-5xl font-golos font-medium">News & Past Events</h1>
+        <p>
+          Our Past Events archive showcases a rich history of engagement and learning opportunities.
+          From insightful workshops to vibrant community gatherings, explore the impactful
+          activities that have brought people together.
+        </p>
+
+        {/* 4 article cards */}
+        <div className="flex flex-row flex-wrap gap-5 gap-y-10 mt-10">
+          {loading ? (
+            <p className="flex flow justify-center items-center w-full h-96 text-xl text-gray-400">
+              Loading...
+            </p>
+          ) : (
+            articles
+              .slice(0, 4)
+              .map((article) => <ArticleCard key={article._id} article={article} />)
+          )}
+        </div>
+
+        {/* TODO: LINK TO THE NEWS AND PAST EVENTS PAGE */}
+        <div className="flex justify-start items-center w-full mt-10 mb-5">
+          <Link
+            href={"/events-archive"}
+            className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos"
+          >
+            See All Articles
+          </Link>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
