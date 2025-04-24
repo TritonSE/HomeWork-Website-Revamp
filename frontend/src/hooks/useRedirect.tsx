@@ -12,11 +12,10 @@ export const useRedirectToLogin = () => {
   }, [loading, firebaseUser, router]);
 };
 
-export const useRedirectToAdminIfLoggedIn = () => {
+export const useRedirectToPortalIfLoggedIn = () => {
   const { loading, firebaseUser } = useAuthState();
   const router = useRouter();
-
   useEffect(() => {
-    if (!loading && firebaseUser) router.replace("/admin");
+    if (!loading && firebaseUser) router.replace("/test-page");
   }, [loading, firebaseUser, router]);
 };
