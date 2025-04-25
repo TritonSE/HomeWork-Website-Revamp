@@ -25,18 +25,13 @@ export default function Checkout() {
         setLoading(true);
         console.log("Attempting API call to:", process.env.NEXT_PUBLIC_API_BASE_URL ?? "/api");
 
-        try {
-          const result = await createCheckoutSession();
+        const result = await createCheckoutSession();
 
-          if (result.success && result.data.client_secret) {
-            setClientSecret(result.data.client_secret);
-          } else {
-            setError("Failed to create checkout session");
-            console.error("Checkout error (api result):", result);
-          }
-        } catch (fetchErr) {
-          console.error("Fetch failed:", fetchErr);
-          throw fetchErr;
+        if (result.success && result.data.client_secret) {
+          setClientSecret(result.data.client_secret);
+        } else {
+          setError("Failed to create checkout session");
+          console.error("Checkout error (api result):", result);
         }
       } catch (err) {
         setError("An error occurred while setting up payment");
@@ -46,7 +41,7 @@ export default function Checkout() {
       }
     };
 
-    fetchClientSecret();
+    void fetchClientSecret();
   }, []);
 
   if (loading) {
