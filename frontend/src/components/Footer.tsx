@@ -1,10 +1,16 @@
 "use client";
 
+//import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
 import { post } from "../api/requests";
+
+//import AdminLogin from "@/../public/images/adminLogin.svg";
+//import Facebook from "@/../public/images/facebook.svg";
+//import Logo from "@/../public/images/homeworkLogo.png";
+//import Instagram from "@/../public/images/instagram.svg";
 
 type LinkProps = {
   text: string;
@@ -49,44 +55,23 @@ const SocialMediaIcon: React.FC<SocialMediaIconProps> = ({ icon, iconAlt, iconUr
 
 const SubscriptionForm: React.FC = () => {
   const [email, setEmail] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [name, setName] = useState("");
   const [formResult, setFormResult] = useState({ success: false, result: "" });
   const [showMessage, setShowMessage] = useState(false);
-
-  type ErrorMessage = {
-    message: string;
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     try {
-      const nameParts = fullName.trim().split(" ");
-      if (nameParts.length < 2) {
-        setFormResult({ success: false, result: "Please enter your full name." });
-        setShowMessage(true);
-        setTimeout(() => {
-          setShowMessage(false);
-        }, 5000);
-        return;
-      }
-
-      const firstName = nameParts[0];
-      const lastName = nameParts.slice(1).join(" ");
-
-      const _ = await post("/subscriptions/create", {
-        firstname: firstName,
-        lastname: lastName,
-        email,
-        date: new Date(),
-      });
-      setFormResult({ success: true, result: "Successfully subscribed!" });
+      // response is never used
+      const _ = await post("/subscriptions/create", { email, name });
+      setFormResult({ success: true, result: "Sucessfully subscribed!" });
       setEmail("");
-      setFullName("");
+      setName("");
     } catch (error) {
       const errorText = (error as Error).message;
-      const errorJSON = JSON.parse(errorText.split(": ")[1]) as ErrorMessage;
+      // gets the actual message for cause of errorring
       console.error("Error creating subscription", errorText);
-      setFormResult({ success: false, result: errorJSON.message });
+      setFormResult({ success: false, result: errorText });
     }
 
     setShowMessage(true);
@@ -128,9 +113,9 @@ const SubscriptionForm: React.FC = () => {
           placeholder="Full Name"
           className="p-2 mt-2 w-full sm:max-w-md text-black"
           required
-          value={fullName}
+          value={name}
           onChange={(e) => {
-            setFullName(e.target.value);
+            setName(e.target.value);
           }}
         />
         <div className="flex flex-row gap-3 items-center">
@@ -179,7 +164,13 @@ const HomeworkIcon: React.FC = () => {
   );
 };
 
+/**
+ * Component to render the footer section of the website
+ *
+ * Needs to be updated to include real social media icons and page links
+ */
 export const Footer = () => {
+  // Placeholder links for page links
   const aboutUsLinks: LinkProps[] = [
     { text: "About Us", url: "/about-us", isHeader: true },
     { text: "Our Team", url: "/our-team" },
@@ -202,6 +193,7 @@ export const Footer = () => {
     { text: "Contact Us", url: "/contact-us" },
   ];
 
+  // Placeholder for social media links
   const facebookIcon: SocialMediaIconProps = {
     icon: "/images/facebook.svg",
     iconAlt: "Facebook Icon",
@@ -216,6 +208,7 @@ export const Footer = () => {
 
   return (
     <div className="bg-black p-10 text-white font-golos">
+      {/* Desktop/Tablet layout */}
       <div className="hidden sm:block">
         <div className="w-full h-fit flex flex-row justify-between gap-5 mb-7 text-base">
           <SubscriptionForm />
@@ -243,6 +236,8 @@ export const Footer = () => {
           <HomeworkIcon />
         </div>
       </div>
+
+      {/* Mobile Layout */}
       <div className="block sm:hidden">
         <div className="flex flex-col gap-7">
           <HomeworkIcon />
