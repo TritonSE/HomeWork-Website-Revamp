@@ -55,18 +55,38 @@ const SocialMediaIcon: React.FC<SocialMediaIconProps> = ({ icon, iconAlt, iconUr
 
 const SubscriptionForm: React.FC = () => {
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [formResult, setFormResult] = useState({ success: false, result: "" });
   const [showMessage, setShowMessage] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+
+    const nameParts = fullName.trim().split(" ");
+    if (nameParts.length < 2) {
+      setFormResult({
+        success: false,
+        result: "Please enter your full name (first and last name).",
+      });
+      setShowMessage(true);
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 5000);
+      return;
+    }
+
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(" ");
     try {
       // response is never used
-      const _ = await post("/subscriptions/create", { email, name });
+      const _ = await post("/subscriptions/create", {
+        firstname: firstName,
+        lastname: lastName,
+        email,
+      });
       setFormResult({ success: true, result: "Sucessfully subscribed!" });
       setEmail("");
-      setName("");
+      setFullName("");
     } catch (error) {
       const errorText = (error as Error).message;
       // gets the actual message for cause of errorring
@@ -113,9 +133,9 @@ const SubscriptionForm: React.FC = () => {
           placeholder="Full Name"
           className="p-2 mt-2 w-full sm:max-w-md text-black"
           required
-          value={name}
+          value={fullName}
           onChange={(e) => {
-            setName(e.target.value);
+            setFullName(e.target.value);
           }}
         />
         <div className="flex flex-row gap-3 items-center">

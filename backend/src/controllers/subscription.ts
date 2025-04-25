@@ -11,7 +11,8 @@ export const createSubscription: RequestHandler = async (
 ) => {
   // extract any errors that were found by the validator
   const errors = validationResult(req);
-  const { firstname, lastname, email, joined } = req.body;
+  const { firstname, lastname, email } = req.body;
+  const joined = new Date();
 
   try {
     validationErrorParser(errors);
