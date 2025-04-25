@@ -13,11 +13,9 @@ interface ClientSecretResponse {
  * @returns Promise with the client secret or error
  */
 export async function createCheckoutSession(): Promise<APIResult<ClientSecretResponse>> {
-  console.log("yooo");
-
   try {
     const response = await post("/stripe/create-session", {});
-    const data = await response.json();
+    const data = (await response.json()) as ClientSecretResponse;
     console.log(data);
     return { success: true, data };
   } catch (error) {
@@ -35,7 +33,7 @@ export async function getCheckoutSession(
 ): Promise<APIResult<{ status: string; customerEmail?: string }>> {
   try {
     const response = await get(`/stripe/session/${sessionId}`);
-    const data = await response.json();
+    const data = (await response.json()) as { status: string; customerEmail?: string };
     return { success: true, data };
   } catch (error) {
     return handleAPIError(error);

@@ -26,10 +26,20 @@ interface StripeCheckoutSession {
   // Add other properties as needed
 }
 
+interface StripeCheckoutSessionCreateParams {
+  ui_mode: "embedded";
+  line_items: {
+    price: string;
+    quantity: number;
+  }[];
+  mode: "payment";
+  return_url: string;
+}
+
 interface StripeCheckoutAPI {
   sessions: {
     retrieve(sessionId: string, options?: { expand?: string[] }): Promise<StripeCheckoutSession>;
-    create(params: any): Promise<StripeCheckoutSession>;
+    create(params: StripeCheckoutSessionCreateParams): Promise<StripeCheckoutSession>;
   };
 }
 

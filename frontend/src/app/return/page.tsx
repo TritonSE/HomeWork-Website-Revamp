@@ -3,11 +3,17 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getCheckoutSession } from "../../api/stripe";
+import { APIResult } from "../../api/requests";
 
 // Define type for our debug information
+interface CheckoutSessionData {
+  status: string;
+  customerEmail?: string;
+}
+
 interface DebugInfo {
   sessionId?: string;
-  responseData?: any;
+  responseData?: APIResult<CheckoutSessionData>;
   errorDetails?: string;
 }
 
@@ -36,7 +42,7 @@ export default function Return() {
 
         const result = await getCheckoutSession(sessionId);
         setDebug((prev) => ({ ...prev, responseData: result }));
-        
+
         if (result.success) {
           // Set state based on API response
           setStatus(result.data.status);
