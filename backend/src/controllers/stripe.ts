@@ -3,7 +3,7 @@ import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 
 // Type definitions for Stripe
-interface StripeCustomerDetails {
+type StripeCustomerDetails = {
   email?: string;
   name?: string;
   phone?: string;
@@ -15,18 +15,18 @@ interface StripeCustomerDetails {
     postal_code?: string;
     state?: string;
   };
-}
+};
 
-interface StripeCheckoutSession {
+type StripeCheckoutSession = {
   id: string;
   object: "checkout.session";
   status: "open" | "complete" | "expired";
   customer_details?: StripeCustomerDetails;
   client_secret?: string;
   // Add other properties as needed
-}
+};
 
-interface StripeCheckoutSessionCreateParams {
+type StripeCheckoutSessionCreateParams = {
   ui_mode: "embedded";
   line_items: {
     price: string;
@@ -34,24 +34,24 @@ interface StripeCheckoutSessionCreateParams {
   }[];
   mode: "payment";
   return_url: string;
-}
+};
 
-interface StripeCheckoutAPI {
+type StripeCheckoutAPI = {
   sessions: {
     retrieve(sessionId: string, options?: { expand?: string[] }): Promise<StripeCheckoutSession>;
     create(params: StripeCheckoutSessionCreateParams): Promise<StripeCheckoutSession>;
   };
-}
+};
 
-interface StripeInstance {
+type StripeInstance = {
   checkout: StripeCheckoutAPI;
-}
+};
 
 // Define a type for Stripe errors
-interface StripeError {
+type StripeError = {
   type: string;
   message: string;
-}
+};
 
 // Using require for Stripe with proper type casting
 import Stripe from "stripe";
