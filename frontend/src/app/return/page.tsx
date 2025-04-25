@@ -1,6 +1,6 @@
 "use client";
 // app/return/page.tsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getCheckoutSession } from "../../api/stripe";
 import { APIResult } from "../../api/requests";
@@ -18,6 +18,14 @@ interface DebugInfo {
 }
 
 export default function Return() {
+  return (
+    <Suspense>
+      <ReturnContent />
+    </Suspense>
+  );
+}
+
+function ReturnContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
