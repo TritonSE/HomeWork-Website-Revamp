@@ -18,6 +18,10 @@ type LinkProps = {
   isHeader?: boolean;
 };
 
+type ErrorMessage = {
+  message: string;
+};
+
 const FooterLink: React.FC<{ links: LinkProps[] }> = ({ links }) => {
   return (
     <div
@@ -88,10 +92,16 @@ const SubscriptionForm: React.FC = () => {
       setEmail("");
       setFullName("");
     } catch (error) {
+      // const errorText = (error as Error).message;
+      // // gets the actual message for cause of errorring
+      // console.error("Error creating subscription", errorText);
+      // setFormResult({ success: false, result: errorText });
+
       const errorText = (error as Error).message;
       // gets the actual message for cause of errorring
+      const errorJSON = JSON.parse(errorText.split(": ")[1]) as ErrorMessage;
       console.error("Error creating subscription", errorText);
-      setFormResult({ success: false, result: errorText });
+      setFormResult({ success: false, result: errorJSON.message });
     }
 
     setShowMessage(true);
@@ -132,11 +142,6 @@ const SubscriptionForm: React.FC = () => {
           id="fullName"
           placeholder="Full Name"
           className="p-2 mt-2 w-full sm:max-w-md text-black"
-          required
-          value={fullName}
-          onChange={(e) => {
-            setFullName(e.target.value);
-          }}
         />
         <div className="flex flex-row gap-3 items-center">
           <button
