@@ -14,14 +14,6 @@ const makeHeaderValidator = () =>
     .notEmpty()
     .withMessage("header cannot be empty");
 
-const makeDateCreatedValidator = () =>
-  body("dateCreated")
-    .exists()
-    .withMessage("dateCreated is required")
-    .bail()
-    .isISO8601()
-    .withMessage("dateCreated must be a valid date-time string");
-
 const makeAuthorValidator = () =>
   body("author")
     .exists()
@@ -37,15 +29,12 @@ const makeBodyValidator = () =>
   body("body").optional().isString().withMessage("body must be a string");
 
 const makeThumbnailValidator = () =>
-  body("thumbnail")
-    .exists()
-    .withMessage("thumbnail is required")
-    .isURL()
-    .withMessage("thumbnail must be a url");
+  body("thumbnail").exists().withMessage("thumbnail is required");
+//.isURL()
+//.withMessage("thumbnail must be a url");
 
 export const createArticle = [
   makeHeaderValidator(),
-  makeDateCreatedValidator(),
   makeAuthorValidator(),
   makeBodyValidator(),
   makeThumbnailValidator(),
@@ -53,7 +42,6 @@ export const createArticle = [
 
 export const updateArticle = [
   makeHeaderValidator(),
-  makeDateCreatedValidator(),
   makeAuthorValidator(),
   makeBodyValidator(),
   makeThumbnailValidator(),

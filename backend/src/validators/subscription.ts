@@ -28,9 +28,9 @@ const makeLastNameValidator = () =>
     .withMessage("last name cannot be empty");
 const makeEmailValidator = () =>
   body("email")
-    // order matters for the validation chain - by marking this field as optional, the rest of
-    // the chain will only be evaluated if it exists
-    .optional()
+    .exists()
+    .withMessage("name is required")
+    .bail()
     .isString()
     .isEmail()
     .withMessage("email must be a valid email and string");
