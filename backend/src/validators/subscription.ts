@@ -34,23 +34,10 @@ const makeEmailValidator = () =>
     .isString()
     .isEmail()
     .withMessage("email must be a valid email and string");
-const makeDateValidator = () =>
-  body("date")
-    // title must exist, if not this message will be displayed
-    .exists()
-    .withMessage("date is required")
-    // bail prevents the remainder of the validation chain for this field from being executed if
-    // there was an error
-    .bail()
-    .isDate()
-    .withMessage("joined must be a date")
-    .bail()
-    .notEmpty()
-    .withMessage("joined cannot be empty");
+
 // establishes a set of rules that the body of the task creation route must follow
 export const createSubscription = [
   makeFirstNameValidator(),
   makeLastNameValidator(),
   makeEmailValidator(),
-  makeDateValidator(),
 ];
