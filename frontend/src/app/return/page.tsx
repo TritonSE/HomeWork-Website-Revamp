@@ -1,14 +1,13 @@
 "use client";
 // app/return/page.tsx
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-
 import { getCheckoutSession } from "../../api/stripe";
 
 // Define type for our debug information
-type DebugInfo = {
+interface DebugInfo {
   sessionId?: string;
-  responseData?: Record<string, unknown>;
+  responseData?: any;
   errorDetails?: string;
 }
 

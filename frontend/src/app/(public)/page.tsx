@@ -1,4 +1,5 @@
 import BoxLinkGroup from "@/components/BoxLinkGroup";
+import Checkout from "@/components/checkout";
 import { EventsCarousel } from "@/components/EventsCarousel/EventsCarousel";
 import { EventsCarouselCard } from "@/components/EventsCarousel/EventsCarouselCard";
 import Header from "@/components/Header";
@@ -41,6 +42,7 @@ export default function Page() {
         subheader="We're committed to amplifying the voices of those rebuilding their lives, offering support, mentorship, and guidance for enduring personal growth within a nurturing community."
         fancy={true}
       />
+      <Checkout />
       <Mission />
       <BoxLinkGroup />
       <HomeworkModel />

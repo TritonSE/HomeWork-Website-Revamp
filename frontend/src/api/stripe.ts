@@ -1,29 +1,24 @@
 // API client for Stripe-related endpoints
-import { APIResult, get, handleAPIError, post } from "./requests";
+import { post, get, APIResult, handleAPIError } from "./requests";
 
 /**
  * Response type for client secret
  */
-type ClientSecretResponse = {
+interface ClientSecretResponse {
   client_secret: string;
-};
-
-/**
- * Response type for session information
- */
-type SessionResponse = {
-  status: string;
-  customerEmail?: string;
-};
+}
 
 /**
  * Creates a new Stripe checkout session and returns the client secret
  * @returns Promise with the client secret or error
  */
 export async function createCheckoutSession(): Promise<APIResult<ClientSecretResponse>> {
+  console.log("yooo");
+
   try {
     const response = await post("/stripe/create-session", {});
-    const data = await response.json() as ClientSecretResponse;
+    const data = await response.json();
+    console.log(data);
     return { success: true, data };
   } catch (error) {
     return handleAPIError(error);
@@ -37,10 +32,10 @@ export async function createCheckoutSession(): Promise<APIResult<ClientSecretRes
  */
 export async function getCheckoutSession(
   sessionId: string,
-): Promise<APIResult<SessionResponse>> {
+): Promise<APIResult<{ status: string; customerEmail?: string }>> {
   try {
     const response = await get(`/stripe/session/${sessionId}`);
-    const data = await response.json() as SessionResponse;
+    const data = await response.json();
     return { success: true, data };
   } catch (error) {
     return handleAPIError(error);

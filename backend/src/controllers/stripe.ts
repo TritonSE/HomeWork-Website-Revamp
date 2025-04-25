@@ -1,10 +1,9 @@
 // controllers/stripeController.ts
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
-import Stripe from "stripe";
 
 // Type definitions for Stripe
-type StripeCustomerDetails = {
+interface StripeCustomerDetails {
   email?: string;
   name?: string;
   phone?: string;
@@ -16,44 +15,36 @@ type StripeCustomerDetails = {
     postal_code?: string;
     state?: string;
   };
-};
+}
 
-type StripeCheckoutSession = {
+interface StripeCheckoutSession {
   id: string;
   object: "checkout.session";
   status: "open" | "complete" | "expired";
   customer_details?: StripeCustomerDetails;
   client_secret?: string;
   // Add other properties as needed
-};
+}
 
-// Define a type for checkout session parameters
-type StripeCheckoutSessionParams = {
-  ui_mode: "embedded" | "hosted";
-  line_items: {
-    price: string;
-    quantity: number;
-  }[];
-  mode: "payment" | "subscription" | "setup";
-  return_url: string;
-};
-
-type StripeCheckoutAPI = {
+interface StripeCheckoutAPI {
   sessions: {
     retrieve(sessionId: string, options?: { expand?: string[] }): Promise<StripeCheckoutSession>;
-    create(params: StripeCheckoutSessionParams): Promise<StripeCheckoutSession>;
+    create(params: any): Promise<StripeCheckoutSession>;
   };
-};
+}
 
-type StripeInstance = {
+interface StripeInstance {
   checkout: StripeCheckoutAPI;
-};
+}
 
 // Define a type for Stripe errors
-type StripeError = {
+interface StripeError {
   type: string;
   message: string;
-};
+}
+
+// Using require for Stripe with proper type casting
+import Stripe from "stripe";
 // Type the Stripe constructor
 type StripeConstructor = (apiKey: string) => StripeInstance;
 const stripe = (Stripe as unknown as StripeConstructor)(process.env.STRIPE_SECRET_KEY ?? "");
