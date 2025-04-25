@@ -92,11 +92,6 @@ const SubscriptionForm: React.FC = () => {
       setEmail("");
       setFullName("");
     } catch (error) {
-      // const errorText = (error as Error).message;
-      // // gets the actual message for cause of errorring
-      // console.error("Error creating subscription", errorText);
-      // setFormResult({ success: false, result: errorText });
-
       const errorText = (error as Error).message;
       // gets the actual message for cause of errorring
       const errorJSON = JSON.parse(errorText.split(": ")[1]) as ErrorMessage;
