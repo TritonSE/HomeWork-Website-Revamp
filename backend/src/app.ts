@@ -36,7 +36,7 @@ mongoose
   })
   .catch(console.error);
 
-cron.schedule("*/1 * * * *", () => {
+cron.schedule("*/15 * * * *", () => {
   console.log("Checking email bounces...");
   void checkForEmailBounces();
 });
