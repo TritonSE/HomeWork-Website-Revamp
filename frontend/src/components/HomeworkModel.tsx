@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function HomeworkModel() {
   const pillars = [
     {
@@ -32,13 +34,15 @@ export default function HomeworkModel() {
       </p>
 
       {/* Pillars Flexbox Layout - Ensuring All Items Stay in One Line */}
-      <div className="mt-10 flex flex-nowrap justify-between gap-6">
+      <div className="mt-10 flex flex-nowrap justify-between gap-6 h-60">
         {pillars.map((pillar, index) => (
           <div
             key={index}
-            className="bg-gray-100 rounded-xl px-6 md:px-0 py-12 text-center shadow-sm w-1/4 min-w-[200px]"
+            className="bg-gray-100 rounded-xl px-6 md:px-0 py-12 text-center shadow-sm w-1/4 min-w-[200px] h-full"
           >
-            <img src={pillar.icon} alt={pillar.title} className="mx-auto h-16 mb-4" />
+            <div className="mx-auto w-1/3 h-[60%] mb-4 relative">
+              <Image src={pillar.icon} alt={pillar.title} fill={true} className="object-fill" />
+            </div>
             <h3 className="text-xl font-semibold">{pillar.title}</h3>
             <p className="text-gray-600">{pillar.subtitle}</p>
           </div>

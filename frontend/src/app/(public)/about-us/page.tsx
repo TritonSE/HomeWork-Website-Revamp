@@ -6,9 +6,6 @@ import { useRouter } from "next/navigation";
 import Header from "../../../components/Header";
 
 import { ourHistorySlides, ourValuesSlides } from "./ScrollThroughData";
-
-import DemoButton from "@/components/Notifications/DemoButton";
-import { NotificationProvider } from "@/components/Notifications/NotificationProvider";
 import ScrollThrough from "@/components/ScrollThrough/ScrollThrough";
 
 const InfoCard: React.FC<{ title: string; icon: string; description: string }> = ({
@@ -17,17 +14,12 @@ const InfoCard: React.FC<{ title: string; icon: string; description: string }> =
   description,
 }) => {
   return (
-    <div className="relative flex flex-col items-center justify-center bg-text_bg rounded-xl p-8 pillars:w-[20%] md:w-[45%] w-full h-auto">
-      <Image
-        src={icon}
-        alt={title}
-        className="w-[30%] h-auto mx-auto"
-        width={312}
-        height={238}
-      ></Image>
-
-      <div className="text-center font-golos font-medium mt-2 text-[20px] max-w-xs">{title}</div>
-      <div className="text-center font-golos font-normal mt-2 text-[16px]">{description}</div>
+    <div className="bg-gray-100 rounded-xl px-6 md:px-0 py-12 text-center shadow-sm w-1/4 min-w-[200px] h-full">
+      <div className="mx-auto w-1/3 h-[60%] mb-4 relative">
+        <Image src={icon} alt={title} fill={true} className="object-fill" />
+      </div>
+      <h3 className="text-xl font-semibold">{title}</h3>
+      <p className="text-gray-600">{description}</p>
     </div>
   );
 };
@@ -68,12 +60,9 @@ const AboutUsPage = () => {
           </div>
         </div>
       </div>
-      <NotificationProvider>
-        <DemoButton />
-      </NotificationProvider>
       <ScrollThrough heading="Our History" slidesData={ourHistorySlides} />
       <div>
-        <div className="flex md:flex-row flex-col md:justify-between bg-text_bg py-[50px] items-center">
+        <div className="flex md:flex-row flex-col md:justify-between bg-text_bg py-[50px] items-center mt-8">
           <div className="font-golos w-full max-w-[calc(80%)] md:max-w-[calc(50%)] ml-[50px] mr-4">
             <div className="text-[48px] font-medium pb-4">Our Mission</div>
             <div className="text-[20px] font-normal max-w-auto">
@@ -108,25 +97,25 @@ const AboutUsPage = () => {
             prides ourself on.
           </div>
         </div>
-        <div className="flex flex-wrap pillars:justify-between justify-center md:gap-8 gap-y-12">
+        <div className="mt-10 flex flex-nowrap justify-between gap-6 h-60">
           <InfoCard
             title="Life Skills Development"
-            icon="/images/flashcards/flashcard1.png"
+            icon="/icons/life-skills.svg"
             description="Fostering Personal Growth"
           ></InfoCard>
           <InfoCard
             title="Family Rebuilding"
-            icon="/images/flashcards/flashcard2.png"
+            icon="/icons/family-rebuilding.svg"
             description="Restoring Relationships"
           ></InfoCard>
           <InfoCard
             title="Community Restoration"
-            icon="/images/flashcards/flashcard3.png"
+            icon="/icons/community-restoration.svg"
             description="Rebuilding Neighborhoods"
           ></InfoCard>
           <InfoCard
             title="Civic Engagement"
-            icon="/images/flashcards/flashcard4.png"
+            icon="/icons/civic-engagement.svg"
             description="Advocating For Change"
           ></InfoCard>
         </div>
@@ -144,7 +133,7 @@ const AboutUsPage = () => {
             </div>
           </div>
           <Button
-            className="max-w-[calc(25%)] md:mx-0 mx-auto mb-8"
+            className="max-w-44 mb-8"
             onClick={() => {
               router.push("/our-team");
             }}
