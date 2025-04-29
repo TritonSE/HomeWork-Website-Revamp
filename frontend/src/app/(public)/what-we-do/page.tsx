@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-
 import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
 
 import Flashcard from "../../../components/Flashcard/Flashcard";
 import Header from "../../../components/Header";

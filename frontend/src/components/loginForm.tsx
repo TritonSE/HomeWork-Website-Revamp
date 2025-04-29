@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { verifyUser } from "../api/user";
 import { auth } from "../firebase/firebase";
 
+import { useRedirectToPortalIfLoggedIn } from "@/hooks/useRedirect";
 const LoginForm: React.FC = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -27,7 +28,6 @@ const LoginForm: React.FC = () => {
 
   const submitForm = async () => {
     setIsSubmitting(true);
-
     try {
       // Sign in with Firebase
       const userCredential = await signInWithEmailAndPassword(
@@ -66,7 +66,7 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
     void submitForm();
   };
-
+  useRedirectToPortalIfLoggedIn();
   return (
     <div className="flex h-screen">
       {/* Left side - Image */}
