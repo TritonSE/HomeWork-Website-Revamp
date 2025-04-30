@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Header from "../../../components/Header";
 
 import { ourHistorySlides, ourValuesSlides } from "./ScrollThroughData";
+
 import ScrollThrough from "@/components/ScrollThrough/ScrollThrough";
 
 const InfoCard: React.FC<{ title: string; icon: string; description: string }> = ({
