@@ -101,7 +101,7 @@ export default function OurTeamPage() {
       />
 
       {/* Team Members Section */}
-      <div className="mx-[32px] py-12">
+      <div className="p-12">
         <h2 className="text-[16px] font-medium sm:text-[48px] leading-[3rem] sm:leading-[3.5rem] tracking-normal text-left mb-6">
           Our Team
         </h2>

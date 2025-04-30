@@ -48,7 +48,7 @@ const AboutUsPage = () => {
         subheader="We’re a groundbreaking initiative changing what it means to be formerly incarcerated, changing the stigma of criminal history through recognizing resilience, rehabilitation, and capacity for positive change."
       ></Header>
       {/*our impact */}
-      <div className="px-[50px]">
+      <div className="px-12">
         <div className="font-golos py-[60px]">
           <div className="text-[48px] font-medium pb-4">Our Impact</div>
           <div className="text-[20px] font-normal pb-12">

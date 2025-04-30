@@ -24,11 +24,11 @@ export default function ScrollThrough({ heading, slidesData }: ScrollThroughProp
   const currentSlide = slidesData[currentIndex];
 
   return (
-    <section className="w-full py-8 flex justify-center">
+    <section className="w-full py-8 flex px-12">
       {/* Main container */}
       <div className="w-full max-w-[1336px] h-auto md:h-[742px] flex flex-col px-4 md:px-0">
         {/* Heading (left-aligned) */}
-        <h2 className="text-left font-golos text-[32px] md:text-[48px] font-medium leading-[130%] text-[#1B1B1B] mb-6">
+        <h2 className="text-left font-golos text-[32px] md:text-[48px] font-medium leading-[130%] mb-6">
           {heading}
         </h2>
 
