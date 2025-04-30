@@ -105,8 +105,8 @@ const FlashcardPage: React.FC = () => {
   const segIndex = Math.min(Math.floor(progress / SEG), 9);
   const segT = (progress - segIndex * SEG) / SEG;
 
-  const maxRightPosition = screenWidth - 360;
-  const maxLeftPosition = 223;
+  const maxRightPosition = screenWidth - 380;
+  const maxLeftPosition = 230;
   const [ballXPosDesktop, ballYPositionDesktop] = (() => {
     switch (segIndex) {
       case 0:
@@ -163,37 +163,46 @@ const FlashcardPage: React.FC = () => {
       />
 
       <div className="flex md:flex-row flex-col w-full justify-between pt-12">
-        <div className="font-golos  md:w-[calc(60%)] md:max-w-4xl w-full px-8 md:pb-0 pb-20">
-          <div className="text-[32px] mb-8 weight-500">
-            Transforming Lives, Empowering Communities
-          </div>
-          <div className="text-[20px] weight-400">
-            <div>
-              By leveraging community resources, we establish a supportive peer mentoring
-              environment that empowers San Diegans towards lasting change and success.
+        <div className="font-golos md:pb-0 pb-20 flex flex-col md:flex-row w-full">
+          <div className="px-4 md:pl-12 pb-6 md:pb-0 md:w-[60%] md:max-w-4xl ">
+            <div className="text-[32px] mb-8 font-medium">
+              Transforming Lives, Empowering Communities
             </div>
-            <div className="mt-6">
-              Our transformative approach to post-incarceration support emphasizes continuous
-              assistance during employment rather than solely focusing on pre-employment readiness.
+
+            <div className="w-full text-[20px]">
+              <div>
+                By leveraging community resources, we establish a supportive peer mentoring
+                environment that empowers San Diegans towards lasting change and success.
+              </div>
+              <div className="mt-6">
+                Our transformative approach to post-incarceration support emphasizes continuous
+                assistance during employment rather than solely focusing on pre-employment
+                readiness. Through collaborative efforts, we are committed to facilitating a
+                seamless transition for individuals returning from incarceration. Our Friday night
+                classes serve as a gateway to Union careers. To enhance engagement, we organize
+                unique in-person gatherings six times a year, bringing together Trade Union
+                representatives and individuals with diverse incarceration experiences. These
+                gatherings foster discussions on high-wage careers, apprenticeship programs, and
+                occupational skills training.
+              </div>
             </div>
           </div>
-        </div>
-        <div className="md:px-8">
-          <Image
-            src="/images/whatwedo.png"
-            alt="Illustration of our program"
-            width={800}
-            height={600}
-            className="h-full w-full object-contain"
-            priority
-          />
+          <div className="md:ml-20 md:mr-12 md:max-w-[35%] w-full bg-gray-300 md:h-full h-[520px] relative">
+            <Image
+              src="/images/whatwedo.png"
+              alt="Illustration of our program"
+              fill={true}
+              className="object-cover"
+              priority
+            />
+          </div>
         </div>
       </div>
 
-      <div className="px-8">
+      <div className="px-12">
         <div className="text-5xl font-golos pb-8 mt-20">Our Model</div>
 
-        <div ref={flashcardsRef} className="relative flex flex-col">
+        <div ref={flashcardsRef} className="relative flex pb-20 flex-col">
           {!isMobile && (
             <>
               <div
@@ -309,7 +318,7 @@ const FlashcardPage: React.FC = () => {
               <div
                 key={index}
                 className={`relative flex ${rowClass} items-center`}
-                style={{ opacity: cardOpacity(index), transition: "opacity 2s linear" }}
+                style={{ opacity: cardOpacity(index), transition: "opacity 0.5s ease-in" }}
               >
                 <Flashcard {...flashcard} />
               </div>
