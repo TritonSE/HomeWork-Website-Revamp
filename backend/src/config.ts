@@ -17,6 +17,7 @@ const serviceAccountKey = throwIfUndefined(
   process.env.SERVICE_ACCOUNT_KEY,
   InternalError.NO_SERVICE_ACCOUNT_KEY,
 );
+const storageBucket = throwIfUndefined(process.env.STORAGE_BUCKET, InternalError.NO_STORAGE_BUCKET);
 const email = throwIfUndefined(process.env.EMAIL, InternalError.NO_EMAIL);
 const emailPassword = throwIfUndefined(process.env.EMAIL_PASSWORD, InternalError.NO_EMAIL_PASSWORD);
-export { port, mongoUri, serviceAccountKey, email, emailPassword };
+export { port, mongoUri, serviceAccountKey, storageBucket, email, emailPassword };

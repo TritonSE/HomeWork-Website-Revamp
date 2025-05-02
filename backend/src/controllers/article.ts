@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import createHttpError from "http-errors";
 
 import ArticleModel from "../models/article";
+import { firebaseStorage } from "../util/firebase";
 import validationErrorParser from "../util/validationErrorParser";
 
 type ArticleUpdate = {
@@ -10,15 +11,26 @@ type ArticleUpdate = {
   author: string;
   body?: string | null;
   thumbnail: string;
+  isPublished?: boolean;
+};
+
+type ArticleBody = {
+  header: string;
+  author: string;
+  body?: string;
+  thumbnail: string;
+  isPublished?: boolean;
 };
 
 export const createArticle: RequestHandler = async (req, res, next) => {
   const errors = validationResult(req);
   try {
     validationErrorParser(errors);
+    const articleData = req.body as ArticleBody;
     const article = await ArticleModel.create({
-      ...req.body,
+      ...articleData,
       dateCreated: new Date().toISOString(),
+      isPublished: articleData.isPublished ?? false,
     });
     res.status(201).json(article);
   } catch (error) {
@@ -54,6 +66,39 @@ export const updateArticle: RequestHandler = async (req, res, next) => {
     }
 
     res.status(200).json(article);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteArticle: RequestHandler = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const article = await ArticleModel.findById(id);
+    if (article === null) {
+      throw createHttpError(404, "Article not found at id " + id);
+    }
+
+    // Delete thumbnail from Firebase Storage if it exists
+    if (article.thumbnail) {
+      try {
+        const thumbnailUrl = article.thumbnail;
+        // Extract the path from the full URL
+        const path = thumbnailUrl.split("/o/")[1]?.split("?")[0];
+        if (path) {
+          const decodedPath = decodeURIComponent(path);
+          await firebaseStorage.bucket().file(decodedPath).delete();
+        }
+      } catch (error) {
+        console.error("Error deleting thumbnail from Firebase:", error);
+        // Continue with article deletion even if thumbnail deletion fails
+      }
+    }
+
+    // Delete the article from MongoDB
+    await ArticleModel.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Article deleted successfully" });
   } catch (error) {
     next(error);
   }

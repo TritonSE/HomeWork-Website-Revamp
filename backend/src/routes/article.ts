@@ -19,5 +19,6 @@ router.put(
   ArticleValidator.updateArticle,
   ArticleController.updateArticle,
 );
+router.delete("/:id", ArticleController.deleteArticle);
 
 export default router;
