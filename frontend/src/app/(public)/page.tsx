@@ -1,5 +1,4 @@
 import BoxLinkGroup from "@/components/BoxLinkGroup";
-import Checkout from "@/components/Checkout";
 import { EventsCarousel } from "@/components/EventsCarousel/EventsCarousel";
 import { EventsCarouselCard } from "@/components/EventsCarousel/EventsCarouselCard";
 import Header from "@/components/Header";

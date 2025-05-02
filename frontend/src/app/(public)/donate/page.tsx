@@ -1,8 +1,7 @@
 "use client";
-import { Button, TextField } from "@tritonse/tse-constellation";
+import Checkout from "../../../components/Checkout";
 import Image from "next/image";
 import React from "react";
-import Checkout from "../../../components/Checkout";
 
 const DonationPage = () => {
   return (
