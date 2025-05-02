@@ -818,7 +818,13 @@ const EventsTable: React.FC = () => {
             <div className="flex justify-end gap-4 mt-6">
               <button
                 onClick={(): void => {
-                  void handleSaveDraft();
+                  void (async () => {
+                    if (selectedArticle) {
+                      await handleUpdateEvent(false);
+                    } else {
+                      await handleSaveDraft();
+                    }
+                  })();
                 }}
                 disabled={isUploading || !eventTitle || (!selectedFile && !selectedArticle)}
                 className={`px-4 py-2 border border-gray-300 rounded-md flex items-center gap-2 ${
@@ -841,7 +847,7 @@ const EventsTable: React.FC = () => {
                     d="M5 13l4 4L19 7"
                   />
                 </svg>
-                {selectedArticle ? "SAVE DRAFT" : "SAVE DRAFT"}
+                SAVE DRAFT
               </button>
               <button
                 onClick={(): void => {
