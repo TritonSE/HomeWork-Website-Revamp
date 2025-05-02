@@ -120,7 +120,7 @@ export const createCheckoutSession: RequestHandler = async (req, res, next) => {
       line_items: [
         {
           // Provide the exact Price ID of the product you want to sell
-          price: "price_1Qzk82FzkyJsiGOj7SwJUIHn",
+          price: "price_1RKMv8FzkyJsiGOjDBNG84bJ",
           quantity: 1,
         },
       ],

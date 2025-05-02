@@ -2,8 +2,8 @@
 // app/return/page.tsx
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getCheckoutSession } from "../../api/stripe";
-import { APIResult } from "../../api/requests";
+import { getCheckoutSession } from "../../../api/stripe";
+import { APIResult } from "../../../api/requests";
 
 // Define type for our debug information
 interface CheckoutSessionData {
@@ -84,42 +84,48 @@ function ReturnContent() {
 
   // Loading state
   if (isLoading) {
-    return <div>Loading checkout information...</div>;
+    return (
+      <div className="mt-24 px-4">
+        <div>Loading checkout information...</div>
+      </div>
+    );
   }
 
   // Error state with debugging info
   if (error) {
     return (
-      <div className="error">
-        <h3>Error: {error}</h3>
+      <div className="mt-24 px-4">
+        <div className="error">
+          <h3>Error: {error}</h3>
 
-        <div style={{ marginTop: "20px" }}>
-          <h4>Debugging Information:</h4>
-          <pre
-            style={{
-              background: "#f5f5f5",
-              padding: "10px",
-              borderRadius: "4px",
-              overflow: "auto",
-            }}
-          >
-            {JSON.stringify(debug, null, 2)}
-          </pre>
+          <div style={{ marginTop: "20px" }}>
+            <h4>Debugging Information:</h4>
+            <pre
+              style={{
+                background: "#f5f5f5",
+                padding: "10px",
+                borderRadius: "4px",
+                overflow: "auto",
+              }}
+            >
+              {JSON.stringify(debug, null, 2)}
+            </pre>
 
-          <button
-            onClick={() => (window.location.href = "/")}
-            style={{
-              marginTop: "10px",
-              padding: "8px 16px",
-              background: "#4a4a4a",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Return to Home
-          </button>
+            <button
+              onClick={() => (window.location.href = "/")}
+              style={{
+                marginTop: "10px",
+                padding: "8px 16px",
+                background: "#4a4a4a",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              Return to Home
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -128,13 +134,15 @@ function ReturnContent() {
   // Complete state
   if (status === "complete") {
     return (
-      <section id="success">
-        <p>
-          We appreciate your business! A confirmation email will be sent to {customerEmail}. If you
-          have any questions, please email{" "}
-        </p>
-        <a href="mailto:orders@example.com">orders@example.com</a>.
-      </section>
+      <div className="mt-24 px-4">
+        <section id="success">
+          <p>
+            We appreciate your business! A confirmation email will be sent to {customerEmail}. If
+            you have any questions, please email{" "}
+          </p>
+          <a href="mailto:orders@example.com">orders@example.com</a>.
+        </section>
+      </div>
     );
   }
 
