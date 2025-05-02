@@ -89,7 +89,7 @@ const DonationPage: React.FC = () => {
 
         {/* Right Column - Donation Form */}
         <div className="bg-white p-6 border-2 border-[#D9D9D9]">
-          <h2 className="text-2xl mb-6">Who's Donating?</h2>
+          <h2 className="text-2xl mb-6">Who&apos;s Donating?</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
