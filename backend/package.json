@@ -25,11 +25,14 @@
     "firebase-functions": "^6.2.0",
     "mongoose": "^8.9.5",
     "nodemailer": "^6.9.16",
-    "stripe": "^17.7.0"
+    "stripe": "^17.7.0",
+    "googleapis": "^148.0.0",
+    "node-cron": "^3.0.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^6.4.17",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
@@ -42,6 +45,6 @@
     "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.10",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   }
 }

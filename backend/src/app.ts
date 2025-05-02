@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import { onRequest } from "firebase-functions/v2/https";
 import mongoose from "mongoose";
+import cron from "node-cron";
 
 import { mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
@@ -12,6 +13,7 @@ import quoteRoutes from "./routes/quote";
 import stripeRoutes from "./routes/stripe";
 import subscriptionRoutes from "./routes/subscriptions";
 import userRoute from "./routes/user";
+import { checkForEmailBounces } from "./services/emailBounceChecker";
 
 // Initialize Express App
 const app = express();
@@ -50,5 +52,10 @@ mongoose
     });
   })
   .catch(console.error);
+
+cron.schedule("*/15 * * * *", () => {
+  console.log("Checking email bounces...");
+  void checkForEmailBounces();
+});
 
 export const backend = onRequest({ region: "us-west1" }, app);
