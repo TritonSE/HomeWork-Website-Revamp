@@ -19,6 +19,6 @@ router.put(
   ArticleValidator.updateArticle,
   ArticleController.updateArticle,
 );
-router.delete("/:id", ArticleController.deleteArticle);
+router.delete("/:id", [verifyAuthToken], ArticleController.deleteArticle);
 
 export default router;

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useContext } from "react";
 
+import Header from "@/components/Header";
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
 
@@ -132,6 +133,11 @@ const EventsArchiveContent = () => {
 const EventsArchivePage = () => {
   return (
     <Suspense>
+      <Header
+        imageUrl="/images/events-archive-header.jpg"
+        header="News & Past Events"
+        subheader="Discover the impact we've made together through our past events! From inspiring workshops and community gatherings to impactful initiatives, this page celebrates the milestones and memories that have shaped our mission."
+      />
       <EventsArchiveContent />
     </Suspense>
   );

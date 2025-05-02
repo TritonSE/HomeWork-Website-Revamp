@@ -8,6 +8,8 @@ import { storage } from "../firebase/firebase";
 import type { Article } from "@/hooks/useArticles";
 
 import { del, get, post, put } from "@/api/requests";
+import { useAuthState } from "@/contexts/userContext";
+import { useRedirectToLogin } from "@/hooks/useRedirect";
 
 type ArticleWithStatus = Article & {
   status: "Draft" | "Published";
@@ -25,6 +27,8 @@ type Column = {
 };
 
 const EventsTable: React.FC = () => {
+  useRedirectToLogin();
+  const { firebaseUser, loading } = useAuthState();
   const [articles, setArticles] = useState<Article[]>([]);
   const [_isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -44,10 +48,22 @@ const EventsTable: React.FC = () => {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [showDeleteConfirmDialog, setShowDeleteConfirmDialog] = useState(false);
 
+  const getAuthHeader = async (): Promise<Record<string, string>> => {
+    const token = await firebaseUser?.getIdToken();
+    if (!token) {
+      throw new Error('No authentication token available');
+    }
+    return {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+  };
+
   const fetchArticles = async (): Promise<void> => {
     setIsLoading(true);
     try {
-      const response = await get("/articles/all");
+      const headers = await getAuthHeader();
+      const response = await get("/articles/all", headers);
       const data = (await response.json()) as Article[];
       data.sort((a, b) => {
         return new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime();
@@ -116,7 +132,7 @@ const EventsTable: React.FC = () => {
               reject(new Error("Failed to get download URL"));
             }
           })();
-        }
+        },
       );
     });
   };
@@ -167,14 +183,19 @@ const EventsTable: React.FC = () => {
 
     try {
       const thumbnailUrl = await uploadFileToFirebase(selectedFile);
+      const headers = await getAuthHeader();
 
-      const response = await post("/articles/create", {
-        header: eventTitle,
-        body: eventDescription,
-        author: "Admin",
-        thumbnail: thumbnailUrl,
-        isPublished: false,
-      });
+      const response = await post(
+        "/articles/create",
+        {
+          header: eventTitle,
+          body: eventDescription,
+          author: firebaseUser?.displayName ?? "Anonymous",
+          thumbnail: thumbnailUrl,
+          isPublished: false,
+        },
+        headers,
+      );
 
       if (response.ok) {
         setIsModalOpen(false);
@@ -248,14 +269,14 @@ const EventsTable: React.FC = () => {
     if (!selectedArticle) return;
 
     try {
-      const response = await del(`/articles/${selectedArticle._id}`);
+      const headers = await getAuthHeader();
+      const response = await del(`/articles/${selectedArticle._id}`, headers);
 
       if (response.ok) {
         setIsDetailModalOpen(false);
         setSelectedArticle(null);
         setShowDeleteConfirmDialog(false);
         showSuccessMessage("Event deleted successfully.");
-        // Refresh the list
         await fetchArticles();
       } else {
         console.error("Failed to delete event");
@@ -287,23 +308,25 @@ const EventsTable: React.FC = () => {
     try {
       let thumbnailUrl = selectedArticle.thumbnail;
 
-      // If a new file is selected, upload it to Firebase
       if (selectedFile) {
         thumbnailUrl = await uploadFileToFirebase(selectedFile);
       }
 
-      // Update the article with the new data
-      const response = await put(`/articles/${selectedArticle._id}`, {
-        header: eventTitle,
-        body: eventDescription,
-        author: selectedArticle.author,
-        thumbnail: thumbnailUrl,
-        isPublished: shouldPublish,
-      });
+      const headers = await getAuthHeader();
+      const response = await put(
+        `/articles/${selectedArticle._id}`,
+        {
+          header: eventTitle,
+          body: eventDescription,
+          author: firebaseUser?.displayName ?? selectedArticle.author,
+          thumbnail: thumbnailUrl,
+          isPublished: shouldPublish,
+        },
+        headers,
+      );
 
       if (response.ok) {
         setIsModalOpen(false);
-        // Reset form
         setEventTitle("");
         setEventDescription("");
         setSelectedFile(null);
@@ -312,7 +335,6 @@ const EventsTable: React.FC = () => {
         showSuccessMessage(
           shouldPublish ? "Event published successfully." : "Event successfully saved as a draft.",
         );
-        // Reload articles to show the updated one
         await fetchArticles();
       } else {
         console.error("Failed to update event");
@@ -388,6 +410,14 @@ const EventsTable: React.FC = () => {
       ),
     },
   ];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#f26522]"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -595,15 +625,16 @@ const EventsTable: React.FC = () => {
                 fill="none"
               >
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M29.3346 10.666C19.0253 10.666 10.668 19.0234 10.668 29.3327C10.668 39.642 19.0253 47.9993 29.3346 47.9993C33.5275 47.9993 37.3975 46.6169 40.5138 44.283L48.7823 52.5516C49.8237 53.593 51.5122 53.593 52.5536 52.5516C53.595 51.5102 53.595 49.8218 52.5536 48.7804L44.285 40.5118C46.6189 37.3956 48.0013 33.5256 48.0013 29.3327C48.0013 19.0234 39.6439 10.666 29.3346 10.666ZM16.0013 29.3327C16.0013 21.9689 21.9708 15.9993 29.3346 15.9993C36.6984 15.9993 42.668 21.9689 42.668 29.3327C42.668 36.6965 36.6984 42.666 29.3346 42.666C21.9708 42.666 16.0013 36.6965 16.0013 29.3327Z"
                   fill="#1B1B1B"
                 />
               </svg>
               <h3 className="text-xl font-medium text-gray-900 mb-2">No Results Found</h3>
               <p className="text-gray-600 text-center">
-                We can&apos;t find any events that match your search. Please double check your selection and try again.
+                We can&apos;t find any events that match your search. Please double check your
+                selection and try again.
               </p>
             </div>
           )}

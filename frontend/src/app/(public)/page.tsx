@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import HomeworkModel from "@/components/HomeworkModel";
 import Mission from "@/components/Mission";
 import NewsPastEvents from "@/components/NewsPastEvents";
+import SuccessStories from "@/components/SuccessStories";
 
 type Event = {
   header: string;
@@ -44,6 +45,7 @@ export default function Page() {
       <Mission />
       <BoxLinkGroup />
       <HomeworkModel />
+      <SuccessStories />
       <NewsPastEvents />
 
       <div className="mb-10">
