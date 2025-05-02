@@ -2,12 +2,12 @@ import { RequestHandler } from "express";
 import { validationResult } from "express-validator";
 
 import SubscriptionModel from "../models/subscription";
+import { sendConfirmationEmail } from "../services/gmailService";
 import validationErrorParser from "../util/validationErrorParser";
 
 export const createSubscription: RequestHandler = async (
   req: { body: { email: string; firstname: string; lastname: string; joined: Date } },
   res,
-  next,
 ) => {
   // extract any errors that were found by the validator
   const errors = validationResult(req);
@@ -15,7 +15,12 @@ export const createSubscription: RequestHandler = async (
   const joined = new Date();
 
   try {
+    console.log("Received body:", req.body);
+
+    const errors = validationResult(req);
     validationErrorParser(errors);
+
+    const { name, email } = req.body;
 
     const subscription = await SubscriptionModel.findOne({ email });
     if (!subscription) {
@@ -28,9 +33,26 @@ export const createSubscription: RequestHandler = async (
       res.status(201).json(newSubscription);
     } else {
       res.status(400).json({ message: "Email is already subscribed." });
+      return;
     }
+
+    const threadId = await sendConfirmationEmail(
+      email,
+      "Thanks for subscribing to HoMEwork!",
+      "We’ve received your request and will keep in touch.",
+    );
+
+    const newSubscription = await SubscriptionModel.create({
+      name,
+      email,
+      threadId,
+      status: "active",
+    });
+
+    res.status(201).json(newSubscription);
   } catch (error) {
-    next(error);
+    console.error(error);
+    res.status(500).json({ message: (error as Error).message || "Internal server error" });
   }
 };
 
