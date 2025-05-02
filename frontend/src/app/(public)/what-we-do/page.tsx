@@ -208,4 +208,4 @@ const WhatWeDoPage: React.FC = () => {
   );
 };
 
-export default WhatWeDoPage;
+export default FlashcardPage;

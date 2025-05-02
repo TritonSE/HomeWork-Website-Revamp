@@ -153,7 +153,9 @@ const AboutUsPage = () => {
           </div>
         </div>
       )}
-
+      <NotificationProvider>
+        <DemoButton />
+      </NotificationProvider>
       {/* Our History Section */}
       {historyField && (
         <ScrollThrough heading={historyData.heading} slidesData={historyData.slidesData} />

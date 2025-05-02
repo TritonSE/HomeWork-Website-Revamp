@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 
 import Header from "@/components/Header";
+import Header from "@/components/Header";
 import { ArticleContext } from "@/contexts/articleContext";
 import { PageDataContext } from "@/contexts/pageDataContext";
 import { Article } from "@/hooks/useArticles";
