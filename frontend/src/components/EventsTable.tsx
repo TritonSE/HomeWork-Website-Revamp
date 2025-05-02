@@ -51,7 +51,7 @@ const EventsTable: React.FC = () => {
   const getAuthHeader = async (): Promise<Record<string, string>> => {
     const token = await firebaseUser?.getIdToken();
     if (!token) {
-      throw new Error('No authentication token available');
+      throw new Error("No authentication token available");
     }
     return {
       Authorization: `Bearer ${token}`,
