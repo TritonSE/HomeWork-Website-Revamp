@@ -5,7 +5,7 @@ import { onRequest } from "firebase-functions/v2/https";
 import mongoose from "mongoose";
 import cron from "node-cron";
 
-import { mongoUri, port } from "./config";
+import { devMode, mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
 import contactRoute from "./routes/contactRequest";
@@ -29,6 +29,7 @@ mongoose
   .connect(mongoUri)
   .then(() => {
     console.log("Mongoose connected!");
+    if (devMode) console.log("### Running Backend in Developer Mode ###");
     // Tell app to listen on our port environment variable
     app.listen(port, () => {
       console.log(`> Listening on port ${port}`);
@@ -36,9 +37,10 @@ mongoose
   })
   .catch(console.error);
 
-cron.schedule("*/15 * * * *", () => {
-  console.log("Checking email bounces...");
-  void checkForEmailBounces();
-});
+if (!devMode)
+  cron.schedule("*/15 * * * *", () => {
+    console.log("Checking email bounces...");
+    void checkForEmailBounces();
+  });
 
 export const backend = onRequest({ region: "us-west1" }, app);
