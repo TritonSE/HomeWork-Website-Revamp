@@ -137,6 +137,10 @@ const SubscriptionForm: React.FC = () => {
           id="fullName"
           placeholder="Full Name"
           className="p-2 mt-2 w-full sm:max-w-md text-black"
+          value={fullName}
+          onChange={(e) => {
+            setFullName(e.target.value);
+          }}
         />
         <div className="flex flex-row gap-3 items-center">
           <button
