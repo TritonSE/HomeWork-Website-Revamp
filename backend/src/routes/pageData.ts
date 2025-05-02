@@ -15,7 +15,7 @@ router.post("/update", [verifyAuthToken], updatePageDataValidator, updatePageDat
 router.get("/all", getAllPageData);
 
 // Added in case you need to make delete or make a page.
-router.delete("/delete/:pagename", [verifyAuthToken], deletePageData);
-router.post("/seed", [verifyAuthToken], seedPageData);
+// router.delete("/delete/:pagename", [verifyAuthToken], deletePageData);
+// router.post("/seed", [verifyAuthToken], seedPageData);
 
 export default router;
