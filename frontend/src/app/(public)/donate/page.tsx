@@ -1,5 +1,5 @@
 "use client";
-import Checkout from "../../../components/Checkout";
+import Checkout from "@/components/Checkout";
 import Image from "next/image";
 import React from "react";
 
