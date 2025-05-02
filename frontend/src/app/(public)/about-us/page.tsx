@@ -1,11 +1,15 @@
 "use client";
 
+"use client";
+
 import { Button } from "@tritonse/tse-constellation";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 
 import Header from "@/components/Header";
+import DemoButton from "@/components/Notifications/DemoButton";
+import { NotificationProvider } from "@/components/Notifications/NotificationProvider";
 import ScrollThrough from "@/components/ScrollThrough/ScrollThrough";
 import { PageDataContext } from "@/contexts/pageDataContext";
 

@@ -2,18 +2,23 @@
 
 import React, { useContext, useEffect, useState } from "react";
 
+import BoxLinkGroup from "@/components/BoxLinkGroup";
+import { EventsCarousel } from "@/components/EventsCarousel/EventsCarousel";
+import { EventsCarouselCard } from "@/components/EventsCarousel/EventsCarouselCard";
 import Header from "@/components/Header";
+import HomeworkModel from "@/components/HomeworkModel";
+import Mission from "@/components/Mission";
+import NewsPastEvents from "@/components/NewsPastEvents";
+import SuccessStories from "@/components/SuccessStories";
 import { PageDataContext } from "@/contexts/pageDataContext";
 
-type HeaderData = {
-  imageUrl: string;
+type Event = {
   header: string;
-  subheader: string;
-  fancy?: boolean;
-};
-
-type ContentField = {
-  text: string;
+  dateCreated: string;
+  body: string;
+  thumbnail: string;
+  thumbnailAlt?: string;
+  learnMoreUrl: string;
 };
 
 export default function HomePage() {
@@ -21,53 +26,53 @@ export default function HomePage() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (context?.pageData && !context.loading) {
+    if (context && !context.loading) {
       const timer = setTimeout(() => {
         setIsVisible(true);
-      }, 50); // slight delay for fade-in trigger
+      }, 50);
       return () => {
         clearTimeout(timer);
       };
     }
   }, [context]);
 
-  if (!context) return <div>Error: PageDataContext is not provided.</div>;
-
+  if (!context) return <div>Error: Page data not available.</div>;
   const { pageData, loading } = context;
-  if (loading) return null; // No loading message, just delay content appearance
+  if (loading) return null;
 
-  const homePageData = pageData.find((page) => page.pagename === "home");
-  if (!homePageData) return <div>No home page data found.</div>;
+  const homeData = pageData.find((p) => p.pagename === "home");
+  if (!homeData) return <div>No home page data found.</div>;
 
-  const headerField = homePageData.fields.find((field) => field.name === "header");
-  const headerData = headerField?.data as HeaderData;
+  // header
+  const headerField = homeData.fields.find((f) => f.name === "header");
+  if (!headerField) return <div>Header field missing</div>;
+  const { imageUrl, header, subheader, fancy } = headerField.data as {
+    imageUrl: string;
+    header: string;
+    subheader: string;
+    fancy?: boolean;
+  };
 
-  const contentFields = homePageData.fields.filter((field) => field.name === "content");
+  // events carousel
+  const eventsField = homeData.fields.find((f) => f.name === "events");
+  const events: Event[] = (eventsField?.data as Event[]) ?? [];
 
   return (
-    <div
-      className={`transition-opacity duration-700 ease-in ${
-        isVisible ? "opacity-100" : "opacity-0"
-      }`}
-    >
-      {headerField && (
-        <Header
-          imageUrl={headerData.imageUrl}
-          header={headerData.header}
-          subheader={headerData.subheader}
-          fancy={headerData.fancy}
-        />
-      )}
+    <div className={`transition-opacity duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}>
+      <Header imageUrl={imageUrl} header={header} subheader={subheader} fancy={fancy} />
 
-      <div className="px-6 py-4">
-        {contentFields.map((field, index) => {
-          const content = field.data as ContentField;
-          return (
-            <p key={index} className="text-lg font-golos mb-4">
-              {content.text}
-            </p>
-          );
-        })}
+      <Mission />
+      <BoxLinkGroup />
+      <HomeworkModel />
+      <SuccessStories />
+      <NewsPastEvents />
+
+      <div className="mb-10">
+        <EventsCarousel>
+          {events.map((evt, i) => (
+            <EventsCarouselCard key={i} event={evt} />
+          ))}
+        </EventsCarousel>
       </div>
     </div>
   );

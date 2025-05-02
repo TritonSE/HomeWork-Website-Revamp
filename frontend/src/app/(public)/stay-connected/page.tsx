@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
+import Header from "@/components/Header";
 import { ArticleContext } from "@/contexts/articleContext";
 import { PageDataContext } from "@/contexts/pageDataContext";
 import { Article } from "@/hooks/useArticles";
@@ -20,10 +21,10 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
       <img className="w-full h-80 mb-3 object-cover" src={article.thumbnail} alt={article.header} />
       <h2 className="text-2xl font-medium">{article.header}</h2>
       <p className="font-medium text-orange-500">{textDate}</p>
-      <p className="line-clamp-3">{article?.body ?? ""}</p>
+      <p className="line-clamp-3">{article.body ?? ""}</p>
       <Link
-        className="flex flex-row gap-2 w-fit text-gray-400 border border-transparent cursor-pointer hover:border-b-gray-400"
         href={{ pathname: "/article-viewer", query: { articleId: article._id } }}
+        className="flex flex-row gap-2 w-fit text-gray-400 border border-transparent cursor-pointer hover:border-b-gray-400"
       >
         <p>LEARN MORE</p>
         <Image src="/icons/learnMore.svg" width={20} height={20} alt="Learn more arrow" />
@@ -32,13 +33,13 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
   );
 };
 
-const StayConnectedPage = () => {
+const StayConnectedPage: React.FC = () => {
   const { articles, loading } = useContext(ArticleContext);
-  const context = useContext(PageDataContext);
+  const pageContext = useContext(PageDataContext);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (context?.pageData && !context.loading) {
+    if (pageContext?.pageData && !pageContext.loading) {
       const timer = setTimeout(() => {
         setIsVisible(true);
       }, 50);
@@ -46,43 +47,78 @@ const StayConnectedPage = () => {
         clearTimeout(timer);
       };
     }
-  }, [context]);
+  }, [pageContext]);
 
-  if (!context) return <div>Error: Page data not available.</div>;
-  const { pageData } = context;
-  const page = pageData.find((entry) => entry.pagename === "stay-connected");
+  if (!pageContext) return <div>Error: Page data not available.</div>;
+  const { pageData, loading: pageLoading } = pageContext;
+  if (pageLoading) return null;
+
+  const page = pageData.find((p) => p.pagename === "stay-connected");
   if (!page) return <div>No Stay Connected page data found.</div>;
 
-  const headerField = page.fields.find((field) => field.name === "header");
-  const headerData = headerField?.data as { title: string; description: string };
+  const headerField = page.fields.find((f) => f.name === "header");
+  const descField = page.fields.find((f) => f.name === "description");
+
+  const headerData = headerField?.data as {
+    imageUrl: string;
+    header: string;
+    subheader: string;
+    fancy?: boolean;
+  };
+  const descData = descField?.data as { title: string; description: string };
 
   return (
     <div
-      className={`p-10 font-golos transition-opacity duration-700 ${
+      className={`flex flex-col transition-opacity duration-700 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
     >
-      <h1 className="mb-5 text-3xl sm:text-5xl font-golos font-medium">{headerData.title}</h1>
-      <p>{headerData.description}</p>
+      {/* Header Section */}
+      {headerField && (
+        <>
+          <Header
+            imageUrl={headerData.imageUrl}
+            header={headerData.header}
+            subheader={headerData.subheader}
+            fancy={headerData.fancy}
+          />
+          <div className="flex justify-end w-full mt-4 px-10">
+            <Link
+              href="/contact"
+              className="w-[25%] border rounded-lg px-6 py-3 bg-transparent hover:bg-white/25"
+            >
+              Send us a Message
+            </Link>
+          </div>
+        </>
+      )}
 
-      {/* 4 article cards */}
-      <div className="flex flex-row flex-wrap gap-5 gap-y-10 mt-10">
-        {loading ? (
-          <p className="flex flow justify-center items-center w-full h-96 text-xl text-gray-400">
-            Loading...
-          </p>
-        ) : (
-          articles.slice(0, 4).map((article) => <ArticleCard key={article._id} article={article} />)
-        )}
-      </div>
+      {/* Content Section */}
+      <div className="p-10 font-golos">
+        <h1 className="mb-5 text-3xl sm:text-5xl font-medium">{descData.title}</h1>
+        <p>{descData.description}</p>
 
-      <div className="flex justify-start items-center w-full mt-10 mb-5">
-        <Link
-          href="/events-archive"
-          className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos"
-        >
-          See All Articles
-        </Link>
+        {/* 4 article cards */}
+        <div className="flex flex-row flex-wrap gap-5 gap-y-10 mt-10">
+          {loading ? (
+            <p className="flex justify-center items-center w-full h-96 text-xl text-gray-400">
+              Loading...
+            </p>
+          ) : (
+            articles
+              .slice(0, 4)
+              .map((article) => <ArticleCard key={article._id} article={article} />)
+          )}
+        </div>
+
+        <div className="flex justify-start items-center w-full mt-10 mb-5">
+          <Link
+            href="/events-archive"
+            className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos"
+          >
+            See All Articles
+          </Link>
+        </div>
       </div>
     </div>
   );
