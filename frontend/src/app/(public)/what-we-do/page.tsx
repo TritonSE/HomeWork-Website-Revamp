@@ -1,204 +1,320 @@
 "use client";
-
 import Image from "next/image";
 import React, { useContext, useEffect, useRef, useState } from "react";
 
-import Flashcard from "@/components/Flashcard/Flashcard";
-import Header from "@/components/Header";
+import Flashcard from "../../../components/Flashcard/Flashcard";
+import Header from "../../../components/Header";
 import { PageDataContext } from "@/contexts/pageDataContext";
 
-const FLASHCARD_HEIGHT = 408;
-const SEG = 0.08;
+type FlashcardData = {
+  title: string;
+  icon: string;
+  info: string;
+};
 
-const WhatWeDoPage: React.FC = () => {
+const FlashcardPage: React.FC = () => {
   const context = useContext(PageDataContext);
 
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const [viewportH, setViewportH] = useState(
-    typeof window !== "undefined" ? window.innerHeight : 0,
-  );
-  const [scrollY, setScrollY] = useState(0);
-  const [topY, setTopY] = useState(0);
-  const [height, setHeight] = useState(1);
+  const flashcardHeight = 408;
+  const [viewport, setViewport] = useState({ h: 1000 }); // default placeholder
 
   useEffect(() => {
-    if (context && !context.loading) {
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 50);
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, [context]);
+    const getViewport = () => ({ h: window.innerHeight });
+    setViewport(getViewport());
+    const handleResize = () => {
+      setViewport(getViewport());
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  const [screenWidth, setScreenWidth] = useState<number>(1200);
+  const isMobile = screenWidth < 1200;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  const flashcardsRef = useRef<HTMLDivElement | null>(null);
+  const [flashcardsTop, setFlashcardsTop] = useState(0);
+  const [flashcardsHeight, setFlashcardsHeight] = useState(1);
 
   useEffect(() => {
     const measure = () => {
-      setViewportH(window.innerHeight);
-      if (ref.current) {
-        setTopY(ref.current.offsetTop);
-        setHeight(ref.current.offsetHeight);
+      if (flashcardsRef.current) {
+        setFlashcardsTop(flashcardsRef.current.offsetTop);
+        setFlashcardsHeight(flashcardsRef.current.offsetHeight);
       }
     };
     measure();
     window.addEventListener("resize", measure);
-    const onScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("resize", measure);
-      window.removeEventListener("scroll", onScroll);
     };
   }, []);
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    if (!flashcardsHeight || !flashcardsTop) return;
+    const START_DELAY = flashcardsTop / 4;
+    const onScroll = () => {
+      const bottom = window.scrollY + viewport.h;
+      const startLine = flashcardsTop + START_DELAY;
+      const pxPast = Math.max(0, bottom - startLine);
+      const current = Math.min(pxPast / flashcardsHeight, 1);
+      setProgress((prev) => (current > prev ? current : prev));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [flashcardsTop, flashcardsHeight, viewport.h]);
 
   if (!context) return <div>Error: Page data not available.</div>;
   const { pageData, loading } = context;
-  if (loading) return null;
 
   const pageEntry = pageData.find((p) => p.pagename === "what-we-do");
-  if (!pageEntry) return <div>No data</div>;
 
-  const headerField = pageEntry.fields.find((f) => f.name === "header");
-  const heroField = pageEntry.fields.find((f) => f.name === "hero");
-  const flashcardsField = pageEntry.fields.find((f) => f.name === "flashcards");
+  const headerField = pageEntry?.fields.find((f) => f.name === "header");
+  const heroField = pageEntry?.fields.find((f) => f.name === "hero");
+  const modelHeadingField = pageEntry?.fields.find((f) => f.name === "modelHeading");
+  const flashcardsField = pageEntry?.fields.find((f) => f.name === "flashcards");
 
-  if (!headerField || !heroField || !flashcardsField) {
-    return <div>Page fields missing</div>;
-  }
-
-  const headerData = headerField.data as {
+  const headerData = headerField?.data as {
     imageUrl: string;
     header: string;
     subheader: string;
     fancy?: boolean;
   };
 
-  const heroData = heroField.data as {
+  const heroData = heroField?.data as {
     title: string;
     description: string[];
     imageUrl: string;
   };
 
-  const flashcards = flashcardsField.data as {
-    title: string;
-    icon: string;
-    info: string;
-  }[];
+  const modelHeading = modelHeadingField?.data as {
+    text: string;
+  };
 
-  const bottom = scrollY + viewportH;
-  const startLine = topY + height / 4;
-  const pxPast = Math.max(0, bottom - startLine);
-  const progress = Math.min(pxPast / height, 1);
+  const flashcards = (flashcardsField?.data as FlashcardData[]) ?? [];
 
-  const segIndex = Math.min(Math.floor(progress / SEG), flashcards.length - 1);
+  const SEG = 0.08;
+  const segIndex = Math.min(Math.floor(progress / SEG), 9);
   const segT = (progress - segIndex * SEG) / SEG;
-  const maxRight = window.innerWidth - 360;
-  const maxLeft = 223;
-  let ballX = maxLeft;
-  let ballY = FLASHCARD_HEIGHT * 0.5;
 
-  switch (segIndex) {
-    case 0:
-      ballX = 500 + segT * (maxRight - 500);
-      break;
-    case 1:
-      ballX = maxRight;
-      ballY = FLASHCARD_HEIGHT * (0.5 + segT);
-      break;
-    case 2:
-      ballX = maxRight - segT * (maxRight - maxLeft);
-      ballY = FLASHCARD_HEIGHT * 1.5;
-      break;
-    case 3:
-      ballX = maxLeft;
-      ballY = FLASHCARD_HEIGHT * (1.5 + segT);
-      break;
-    case 4:
-      ballX = maxLeft + segT * (maxRight - maxLeft);
-      ballY = FLASHCARD_HEIGHT * 2.5;
-      break;
-    case 5:
-      ballX = maxRight;
-      ballY = FLASHCARD_HEIGHT * (2.5 + segT);
-      break;
-    case 6:
-      ballX = maxRight - segT * (maxRight - maxLeft);
-      ballY = FLASHCARD_HEIGHT * 3.5;
-      break;
-    case 7:
-      ballX = maxLeft;
-      ballY = FLASHCARD_HEIGHT * (3.5 + segT);
-      break;
-    case 8:
-      ballX = maxLeft + segT * (maxRight - maxLeft);
-      ballY = FLASHCARD_HEIGHT * 4.5;
-      break;
-    default:
-      ballX = maxRight;
-      ballY = FLASHCARD_HEIGHT * (4.5 + Math.min(segT, 1));
-  }
+  const maxRightPosition = screenWidth - 360;
+  const maxLeftPosition = 223;
+  const [ballXPosDesktop, ballYPositionDesktop] = (() => {
+    switch (segIndex) {
+      case 0:
+        return [500 + segT * (maxRightPosition - 500), flashcardHeight * 0.5];
+      case 1:
+        return [maxRightPosition, flashcardHeight * (0.5 + segT)];
+      case 2:
+        return [
+          maxRightPosition - segT * (maxRightPosition - maxLeftPosition),
+          1.5 * flashcardHeight,
+        ];
+      case 3:
+        return [maxLeftPosition, flashcardHeight * (1.5 + segT)];
+      case 4:
+        return [
+          maxLeftPosition + segT * (maxRightPosition - maxLeftPosition),
+          2.5 * flashcardHeight,
+        ];
+      case 5:
+        return [maxRightPosition, flashcardHeight * (2.5 + segT)];
+      case 6:
+        return [
+          maxRightPosition - segT * (maxRightPosition - maxLeftPosition),
+          3.5 * flashcardHeight,
+        ];
+      case 7:
+        return [maxLeftPosition, flashcardHeight * (3.5 + segT)];
+      case 8:
+        return [
+          maxLeftPosition + segT * (maxRightPosition - maxLeftPosition),
+          4.5 * flashcardHeight,
+        ];
+      case 9:
+        return [maxRightPosition, flashcardHeight * (4.5 + Math.min(1, segT))];
+      default:
+        return [maxLeftPosition, flashcardHeight * 0.5];
+    }
+  })();
 
-  const cardOpacity = (i: number) => Math.min(Math.max((progress - (i - 1) * SEG) / SEG, 0), 1);
+  const totalMobileHeight = flashcards.length * flashcardHeight;
+  const ballYPositionMobile = flashcardHeight * 0.5 + progress * totalMobileHeight;
+
+  const cardOpacity = (idx: number) => Math.min(Math.max((progress - (idx - 1) * SEG) / SEG, 0), 1);
+
+  const fill = (seg: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9) =>
+    Math.min(Math.max((progress - seg * SEG) / SEG, 0), 1);
 
   return (
-    <div className={`transition-opacity duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}>
-      <Header
-        imageUrl={headerData.imageUrl}
-        header={headerData.header}
-        subheader={headerData.subheader}
-        fancy={headerData.fancy}
-      />
-
+    <div>
+      {headerData && (
+        <Header
+          imageUrl={headerData.imageUrl}
+          header={headerData.header}
+          subheader={headerData.subheader}
+          fancy={headerData.fancy}
+        />
+      )}{" "}
       <div className="flex md:flex-row flex-col w-full justify-between pt-12">
-        <div className="font-golos md:w-[60%] w-full px-8 pb-20">
-          <div className="text-[32px] mb-8 weight-500">{heroData.title}</div>
-          <div className="text-[20px] weight-400">
-            {heroData.description.map((line, i) => (
+        <div className="font-golos  md:w-[calc(60%)] md:max-w-4xl w-full px-8 md:pb-0 pb-20">
+          {heroData && <div className="text-[32px] mb-8 weight-500">{heroData.title}</div>}
+          {heroData &&
+            heroData.description.map((line, i) => (
               <div className={i > 0 ? "mt-6" : ""} key={i}>
                 {line}
               </div>
             ))}
+        </div>
+        {heroData && (
+          <div className="md:px-8">
+            <Image
+              src={heroData.imageUrl}
+              alt={heroData.title}
+              width={800}
+              height={600}
+              className="h-full w-full object-contain"
+              priority
+            />
           </div>
-        </div>
-        <div className="md:px-8">
-          <Image
-            src={heroData.imageUrl}
-            alt="Illustration of our program"
-            width={800}
-            height={600}
-            className="h-full w-full object-contain"
-            priority
-          />
-        </div>
+        )}
       </div>
-
       <div className="px-8">
-        <div className="text-5xl font-golos pb-8 mt-20">Our Model</div>
-        <div ref={ref} className="relative flex flex-col">
-          {window.innerWidth >= 1200 && (
+        {modelHeading && <div className="text-5xl font-golos pb-8 mt-20">{modelHeading.text}</div>}
+
+        <div ref={flashcardsRef} className="relative flex flex-col">
+          {!isMobile && (
             <>
               <div
                 className="lineX absolute"
                 style={{
-                  left: 505,
-                  top: FLASHCARD_HEIGHT * 0.5,
-                  width: progress * (maxRight - 500),
+                  left: 525 + 5,
+                  top: flashcardHeight * 0.5,
+                  width: fill(0) * (maxRightPosition - 500),
                 }}
               />
-              <div className="circle absolute" style={{ left: ballX + 2.5, top: ballY + 2.5 }} />
+              <div
+                className="lineY absolute"
+                style={{
+                  left: maxRightPosition + 25,
+                  top: flashcardHeight * 0.5 + 5,
+                  height: fill(1) * flashcardHeight,
+                }}
+              />
+              <div
+                className="lineX absolute"
+                style={{
+                  left: maxRightPosition + 25 - fill(2) * (maxRightPosition - maxLeftPosition),
+                  top: flashcardHeight * 1.5,
+                  width: fill(2) * (maxRightPosition - maxLeftPosition),
+                }}
+              />
+              <div
+                className="lineY absolute"
+                style={{
+                  left: maxLeftPosition + 25,
+                  top: flashcardHeight * 1.5 + 5,
+                  height: fill(3) * flashcardHeight,
+                }}
+              />
+              <div
+                className="lineX absolute"
+                style={{
+                  left: maxLeftPosition + 25 + 5,
+                  top: flashcardHeight * 2.5,
+                  width: fill(4) * (maxRightPosition - maxLeftPosition),
+                }}
+              />
+              <div
+                className="lineY absolute"
+                style={{
+                  left: maxRightPosition + 25,
+                  top: flashcardHeight * 2.5 + 5,
+                  height: fill(5) * flashcardHeight,
+                }}
+              />
+              <div
+                className="lineX absolute"
+                style={{
+                  left: maxRightPosition + 25 - fill(6) * (maxRightPosition - maxLeftPosition),
+                  top: flashcardHeight * 3.5,
+                  width: fill(6) * (maxRightPosition - maxLeftPosition),
+                }}
+              />
+              <div
+                className="lineY absolute"
+                style={{
+                  left: maxLeftPosition + 25,
+                  top: flashcardHeight * 3.5,
+                  height: fill(7) * flashcardHeight,
+                }}
+              />
+              <div
+                className="lineX absolute"
+                style={{
+                  left: maxLeftPosition + 25,
+                  top: flashcardHeight * 4.5,
+                  width: fill(8) * (maxRightPosition - maxLeftPosition),
+                }}
+              />
+              <div
+                className="lineY absolute"
+                style={{
+                  left: maxRightPosition + 25,
+                  top: flashcardHeight * 4.5,
+                  height: fill(9) * flashcardHeight,
+                }}
+              />
+              {/* Moving circle */}
+              <div
+                className="circle absolute"
+                style={{ left: ballXPosDesktop + 2.5, top: ballYPositionDesktop + 2.5 }}
+              />
             </>
           )}
-          {flashcards.map((f, idx) => {
-            const rowCls = idx % 2 === 0 ? "flex-row" : "flex-row-reverse";
+          {isMobile && (
+            <>
+              <div
+                className="lineY absolute"
+                style={{
+                  left: "50%",
+                  top: flashcardHeight * 0.5,
+                  height: progress * totalMobileHeight,
+                }}
+              />
+              <div
+                className="circle absolute"
+                style={{ left: `calc(50% - 22.5px)`, top: ballYPositionMobile }}
+              />
+            </>
+          )}
+          {flashcards.map((flashcard, index) => {
+            const rowClass = isMobile
+              ? "flex-row justify-center py-12"
+              : index % 2 === 0
+                ? "flex-row"
+                : "flex-row-reverse";
             return (
               <div
-                key={idx}
-                className={`relative flex ${rowCls} items-center`}
-                style={{ opacity: cardOpacity(idx), transition: "opacity 2s linear" }}
+                key={index}
+                className={`relative flex ${rowClass} items-center`}
+                style={{ opacity: cardOpacity(index), transition: "opacity 2s linear" }}
               >
-                <Flashcard {...f} />
+                <Flashcard {...flashcard} />
               </div>
             );
           })}
@@ -208,4 +324,4 @@ const WhatWeDoPage: React.FC = () => {
   );
 };
 
-export default WhatWeDoPage;
+export default FlashcardPage;

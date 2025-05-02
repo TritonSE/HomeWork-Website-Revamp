@@ -7,10 +7,8 @@ import { Button, TextField } from "@tritonse/tse-constellation";
 import { PageDataContext } from "@/contexts/pageDataContext";
 
 const DonationPage: React.FC = () => {
-  // 1) Context
   const context = useContext(PageDataContext);
 
-  // 2) Hooks first—never inside any if/return
   const [formData, setFormData] = useState({
     isAnonymous: false,
     isDonatingOnBehalf: false,
@@ -25,7 +23,6 @@ const DonationPage: React.FC = () => {
     paymentMethod: "card",
   });
 
-  // 3) Early returns
   if (!context) return <div>Error: Page data not available.</div>;
   const { pageData, loading } = context;
   if (loading) return null;

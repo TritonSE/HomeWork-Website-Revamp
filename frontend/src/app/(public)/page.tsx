@@ -69,9 +69,10 @@ export default function HomePage() {
 
       <div className="mb-10">
         <EventsCarousel>
-          {events.map((evt, i) => (
-            <EventsCarouselCard key={i} event={evt} />
-          ))}
+          <EventsCarouselCard key="1" event={events[0]} />
+          <EventsCarouselCard key="2" event={events[1]} />
+          <EventsCarouselCard key="3" event={events[1]} />
+          <EventsCarouselCard key="4" event={events[1]} />
         </EventsCarousel>
       </div>
     </div>
