@@ -33,11 +33,15 @@ const makeThumbnailValidator = () =>
 //.isURL()
 //.withMessage("thumbnail must be a url");
 
+const makeIsPublishedValidator = () =>
+  body("isPublished").optional().isBoolean().withMessage("isPublished must be a boolean");
+
 export const createArticle = [
   makeHeaderValidator(),
   makeAuthorValidator(),
   makeBodyValidator(),
   makeThumbnailValidator(),
+  makeIsPublishedValidator(),
 ];
 
 export const updateArticle = [
@@ -45,4 +49,5 @@ export const updateArticle = [
   makeAuthorValidator(),
   makeBodyValidator(),
   makeThumbnailValidator(),
+  makeIsPublishedValidator(),
 ];

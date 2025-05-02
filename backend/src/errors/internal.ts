@@ -14,6 +14,7 @@ const NO_GMAIL_ACCESS_TOKEN = "Could not find Gmail access token";
 const NO_GMAIL_REFRESH_TOKEN = "Could not find Gmail refresh token";
 const NO_GMAIL_TOKEN_EXPIRY = "Could not find Gmail token expiry";
 
+const NO_STORAGE_BUCKET = "Could not find storage bucket env variable";
 export class InternalError extends CustomError {
   static NO_EMAIL = new InternalError(1, 500, NO_EMAIL);
   static NO_EMAIL_PASSWORD = new InternalError(2, 500, NO_EMAIL_PASSWORD);
@@ -28,4 +29,5 @@ export class InternalError extends CustomError {
   static NO_GMAIL_ACCESS_TOKEN = new InternalError(9, 500, NO_GMAIL_ACCESS_TOKEN);
   static NO_GMAIL_REFRESH_TOKEN = new InternalError(10, 500, NO_GMAIL_REFRESH_TOKEN);
   static NO_GMAIL_TOKEN_EXPIRY = new InternalError(11, 500, NO_GMAIL_TOKEN_EXPIRY);
+  static NO_STORAGE_BUCKET = new InternalError(6, 500, NO_STORAGE_BUCKET);
 }
