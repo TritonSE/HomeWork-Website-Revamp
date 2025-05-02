@@ -15,7 +15,6 @@ const subscriptionSchema = new Schema({
     required: true,
     default: "active",
   },
- 
 });
 
 type Subscription = InferSchemaType<typeof subscriptionSchema>;

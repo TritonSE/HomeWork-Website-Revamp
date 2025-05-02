@@ -5,33 +5,26 @@ import SubscriptionModel from "../models/subscription";
 import { sendConfirmationEmail } from "../services/gmailService";
 import validationErrorParser from "../util/validationErrorParser";
 
-export const createSubscription: RequestHandler = async (
-  req: { body: { email: string; firstname: string; lastname: string; joined: Date } },
+type SubscriptionBody = {
+  firstname: string;
+  lastname: string;
+  email: string;
+};
+
+export const createSubscription: RequestHandler<object, object, SubscriptionBody> = async (
+  req,
   res,
 ) => {
-  // extract any errors that were found by the validator
-  const errors = validationResult(req);
-  const { firstname, lastname, email } = req.body;
-  const joined = new Date();
-
   try {
     console.log("Received body:", req.body);
 
     const errors = validationResult(req);
     validationErrorParser(errors);
 
-    const { name, email } = req.body;
+    const { firstname, lastname, email } = req.body;
 
     const subscription = await SubscriptionModel.findOne({ email });
-    if (!subscription) {
-      const newSubscription = await SubscriptionModel.create({
-        firstname: String(firstname),
-        lastname: String(lastname),
-        email: String(email),
-        joined,
-      });
-      res.status(201).json(newSubscription);
-    } else {
+    if (subscription) {
       res.status(400).json({ message: "Email is already subscribed." });
       return;
     }
@@ -43,7 +36,8 @@ export const createSubscription: RequestHandler = async (
     );
 
     const newSubscription = await SubscriptionModel.create({
-      name,
+      firstname,
+      lastname,
       email,
       threadId,
       status: "active",
