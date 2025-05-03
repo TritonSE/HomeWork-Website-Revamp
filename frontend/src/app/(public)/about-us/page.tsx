@@ -14,6 +14,13 @@ import ScrollThrough from "@/components/ScrollThrough/ScrollThrough";
 import { PageDataContext } from "@/contexts/pageDataContext";
 
 // Types for field.data
+
+type Slide = {
+  title: string;
+  description: string[];
+  image: string;
+};
+
 type HeaderData = {
   imageUrl: string;
   header: string;
@@ -29,7 +36,7 @@ type ImpactData = {
 
 type HistoryData = {
   heading: string;
-  slidesData: unknown[];
+  slidesData: Slide[];
 };
 
 type MissionData = {
@@ -50,7 +57,7 @@ type VisionData = {
 
 type ValuesData = {
   heading: string;
-  slidesData: unknown[];
+  slidesData: Slide[];
 };
 
 type TeamData = {
