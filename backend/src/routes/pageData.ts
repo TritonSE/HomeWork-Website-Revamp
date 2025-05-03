@@ -1,11 +1,6 @@
 import express from "express";
 
-import {
-  deletePageData,
-  getAllPageData,
-  seedPageData,
-  updatePageData,
-} from "../controllers/pageData";
+import { getAllPageData, updatePageData } from "../controllers/pageData";
 import { verifyAuthToken } from "../validators/auth";
 import { updatePageDataValidator } from "../validators/pageData";
 

@@ -79,7 +79,7 @@ const FlashcardPage: React.FC = () => {
   }, [flashcardsTop, flashcardsHeight, viewport.h]);
 
   if (!context) return <div>Error: Page data not available.</div>;
-  const { pageData, loading } = context;
+  const { pageData } = context;
 
   const pageEntry = pageData.find((p) => p.pagename === "what-we-do");
 
@@ -173,12 +173,11 @@ const FlashcardPage: React.FC = () => {
       <div className="flex md:flex-row flex-col w-full justify-between pt-12">
         <div className="font-golos  md:w-[calc(60%)] md:max-w-4xl w-full px-8 md:pb-0 pb-20">
           {heroData && <div className="text-[32px] mb-8 weight-500">{heroData.title}</div>}
-          {heroData &&
-            heroData.description.map((line, i) => (
-              <div className={i > 0 ? "mt-6" : ""} key={i}>
-                {line}
-              </div>
-            ))}
+          {heroData?.description.map((line, i) => (
+            <div className={i > 0 ? "mt-6" : ""} key={i}>
+              {line}
+            </div>
+          ))}
         </div>
         {heroData && (
           <div className="md:px-8">
