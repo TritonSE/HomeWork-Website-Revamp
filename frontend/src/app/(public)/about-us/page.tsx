@@ -126,6 +126,7 @@ const AboutUsPage = () => {
 
   const headerData = headerField?.data as HeaderData;
   const impactData = impactField?.data as ImpactData;
+  if (!historyField) return null;
   const historyData = historyField?.data as HistoryData;
   const missionData = missionField?.data as MissionData;
   const visionData = visionField?.data as VisionData;
@@ -145,7 +146,6 @@ const AboutUsPage = () => {
           fancy={headerData.fancy}
         />
       )}
-
       {/* Our Impact Section */}
       {impactField && (
         <div className="px-[50px]">
@@ -167,7 +167,6 @@ const AboutUsPage = () => {
       {historyField && (
         <ScrollThrough heading={historyData.heading} slidesData={historyData.slidesData} />
       )}
-
       {/* Our Mission Section */}
       {missionField && (
         <div className="flex md:flex-row flex-col md:justify-between bg-text_bg py-[50px] items-center">
@@ -186,7 +185,6 @@ const AboutUsPage = () => {
           )}
         </div>
       )}
-
       {/* Our Vision & Pillars Section */}
       {visionField && visionData.pillars && (
         <div className="mx-[50px] flex flex-col pt-16">
@@ -210,12 +208,10 @@ const AboutUsPage = () => {
           </div>
         </div>
       )}
-
       {/* Our Values Section */}
       {valuesField && (
         <ScrollThrough heading={valuesData.heading} slidesData={valuesData.slidesData} />
       )}
-
       {/* Our Team Section */}
       {teamField && (
         <div className="mx-[50px] flex md:flex-row flex-col md:justify-between md:items-center pt-16 mb-16">
