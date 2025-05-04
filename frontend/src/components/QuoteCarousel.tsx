@@ -56,21 +56,21 @@ const QuoteCarousel: React.FC<QuoteCarouselProps> = ({ slides = [] }) => {
     // Normalize the index differences to handle wrapping
     const diff = (index - activeIndex + slidesToDisplay.length) % slidesToDisplay.length;
 
+    console.log(diff);
     if (diff === 0) return "center";
-    if (diff === 1 || diff === -(slidesToDisplay.length - 1)) return "right";
-    if (diff === -1 || diff === slidesToDisplay.length - 1) return "left";
-    return "hidden";
+    if (diff === 1) return "right";
+    if (diff === slidesToDisplay.length - 1) return "left";
+    if (diff === 2) return "hiddenRight";
+    return "hiddenLeft";
   };
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto px-4 py-12 overflow-hidden">
+    <div className="relative w-screen mx-auto px-10 pt-12 overflow-hidden h-screen">
       {/* Main carousel container */}
-      <div className="relative" style={{ height: "600px" }}>
-        {/* Slides */}
-        {slidesToDisplay.map((slide, index) => (
-          <QuoteCarouselCard key={slide.id} slide={slide} position={getSlidePosition(index)} />
-        ))}
-      </div>
+      {/* Slides */}
+      {slidesToDisplay.map((slide, index) => (
+        <QuoteCarouselCard key={slide.id} slide={slide} position={getSlidePosition(index)} />
+      ))}
 
       {/* Navigation buttons */}
       <button

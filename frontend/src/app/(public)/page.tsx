@@ -42,11 +42,16 @@ export default function Page() {
         subheader="We're committed to amplifying the voices of those rebuilding their lives, offering support, mentorship, and guidance for enduring personal growth within a nurturing community."
         fancy={true}
       />
-      <Mission />
+      <div className="p-12">
+        <Mission />
+      </div>
+
       <BoxLinkGroup />
-      <HomeworkModel />
-      <SuccessStories />
-      <NewsPastEvents />
+      <div className="px-12">
+        <HomeworkModel />
+        <SuccessStories />
+        <NewsPastEvents />
+      </div>
 
       <div className="mb-10">
         <EventsCarousel>
