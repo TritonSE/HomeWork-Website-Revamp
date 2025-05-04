@@ -26,7 +26,8 @@
     "googleapis": "^148.0.0",
     "mongoose": "^8.9.5",
     "node-cron": "^3.0.3",
-    "nodemailer": "^6.9.16"
+    "nodemailer": "^6.9.16",
+    "stripe": "^17.7.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
