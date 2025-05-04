@@ -1,14 +1,14 @@
 name: Build and Deploy
 
 on:
-    workflow_call:
-        inputs:
-            environment:
-                required: true
-                type: string
-            firebaseHostingChannelId:
-                required: false
-                type: string
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      firebaseHostingChannelId:
+        required: false
+        type: string
 
 jobs:
   build_and_preview:
@@ -18,19 +18,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Create Backend .env file
-        run: | 
-            cd backend 
-            touch .env
-            echo APP_PORT=${{secrets.APP_PORT}} >> .env
-            echo MONGO_URI=${{secrets.MONGO_URI}} >> .env
-            echo SERVICE_ACCOUNT_KEY=${{secrets.SERVICE_ACCOUNT_KEY}} >> .env
-            echo EMAIL=${{secrets.EMAIL}} >> .env
-            echo EMAIL_PASSWORD=${{secrets.EMAIL_PASSWORD}} >> .env
+        run: |
+          cd backend 
+          touch .env
+          echo APP_PORT=${{secrets.APP_PORT}} >> .env
+          echo MONGO_URI=${{secrets.MONGO_URI}} >> .env
+          echo SERVICE_ACCOUNT_KEY=${{secrets.SERVICE_ACCOUNT_KEY}} >> .env
+          echo EMAIL=${{secrets.EMAIL}} >> .env
+          echo EMAIL_PASSWORD=${{secrets.EMAIL_PASSWORD}} >> .env
+          echo STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} >> .env
+          echo GMAIL_CLIENT_ID=${{secrets.GMAIL_CLIENT_ID}} >> .env
+          echo GMAIL_CLIENT_SECRET=${{secrets.GMAIL_CLIENT_SECRET}} >> .env
+          echo GMAIL_REDIRECT_URI=${{secrets.GMAIL_REDIRECT_URI}} >> .env
+          echo GMAIL_ACCESS_TOKEN=${{secrets.GMAIL_ACCESS_TOKEN}} >> .env
+          echo GMAIL_REFRESH_TOKEN=${{secrets.GMAIL_REFRESH_TOKEN}} >> .env
+          echo GMAIL_TOKEN_EXPIRY=${{secrets.GMAIL_TOKEN_EXPIRY}} >> .env
       - name: Create Frontend .env file
         run: |
-            cd frontend 
-            touch .env 
-            echo NEXT_PUBLIC_FIREBASE_APP_CONFIG=${{secrets.FIREBASE_APP_CONFIG}} >> .env
+          cd frontend 
+          touch .env 
+          echo NEXT_PUBLIC_FIREBASE_APP_CONFIG=${{secrets.FIREBASE_APP_CONFIG}} >> .env
+          echo NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }} >> .env
       - name: Build Backend
         run: cd backend && npm run build
       - name: Build Frontend
