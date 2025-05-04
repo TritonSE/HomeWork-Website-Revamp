@@ -110,7 +110,7 @@ const FlashcardPage: React.FC = () => {
   const [ballXPosDesktop, ballYPositionDesktop] = (() => {
     switch (segIndex) {
       case 0:
-        return [500 + segT * (maxRightPosition - 500), flashcardHeight * 0.5];
+        return [480 + segT * (maxRightPosition - 500), flashcardHeight * 0.5];
       case 1:
         return [maxRightPosition, flashcardHeight * (0.5 + segT)];
       case 2:
@@ -208,9 +208,9 @@ const FlashcardPage: React.FC = () => {
               <div
                 className="lineX absolute"
                 style={{
-                  left: 525 + 5,
+                  left: 480,
                   top: flashcardHeight * 0.5,
-                  width: fill(0) * (maxRightPosition - 500),
+                  width: fill(0) * (maxRightPosition - 450),
                 }}
               />
               <div

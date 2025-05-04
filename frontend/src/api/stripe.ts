@@ -1,12 +1,12 @@
 // API client for Stripe-related endpoints
-import { post, get, APIResult, handleAPIError } from "./requests";
+import { APIResult, get, handleAPIError, post } from "./requests";
 
 /**
  * Response type for client secret
  */
-interface ClientSecretResponse {
+type ClientSecretResponse = {
   client_secret: string;
-}
+};
 
 /**
  * Creates a new Stripe checkout session and returns the client secret
