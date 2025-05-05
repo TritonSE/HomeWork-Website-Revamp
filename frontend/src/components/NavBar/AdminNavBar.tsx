@@ -94,7 +94,7 @@ const Navbar: React.FC<{ opaque?: boolean }> = ({ opaque = false }) => {
                 Change Password
               </Link>
               <button
-                onClick={() => void handleSignOut}
+                onClick={() => void handleSignOut()}
                 className="w-full px-4 py-2 hover:bg-gray-100 text-center"
               >
                 Sign Out
