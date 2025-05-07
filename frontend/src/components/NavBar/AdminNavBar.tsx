@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuthState } from "../../contexts/userContext";
-const Navbar: React.FC<{ opaque?: boolean }> = ({ opaque = false }) => {
+const Navbar: React.FC = () => {
   const router = useRouter();
   const { loading, firebaseUser, logout } = useAuthState();
   const displayEmail = firebaseUser?.email;
@@ -19,8 +19,8 @@ const Navbar: React.FC<{ opaque?: boolean }> = ({ opaque = false }) => {
   };
   return (
     <>
-      {opaque && <div className="w-[176px] h-[98px]" />}
-      <nav className="fixed top-0 left-0 w-auto z-50 flex flex-col items-center px-8 py-4 transition-all duration-300">
+      {<div className="w-[176px] h-[98px]" />}
+      <nav className="w-auto z-50 flex flex-col items-center px-8 py-4 transition-all duration-300">
         <div className="flex items-center">
           <Link href="/">
             <Image src="/logo-dark.png" alt="Logo" width={176} height={98} priority />
@@ -36,12 +36,12 @@ const Navbar: React.FC<{ opaque?: boolean }> = ({ opaque = false }) => {
             },
             {
               title: "Event Manager",
-              href: "/event-manager",
+              href: "/events",
               icon: "/images/adminNavBar/eventManagerIcon.png",
             },
             {
               title: "Mailing List",
-              href: "/mailing-list",
+              href: "/mailinglist",
               icon: "/images/adminNavBar/mailingListIcon.png",
             },
           ].map((item) => (

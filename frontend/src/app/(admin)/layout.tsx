@@ -4,6 +4,12 @@ export const metadata = {
 };
 import "@/global.css";
 import { UserContextProvider } from "@/contexts/userContext";
+import AdminNavBar from "../../components/NavBar/AdminNavBar";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <UserContextProvider>{children}</UserContextProvider>;
+  return (
+    <UserContextProvider>
+      {children}
+      <AdminNavBar />
+    </UserContextProvider>
+  );
 }
