@@ -1,6 +1,11 @@
-import TestPageComponent from "../../../components/testPageComponent";
+"use client";
+import TestPage from "../../../components/testPageComponent";
 const testPage = () => {
-  return <TestPageComponent />;
+  return (
+    <>
+      <TestPage />
+    </>
+  );
 };
 
 export default testPage;
