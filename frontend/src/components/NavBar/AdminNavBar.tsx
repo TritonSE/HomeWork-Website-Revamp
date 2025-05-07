@@ -19,30 +19,29 @@ const Navbar: React.FC = () => {
   };
   return (
     <>
-      {<div className="w-[176px] h-[98px]" />}
-      <nav className="w-auto z-50 flex flex-col items-center px-8 py-4 transition-all duration-300">
-        <div className="flex items-center">
+      <nav className="fixed top-0 left-0 z-50 flex flex-col px-8 h-screen w-[276px] border-r-2 border-[#f0ecec]">
+        <div className="mx-auto">
           <Link href="/">
             <Image src="/logo-dark.png" alt="Logo" width={176} height={98} priority />
           </Link>
         </div>
 
-        <div className="flex flex-col text-[20px] mt-[25vh] font-GolosText text-[#1B1B1B] font-normal">
+        <div className="absolute top-1/3 text-[20px] font-GolosText text-[#1B1B1B] font-normal">
           {[
             {
               title: "Page Editor",
               href: "/page-editor",
-              icon: "/images/adminNavBar/pageEditorIcon.png",
+              icon: "/images/adminNavBar/pageEditorIcon.svg",
             },
             {
               title: "Event Manager",
               href: "/events",
-              icon: "/images/adminNavBar/eventManagerIcon.png",
+              icon: "/images/adminNavBar/eventManagerIcon.svg",
             },
             {
               title: "Mailing List",
               href: "/mailinglist",
-              icon: "/images/adminNavBar/mailingListIcon.png",
+              icon: "/images/adminNavBar/mailingListIcon.svg",
             },
           ].map((item) => (
             <Link
@@ -61,26 +60,9 @@ const Navbar: React.FC = () => {
             </Link>
           ))}
         </div>
-        <div className="fixed mb-8 bottom-0">
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={toggle}>
-            <div className="flex flex-col">
-              <span className="text-[20px] font-medium">
-                {loading ? "Loading..." : firebaseUser ? displayName : "Not signed in"}
-              </span>
-              <span className="text-[16px] font-normal">{displayEmail}</span>
-            </div>
-            <Image
-              src={open ? "/images/adminNavBar/upArrow.png" : "/images/adminNavBar/downArrow.png"}
-              alt={open ? "upArrow" : "downArrow"}
-              width={16}
-              height={16}
-              className="object-contain flex-shrink-0"
-            />
-          </div>
-
-          {/* dropdown menu */}
+        <div className="mt-auto mb-8">
           {open && (
-            <div className="absolute bottom-full mb-2 left-0 w-48 bg-white border shadow-lg overflow-hidden">
+            <div className=" w-48 bg-white border shadow-lg overflow-hidden">
               <Link
                 href="/create-account"
                 className="block px-4 py-2 hover:bg-gray-100 text-center"
@@ -101,6 +83,22 @@ const Navbar: React.FC = () => {
               </button>
             </div>
           )}
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={toggle}>
+            <div className="flex flex-col">
+              <span className="text-[20px] font-medium">
+                {loading ? "Loading..." : firebaseUser ? displayName : "Not signed in"}
+              </span>
+              <span className="text-[16px] font-normal">{displayEmail}</span>
+            </div>
+            <Image
+              src="/images/adminNavBar/downArrow.svg"
+              alt="toggle arrow"
+              width={16}
+              height={16}
+              className={`object-contain flex-shrink-0 transition-transform duration-150
+              ${open ? "rotate-180" : ""}`}
+            />
+          </div>
         </div>
       </nav>
     </>

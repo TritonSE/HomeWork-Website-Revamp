@@ -8,8 +8,12 @@ import AdminNavBar from "../../components/NavBar/AdminNavBar";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <UserContextProvider>
-      {children}
-      <AdminNavBar />
+      <div className="flex min-h-screen">
+        <div className="flex-none basis-[15%]">
+          <AdminNavBar />
+        </div>
+        <div className="flex-1 p-6">{children}</div>
+      </div>
     </UserContextProvider>
   );
 }
