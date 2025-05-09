@@ -1,5 +1,7 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
+import Stripe from "stripe";
+
 // Type definitions for Stripe
 type StripeCustomerDetails = {
   email?: string;
@@ -52,7 +54,6 @@ type StripeError = {
 };
 
 // Using require for Stripe with proper type casting
-import Stripe from "stripe";
 // Type the Stripe constructor
 type StripeConstructor = (apiKey: string) => StripeInstance;
 const stripe = (Stripe as unknown as StripeConstructor)(process.env.STRIPE_SECRET_KEY ?? "");
