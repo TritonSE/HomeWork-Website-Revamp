@@ -2,7 +2,7 @@
 
 import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { createCheckoutSession } from "../api/stripe";
 

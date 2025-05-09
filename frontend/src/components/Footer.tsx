@@ -94,13 +94,13 @@ const SubscriptionForm: React.FC = () => {
     } catch (error) {
       const errorText = (error as Error).message;
       // gets the actual message for cause of errorring
+      let message = errorText;
       try {
         const errorJSON = JSON.parse(errorText.split(": ")[1]) as ErrorMessage;
+        message = errorJSON.message;
+      } finally {
         console.error("Error creating subscription", errorText);
-        setFormResult({ success: false, result: errorJSON.message });
-      } catch (otherError) {
-        console.error("Error creating subscription", errorText);
-        setFormResult({ success: false, result: errorText });
+        setFormResult({ success: false, result: message });
       }
     }
 
