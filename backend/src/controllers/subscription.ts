@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { validationResult } from "express-validator";
 
+import { devMode } from "../config";
 import SubscriptionModel from "../models/subscription";
 import { sendConfirmationEmail } from "../services/gmailService";
 import validationErrorParser from "../util/validationErrorParser";
@@ -29,11 +30,13 @@ export const createSubscription: RequestHandler<object, object, SubscriptionBody
       return;
     }
 
-    const threadId = await sendConfirmationEmail(
-      email,
-      "Thanks for subscribing to HoMEwork!",
-      "We’ve received your request and will keep in touch.",
-    );
+    const threadId =
+      devMode ??
+      (await sendConfirmationEmail(
+        email,
+        "Thanks for subscribing to HoMEwork!",
+        "We’ve received your request and will keep in touch.",
+      ));
 
     const newSubscription = await SubscriptionModel.create({
       firstname,

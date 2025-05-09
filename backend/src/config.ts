@@ -57,5 +57,6 @@ oAuth2Client.setCredentials({
 });
 
 const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
+const devMode = process.env.DEVELOPER_MODE === "True";
 
-export { port, mongoUri, serviceAccountKey, email, emailPassword, gmail };
+export { port, mongoUri, serviceAccountKey, email, emailPassword, gmail, devMode };
