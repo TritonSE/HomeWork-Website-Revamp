@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
-
 // Type definitions for Stripe
 type StripeCustomerDetails = {
   email?: string;
