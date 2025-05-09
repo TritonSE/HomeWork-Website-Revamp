@@ -1,11 +1,10 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 /**
  * Interface representing a single section (field) of a page.
  */
 export type IField = {
   name: string;
-  type: string; // Type identifier ('header', 'testimonial')
   data: unknown; // Mixed type to hold any shape of data
 };
 
@@ -25,7 +24,6 @@ export type IPageData = {
 const fieldSchema: Schema = new Schema(
   {
     name: { type: String, required: true },
-    type: { type: String, required: true },
     data: { type: Schema.Types.Mixed, required: true },
   },
   { _id: false },

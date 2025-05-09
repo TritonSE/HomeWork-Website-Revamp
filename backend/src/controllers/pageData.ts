@@ -1,13 +1,11 @@
-import { RequestHandler } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 
 import PageData from "../models/pageData";
-import { Request, Response, NextFunction } from "express";
 
 type UpdatePageDataBody = {
   pagename: string;
   fields: {
     name: string;
-    type: string;
     data: unknown;
   }[];
 };

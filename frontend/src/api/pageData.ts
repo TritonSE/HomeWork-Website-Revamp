@@ -2,7 +2,6 @@ import { APIResult, get, post } from "./requests";
 
 export type Field = {
   name: string;
-  type: string;
   data: unknown;
 };
 
