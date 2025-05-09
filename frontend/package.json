@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@firebase/storage": "^0.13.5",
+    "@fontsource/golos-text": "^5.2.5",
     "@material-tailwind/react": "^2.1.10",
     "@stripe/react-stripe-js": "^3.3.0",
     "@stripe/stripe-js": "^5.9.2",

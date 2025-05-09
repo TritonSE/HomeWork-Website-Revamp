@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
-import { post } from "@/api/requests";
+import { post } from "../api/requests";
 
 //import AdminLogin from "@/../public/images/adminLogin.svg";
 //import Facebook from "@/../public/images/facebook.svg";
@@ -16,6 +16,10 @@ type LinkProps = {
   text: string;
   url: string;
   isHeader?: boolean;
+};
+
+type ErrorMessage = {
+  message: string;
 };
 
 const FooterLink: React.FC<{ links: LinkProps[] }> = ({ links }) => {
@@ -55,28 +59,49 @@ const SocialMediaIcon: React.FC<SocialMediaIconProps> = ({ icon, iconAlt, iconUr
 
 const SubscriptionForm: React.FC = () => {
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [formResult, setFormResult] = useState({ success: false, result: "" });
   const [showMessage, setShowMessage] = useState(false);
 
-  type ErrorMessage = {
-    message: string;
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+
+    const nameParts = fullName.trim().split(" ");
+    if (nameParts.length < 2) {
+      setFormResult({
+        success: false,
+        result: "Please enter your full name (first and last name).",
+      });
+      setShowMessage(true);
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 5000);
+      return;
+    }
+
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(" ");
     try {
       // response is never used
-      const _ = await post("/subscriptions/create", { email, name });
+      const _ = await post("/subscriptions/create", {
+        firstname: firstName,
+        lastname: lastName,
+        email,
+      });
       setFormResult({ success: true, result: "Sucessfully subscribed!" });
       setEmail("");
-      setName("");
+      setFullName("");
     } catch (error) {
       const errorText = (error as Error).message;
       // gets the actual message for cause of errorring
-      const errorJSON = JSON.parse(errorText.split(": ")[1]) as ErrorMessage;
-      console.error("Error creating subscription", errorText);
-      setFormResult({ success: false, result: errorJSON.message });
+      let message = errorText;
+      try {
+        const errorJSON = JSON.parse(errorText.split(": ")[1]) as ErrorMessage;
+        message = errorJSON.message;
+      } finally {
+        console.error("Error creating subscription", errorText);
+        setFormResult({ success: false, result: message });
+      }
     }
 
     setShowMessage(true);
@@ -117,10 +142,9 @@ const SubscriptionForm: React.FC = () => {
           id="fullName"
           placeholder="Full Name"
           className="p-2 mt-2 w-full sm:max-w-md text-black"
-          required
-          value={name}
+          value={fullName}
           onChange={(e) => {
-            setName(e.target.value);
+            setFullName(e.target.value);
           }}
         />
         <div className="flex flex-row gap-3 items-center">

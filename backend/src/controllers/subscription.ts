@@ -7,7 +7,8 @@ import { sendConfirmationEmail } from "../services/gmailService";
 import validationErrorParser from "../util/validationErrorParser";
 
 type SubscriptionBody = {
-  name: string;
+  firstname: string;
+  lastname: string;
   email: string;
 };
 
@@ -21,7 +22,7 @@ export const createSubscription: RequestHandler<object, object, SubscriptionBody
     const errors = validationResult(req);
     validationErrorParser(errors);
 
-    const { name, email } = req.body;
+    const { firstname, lastname, email } = req.body;
 
     const subscription = await SubscriptionModel.findOne({ email });
     if (subscription) {
@@ -38,7 +39,8 @@ export const createSubscription: RequestHandler<object, object, SubscriptionBody
       ));
 
     const newSubscription = await SubscriptionModel.create({
-      name,
+      firstname,
+      lastname,
       email,
       threadId,
       status: "active",
