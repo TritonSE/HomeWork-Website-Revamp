@@ -125,6 +125,7 @@
 //   );
 // }
 
+/** DELETE THIS CODE CHUNK AND UNCOMMENT ABOVE AFTER TESTING */
 "use client"; // You need this at the top for React state/hooks!
 
 import React, { useState } from "react";
