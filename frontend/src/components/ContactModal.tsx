@@ -83,6 +83,16 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     }, 5000);
   };
 
+  const handleDiscard = () => {
+    // Reset the form fields to their initial empty states
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setMembership("community"); // Reset membership to default
+    setStatus("active"); // Reset status to default
+    onClose(); // Close the modal
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -228,7 +238,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
               {/* cancel button */}
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleDiscard} // Call the handleDiscard function
                 className="w-[227px] h-12 pt-3 pb-3 pr-6 pl-6 gap-1.5 rounded-md border-2 border-[#b93b3b] flex flex-row items-center justify-center font-golos-text font-normal text-base leading-6 tracking-normal text-center align-middle text-[#b93b3b]"
               >
                 <>
