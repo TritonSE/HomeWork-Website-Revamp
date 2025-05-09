@@ -1,46 +1,35 @@
-export default function HomeworkModel() {
-  const pillars = [
-    {
-      title: "Life Skills Development",
-      subtitle: "Fostering Personal Growth",
-      icon: "/icons/life-skills.svg",
-    },
-    {
-      title: "Family Rebuilding",
-      subtitle: "Restoring Relationships",
-      icon: "/icons/family-rebuilding.svg",
-    },
-    {
-      title: "Community Restoration",
-      subtitle: "Rebuilding Neighborhoods",
-      icon: "/icons/community-restoration.svg",
-    },
-    {
-      title: "Civic Engagement",
-      subtitle: "Advocating For Change",
-      icon: "/icons/civic-engagement.svg",
-    },
-  ];
+import React from "react";
+
+export type Pillar = {
+  title: string;
+  subtitle: string;
+  icon: string;
+};
+
+export default function HomeworkModel({
+  data,
+}: {
+  data: {
+    title: string;
+    description: string;
+    pillars: Pillar[];
+  };
+}) {
+  const { title, description, pillars } = data;
 
   return (
     <section className="px-8 md:px-16 py-12">
-      <h2 className="text-[48px] font-bold text-gray-900">The Homework Model</h2>
-      <p className="text-gray-600 mt-4 max-w-2xl">
-        This isn&apos;t employment assistance; we&apos;re a close-knit family dedicated to your
-        journey. Our Friday night meetings go beyond careers—they&apos;re chances for us to connect,
-        share, and grow together. These are the 4 pillars that our organization prides itself on.
-      </p>
-
-      {/* Pillars Flexbox Layout - Ensuring All Items Stay in One Line */}
+      <h2 className="text-[48px] font-bold text-gray-900">{title}</h2>
+      <p className="text-gray-600 mt-4 max-w-2xl">{description}</p>
       <div className="mt-10 flex flex-nowrap justify-between gap-4">
-        {pillars.map((pillar, index) => (
+        {pillars.map((p, i) => (
           <div
-            key={index}
+            key={i}
             className="bg-gray-100 rounded-lg p-6 text-center shadow-sm w-1/4 min-w-[200px]"
           >
-            <img src={pillar.icon} alt={pillar.title} className="mx-auto h-16 mb-4" />
-            <h3 className="text-xl font-semibold">{pillar.title}</h3>
-            <p className="text-gray-600">{pillar.subtitle}</p>
+            <img src={p.icon} alt={p.title} className="mx-auto h-16 mb-4" />
+            <h3 className="text-xl font-semibold">{p.title}</h3>
+            <p className="text-gray-600">{p.subtitle}</p>
           </div>
         ))}
       </div>
