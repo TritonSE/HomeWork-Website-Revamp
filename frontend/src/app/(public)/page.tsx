@@ -8,9 +8,10 @@ import { EventsCarouselCard } from "@/components/EventsCarousel/EventsCarouselCa
 import Header from "@/components/Header";
 import HomeworkModel from "@/components/HomeworkModel";
 import Mission from "@/components/Mission";
-import NewsPastEvents from "@/components/NewsPastEvents";
-import SuccessStories from "@/components/SuccessStories";
+import NewsPastEvents, { NewsPastEventsData } from "@/components/NewsPastEvents";
+import SuccessStories, { SuccessStoriesData } from "@/components/SuccessStories";
 import { PageDataContext } from "@/contexts/pageDataContext";
+import { BoxLinkProps } from "@/components/BoxLink";
 
 type Event = {
   header: string;
@@ -53,6 +54,37 @@ export default function HomePage() {
     fancy?: boolean;
   };
 
+  // mission
+  const missionField = homeData.fields.find((f) => f.name === "mission");
+  const missionData = missionField?.data as {
+    title: string;
+    description: string;
+    imageUrl: string;
+    buttonText: string;
+    buttonLink: string;
+  };
+
+  // BoxlinkGroup
+  const boxLinksField = homeData.fields.find((f) => f.name === "boxLinks");
+  const boxLinks = (boxLinksField?.data as BoxLinkProps[]) ?? [];
+
+  // Homework Model
+  const modelField = homeData.fields.find((f) => f.name === "homeworkModel");
+  const modelData =
+    (modelField?.data as {
+      title: string;
+      description: string;
+      pillars: { title: string; subtitle: string; icon: string }[];
+    }) ?? null;
+
+  // Success Stories
+  const successField = homeData.fields.find((f) => f.name === "successStories");
+  const successData = (successField?.data as SuccessStoriesData) ?? null;
+
+  // News Past Events
+  const newsField = homeData.fields.find((f) => f.name === "newsPastEvents");
+  const newsData = (newsField?.data as NewsPastEventsData) ?? null;
+
   // events carousel
   const eventsField = homeData.fields.find((f) => f.name === "events");
   const events: Event[] = (eventsField?.data as Event[]) ?? [];
@@ -61,11 +93,11 @@ export default function HomePage() {
     <div className={`transition-opacity duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}>
       <Header imageUrl={imageUrl} header={header} subheader={subheader} fancy={fancy} />
 
-      <Mission />
-      <BoxLinkGroup />
-      <HomeworkModel />
-      <SuccessStories />
-      <NewsPastEvents />
+      {missionData && <Mission data={missionData} />}
+      {boxLinks.length > 0 && <BoxLinkGroup data={boxLinks} />}
+      {modelData && <HomeworkModel data={modelData} />}
+      {successData && <SuccessStories data={successData} />}
+      {newsData && <NewsPastEvents data={newsData} />}
 
       <div className="mb-10">
         <EventsCarousel>
