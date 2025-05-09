@@ -1,27 +1,13 @@
 "use client";
 
 import React, { useContext, useState } from "react";
-import Image from "next/image";
 import { Button, TextField } from "@tritonse/tse-constellation";
-
 import { PageDataContext } from "@/contexts/pageDataContext";
+import Checkout from "@/components/Checkout";
+import Image from "next/image";
 
-const DonationPage: React.FC = () => {
+const DonationPage = () => {
   const context = useContext(PageDataContext);
-
-  const [formData, setFormData] = useState({
-    isAnonymous: false,
-    isDonatingOnBehalf: false,
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    paymentMethod: "card",
-  });
 
   if (!context) return <div>Error: Page data not available.</div>;
   const { pageData, loading } = context;
@@ -48,18 +34,6 @@ const DonationPage: React.FC = () => {
     paragraphs: string[];
     imageUrl: string;
   };
-
-  // 5) Handlers
-  const handleInputChange = (name: string, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission
-  };
-
-  // 6) Render
   return (
     <div className="pt-24">
       <div className="px-8 grid md:grid-cols-2 gap-8 mb-16">
@@ -84,150 +58,10 @@ const DonationPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column - Donation Form */}
+        {/* Right Column - Stripe Checkout */}
         <div className="bg-white p-6 border-2 border-[#D9D9D9]">
-          <h2 className="text-2xl mb-6">Who&apos;s Donating?</h2>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={formData.isAnonymous}
-                  onChange={(e) => {
-                    handleInputChange("isAnonymous", e.target.checked);
-                  }}
-                  className="form-checkbox accent-[#F26522]"
-                />
-                <span>Keep my donation anonymous</span>
-              </label>
-
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={formData.isDonatingOnBehalf}
-                  onChange={(e) => {
-                    handleInputChange("isDonatingOnBehalf", e.target.checked);
-                  }}
-                  className="form-checkbox accent-[#F26522]"
-                />
-                <span>I would like to donate on the behalf of someone else</span>
-              </label>
-            </div>
-
-            <TextField
-              label="First Name"
-              value={formData.firstName}
-              onChange={(v) => {
-                handleInputChange("firstName", v);
-              }}
-              placeholder="Enter your first name"
-            />
-
-            <TextField
-              label="Last Name"
-              value={formData.lastName}
-              onChange={(v) => {
-                handleInputChange("lastName", v);
-              }}
-              placeholder="Enter your last name"
-            />
-
-            <TextField
-              label="Email Address"
-              type="email"
-              value={formData.email}
-              onChange={(v) => {
-                handleInputChange("email", v);
-              }}
-              placeholder="Enter email"
-            />
-
-            <TextField
-              label="Phone"
-              type="tel"
-              value={formData.phone}
-              onChange={(v) => {
-                handleInputChange("phone", v);
-              }}
-              placeholder="Enter phone number"
-            />
-
-            <TextField
-              label="Address"
-              value={formData.address}
-              onChange={(v) => {
-                handleInputChange("address", v);
-              }}
-              placeholder="Enter street address"
-            />
-
-            <TextField
-              label="City"
-              value={formData.city}
-              onChange={(v) => {
-                handleInputChange("city", v);
-              }}
-              placeholder="Enter city name"
-            />
-
-            <TextField
-              label="State"
-              value={formData.state}
-              onChange={(v) => {
-                handleInputChange("state", v);
-              }}
-              placeholder="Enter state name"
-            />
-
-            <TextField
-              label="Zip Code"
-              value={formData.zipCode}
-              onChange={(v) => {
-                handleInputChange("zipCode", v);
-              }}
-              placeholder="Enter zip code"
-            />
-
-            <div className="space-y-4">
-              <h3 className="text-2xl">Choose Payment Method</h3>
-              <div className="space-y-2">
-                <label className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="card"
-                    checked={formData.paymentMethod === "card"}
-                    onChange={(e) => {
-                      handleInputChange("paymentMethod", e.target.value);
-                    }}
-                    className="form-radio accent-[#F26522]"
-                  />
-                  <span>Credit Card / Debit Card</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="paypal"
-                    checked={formData.paymentMethod === "paypal"}
-                    onChange={(e) => {
-                      handleInputChange("paymentMethod", e.target.value);
-                    }}
-                    className="form-radio accent-[#F26522]"
-                  />
-                  <span>PayPal / Venmo</span>
-                </label>
-              </div>
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full bg-[#F26522] text-white py-3 rounded-md hover:bg-[#d55416] transition-colors"
-            >
-              Give Securely
-            </Button>
-          </form>
+          <h2 className="text-2xl mb-6">Make Your Donation</h2>
+          <Checkout />
         </div>
       </div>
 
