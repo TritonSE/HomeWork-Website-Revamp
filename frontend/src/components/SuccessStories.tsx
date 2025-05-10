@@ -15,24 +15,31 @@ export default function SuccessStories() {
           slides={[
             {
               id: 1,
-              image: "images/testimonial.png",
+              image: "images/tavo-vega.png",
               quote:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-              author: "John Doe, Member of Homework",
+                "Being a part of HoMEworkSD gives me a safe space where I can be myself. My lived experiences may get me labeled as someone from a stigmatized community, but I am empowered to embrace my challenges and successes with HoMEworkSD.",
+              author: "Tavo Vega, Member of Homework",
             },
             {
               id: 2,
-              image: "images/testimonial.png",
+              image: "images/coach-ed.png",
               quote:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-              author: "John Doe, Member of Homework",
+                "HoMEwork has offered me the opportunity to build a foundation that has and will continue to, support both me and my family’s future. To build a legacy that will help others even after I am gone. To build an appreciation for community that resonates with the acronym TEAM, because Together Everyone Achieves More.",
+              author: "Coach Ed Wallace, Member of Homework",
             },
             {
               id: 3,
-              image: "images/testimonial.png",
+              image: "images/adrian-vargas.png",
               quote:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-              author: "John Doe, Member of Homework",
+                "15-0-10 KO HoMEwork is a safe place where I am not judged for my past nor the life I have lived. HoMEwork gave me the drive and the tools I needed to construct those bridges which I once tore down and was afraid to walk across.",
+              author: "Adrian Vargas, Member of Homework",
+            },
+            {
+              id: 4,
+              image: "images/matt-edwards.png",
+              quote:
+                "HoMEwork embodies the four pillars: Family Rebuilding, Civic Engagement, Life Skills Development and Community Restoration. We offer a safe space, a community where individuals discover family, support, powerful networking and dedication to transformation. It means paving the way for a prosocial future worth having.",
+              author: "Matt Edwards, Member of Homework",
             },
           ]}
         />

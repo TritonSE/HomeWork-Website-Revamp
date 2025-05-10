@@ -59,12 +59,21 @@ const AboutUsPage = () => {
         <div className="font-golos py-[60px]">
           <div className="text-[48px] font-medium pb-4">Our Impact</div>
           <div className="text-[20px] font-normal pb-12">
-            Since XX, we’ve shifted the narrative of previously incarcerated people.
+            Since 2019, we&apos;ve helped rewrite what life after incarceration can look like.
           </div>
           <div className="flex flex-col md:flex-row justify-between  items-center md:px-[calc(10%)] gap-8">
-            <Stat percentage={20} description="of people do this, this, and this."></Stat>
-            <Stat percentage={40} description="of people do this, this, and this."></Stat>
-            <Stat percentage={60} description="of people do this, this, and this."></Stat>
+            <Stat
+              percentage={68}
+              description="of formerly incarcerated people in the U.S. return to prison."
+            ></Stat>
+            <Stat
+              percentage={46}
+              description="of formerly incarcerated people in California are reincarcerated."
+            ></Stat>
+            <Stat
+              percentage={100}
+              description="of our engaged members have stayed out of prison."
+            ></Stat>
           </div>
         </div>
       </div>
@@ -77,8 +86,8 @@ const AboutUsPage = () => {
           <div className="font-golos w-full max-w-[calc(80%)] md:max-w-[calc(50%)] ml-[50px] mr-4">
             <div className="text-[48px] font-medium pb-4">Our Mission</div>
             <div className="text-[20px] font-normal max-w-auto">
-              We’re reducing recidivism, increasing public safety, and changing the narrative of
-              what it means to be formerly incarcerated.
+              We&apos;re reducing recidivism, increasing public safety, and changing the narrative
+              of what it means to be formerly incarcerated.
             </div>
           </div>
           <Image
@@ -139,8 +148,8 @@ const AboutUsPage = () => {
           <div className="font-golos pb-8">
             <div className="text-[48px] font-medium pb-4">Our Team</div>
             <div className="text-[20px] font-normal max-w-[calc(80%)]">
-              We’re a team of XX, XX, and XX, actively changing what it means to be previously
-              incarcerated. We’re XX, XX, and XX, and we’re just getting started.
+              We’re a team of 7 board members and 100+ members redefining what it means to be
+              formerly incarcerated.
             </div>
           </div>
           <Button
