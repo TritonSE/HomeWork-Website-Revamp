@@ -26,6 +26,7 @@ jobs:
           echo SERVICE_ACCOUNT_KEY=${{secrets.SERVICE_ACCOUNT_KEY}} >> .env
           echo EMAIL=${{secrets.EMAIL}} >> .env
           echo EMAIL_PASSWORD=${{secrets.EMAIL_PASSWORD}} >> .env
+          echo STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} >> .env
           echo GMAIL_CLIENT_ID=${{secrets.GMAIL_CLIENT_ID}} >> .env
           echo GMAIL_CLIENT_SECRET=${{secrets.GMAIL_CLIENT_SECRET}} >> .env
           echo GMAIL_REDIRECT_URI=${{secrets.GMAIL_REDIRECT_URI}} >> .env
@@ -38,6 +39,7 @@ jobs:
           cd frontend 
           touch .env 
           echo NEXT_PUBLIC_FIREBASE_APP_CONFIG=${{secrets.FIREBASE_APP_CONFIG}} >> .env
+          echo NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }} >> .env
       - name: Build Backend
         run: cd backend && npm run build
       - name: Build Frontend
