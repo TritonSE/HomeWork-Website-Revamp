@@ -3,10 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useContext } from "react";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 
 import Header from "@/components/Header";
 import { ArticleContext } from "@/contexts/articleContext";
+import { PageDataContext } from "@/contexts/pageDataContext";
 import { Article } from "@/hooks/useArticles";
 
 const EVENTS_PER_PAGE = 8;
@@ -25,11 +26,11 @@ const EventCard: React.FC<{ article: Article }> = ({ article }) => {
         <p className="text-xs sm:text-base text-orange-500 font-medium">{textDate}</p>
         <p className="hidden sm:line-clamp-2">{article.body}</p>
         <Link
-          className="flex flex-row gap-2 w-fit text-gray-400 border border-transparent cursor-pointer hover:border-b-gray-400"
-          href={{ pathname: "/article-viewer", query: { articleId: article._id } }} // id of selected article
+          href={{ pathname: "/article-viewer", query: { articleId: article._id } }}
+          className="flex flex-row gap-2 w-fit text-gray-400 border border-transparent hover:border-b-gray-400"
         >
           <p className="text-xs sm:text-base">LEARN MORE</p>
-          <Image src="/icons/learnMore.svg" width={20} height={20} alt="Learn more arrow"></Image>
+          <Image src="/icons/learnMore.svg" width={20} height={20} alt="Learn more" />
         </Link>
       </div>
       <img src={article.thumbnail} alt="" className="w-5/12 h-auto object-cover" />
@@ -38,107 +39,141 @@ const EventCard: React.FC<{ article: Article }> = ({ article }) => {
 };
 
 const Pagination: React.FC<{ current: number; totalPages: number }> = ({ current, totalPages }) => {
-  const showPrevPage = current > 0;
-  const showNextPage = current < totalPages - 1;
+  const showPrev = current > 0;
+  const showNext = current < totalPages - 1;
 
   return (
     <div className="flex flex-row gap-2 items-center">
-      {showPrevPage && (
+      {showPrev && (
         <Link
           href={{ query: { page: current - 1 } }}
-          className="flex flex-row justify-center items-center gap-2 w-fit h-min border border-transparent cursor-pointer hover:border-b-orange-500 text-orange-500"
+          className="flex items-center gap-2 text-orange-500 hover:border-b-orange-500"
         >
           <Image
             src="/icons/nextPage.svg"
             width={20}
             height={20}
-            alt="Next page arrow"
+            alt="Previous page"
             className="rotate-180"
           />
-          <p className="hidden sm:block">PREVIOUS PAGE</p>
+          <span className="hidden sm:block">PREVIOUS PAGE</span>
         </Link>
       )}
 
-      {[...Array(totalPages).keys()].map((num) => {
-        const isCurrentDot = num === current;
-        return (
-          <Link
-            key={num}
-            href={{ query: { page: num } }}
-            className={isCurrentDot ? "pointer-events-none cursor-default" : ""}
+      {[...Array(totalPages).keys()].map((num) => (
+        <Link
+          key={num}
+          href={{ query: { page: num } }}
+          className={num === current ? "pointer-events-none cursor-default" : ""}
+        >
+          <span
+            className={`flex justify-center items-center rounded-full w-10 h-10 text-white font-golos font-medium ${
+              num === current ? "bg-orange-600" : "bg-gray-400"
+            }`}
           >
-            <p
-              className={`flex justify-center items-center rounded-full w-10 h-10 text-white font-golos font-medium ${isCurrentDot ? "bg-orange-600" : "bg-gray-400 cursor-pointer"}`}
-            >
-              {num + 1}
-            </p>
-          </Link>
-        );
-      })}
+            {num + 1}
+          </span>
+        </Link>
+      ))}
 
-      {showNextPage && (
+      {showNext && (
         <Link
           href={{ query: { page: current + 1 } }}
-          className="flex flex-row justify-center items-center gap-2 w-fit h-min border border-transparent cursor-pointer hover:border-b-orange-500 text-orange-500"
+          className="flex items-center gap-2 text-orange-500 hover:border-b-orange-500"
         >
-          <p className="hidden sm:block">NEXT PAGE</p>
-          <Image src="/icons/nextPage.svg" width={20} height={20} alt="Next page arrow" />
+          <span className="hidden sm:block">NEXT PAGE</span>
+          <Image src="/icons/nextPage.svg" width={20} height={20} alt="Next page" />
         </Link>
       )}
     </div>
   );
 };
 
-const EventsArchiveContent = () => {
-  // Get articles with the hook
-  const { articles, loading } = useContext(ArticleContext);
+const EventsArchiveContent: React.FC = () => {
+  const { articles, loading: articleLoading } = useContext(ArticleContext);
+  const searchParams = useSearchParams();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (!articleLoading) {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 50);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [articleLoading]);
+
+  if (articleLoading) {
+    return (
+      <p className="flex justify-center items-center w-full h-96 text-xl text-gray-400">
+        Loading...
+      </p>
+    );
+  }
 
   const totalPages = Math.ceil(articles.length / EVENTS_PER_PAGE);
-
-  const searchParams = useSearchParams();
-  // Defaults to home page
   const pageParam = searchParams.get("page");
   const currPage =
-    !Number.isNaN(Number(pageParam)) && 0 < Number(pageParam) && Number(pageParam) < totalPages
+    !isNaN(Number(pageParam)) && Number(pageParam) >= 0 && Number(pageParam) < totalPages
       ? Number(pageParam)
       : 0;
-
   const pageArticles = articles.slice(currPage * EVENTS_PER_PAGE, (currPage + 1) * EVENTS_PER_PAGE);
 
   return (
     <div className="p-5">
-      <section className="flex flex-col gap-5 mb-5 font-golos">
-        <h1 className="text-2xl sm:text-4xl font-medium">Events Archive</h1>
-        <p className="text-sm sm:text-base">
-          Our Past Events archive showcases a rich history of engagement and learning opportunities.
-          From insightful workshops to vibrant community gatherings, explore the impactful
-          activities that have brought people together.
-        </p>
-      </section>
-      <section className="flex flex-col gap-5 mb-5">
-        {loading ? (
-          <p className="flex flow justify-center items-center w-full h-96 text-xl text-gray-400">
-            Loading...
-          </p>
-        ) : (
-          pageArticles.map((article, index) => <EventCard article={article} key={index} />)
-        )}
+      <section
+        className="flex flex-col gap-5 mb-5 transition-opacity duration-700 font-golos"
+        style={{ opacity: isVisible ? 1 : 0 }}
+      >
+        {pageArticles.map((a, i) => (
+          <EventCard article={a} key={i} />
+        ))}
       </section>
       <Pagination current={currPage} totalPages={totalPages} />
     </div>
   );
 };
 
-// Needed to allow pre-rendering to not error for useSearchParams
-const EventsArchivePage = () => {
+const EventsArchivePage: React.FC = () => {
+  const context = useContext(PageDataContext);
+  if (!context) return <div>Error: Page data unavailable.</div>;
+
+  const { pageData, loading: pageLoading } = context;
+  if (pageLoading) return null;
+
+  const page = pageData.find((p) => p.pagename === "events-archive");
+  if (!page) return <div>No data for events-archive.</div>;
+
+  const headerField = page.fields.find((f) => f.name === "header");
+  const descriptionField = page.fields.find((f) => f.name === "description");
+
+  const headerData = headerField?.data as {
+    imageUrl: string;
+    header: string;
+    subheader?: string;
+    fancy?: boolean;
+  };
+  const descData = descriptionField?.data as { title: string; description: string };
+
   return (
     <Suspense>
-      <Header
-        imageUrl="/images/events-archive-header.jpg"
-        header="News & Past Events"
-        subheader="Discover the impact we've made together through our past events! From inspiring workshops and community gatherings to impactful initiatives, this page celebrates the milestones and memories that have shaped our mission."
-      />
-      <EventsArchiveContent />
+      {headerField && (
+        <Header
+          imageUrl={headerData.imageUrl}
+          header={headerData.header}
+          subheader={headerData.subheader ?? ""}
+          fancy={headerData.fancy}
+        />
+      )}
+      <div className="p-5">
+        <section className="flex flex-col gap-5 mb-5 font-golos">
+          <h1 className="text-2xl sm:text-4xl font-medium">{descData.title}</h1>
+          <p className="text-sm sm:text-base pt-4">{descData.description}</p>
+        </section>
+        <EventsArchiveContent />
+      </div>
     </Suspense>
   );
 };
