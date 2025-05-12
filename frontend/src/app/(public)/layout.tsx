@@ -1,6 +1,8 @@
 "use client";
 
 import "@/global.css";
+import { PageDataContextProvider } from "../../contexts/pageDataContext";
+
 import { Footer } from "@/components/Footer";
 import NavBar from "@/components/NavBar/NavBar";
 import { ArticleContextProvider } from "@/contexts/articleContext";
@@ -16,7 +18,9 @@ export default function RootLayout({
     <>
       <NavBar />
       <main className="min-h-screen pt-0">
-        <ArticleContextProvider>{children}</ArticleContextProvider>
+        <ArticleContextProvider>
+          <PageDataContextProvider>{children}</PageDataContextProvider>
+        </ArticleContextProvider>
       </main>
       <Footer />
     </>
