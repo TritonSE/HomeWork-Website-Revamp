@@ -4,15 +4,16 @@ import React, { useRef, useState } from "react";
 import { storage } from "../firebase/firebase";
 
 import type { Article } from "@/hooks/useArticles";
+
 import { post, put } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
 
-interface EventEditorModalProps {
+type EventEditorModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
   selectedArticle?: Article;
-}
+};
 
 const EventEditorModal: React.FC<EventEditorModalProps> = ({
   isOpen,
@@ -395,7 +396,9 @@ const EventEditorModal: React.FC<EventEditorModalProps> = ({
                   }
                 })();
               }}
-              disabled={isUploading || !eventTitle || (!selectedFile && !selectedArticle?.thumbnail)}
+              disabled={
+                isUploading || !eventTitle || (!selectedFile && !selectedArticle?.thumbnail)
+              }
               className={`px-4 py-2 border border-gray-300 rounded-md flex items-center gap-2 ${
                 isUploading || !eventTitle || (!selectedFile && !selectedArticle?.thumbnail)
                   ? "opacity-50 cursor-not-allowed"
@@ -428,7 +431,9 @@ const EventEditorModal: React.FC<EventEditorModalProps> = ({
                   }
                 })();
               }}
-              disabled={isUploading || !eventTitle || (!selectedFile && !selectedArticle?.thumbnail)}
+              disabled={
+                isUploading || !eventTitle || (!selectedFile && !selectedArticle?.thumbnail)
+              }
               className={`px-4 py-2 bg-[#f26522] text-white rounded-md flex items-center gap-2 ${
                 isUploading || !eventTitle || (!selectedFile && !selectedArticle?.thumbnail)
                   ? "opacity-50 cursor-not-allowed"
@@ -505,4 +510,4 @@ const EventEditorModal: React.FC<EventEditorModalProps> = ({
   );
 };
 
-export default EventEditorModal; 
+export default EventEditorModal;

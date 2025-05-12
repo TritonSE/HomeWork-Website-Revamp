@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useContext } from "react";
-import { PageDataContext } from "@/contexts/pageDataContext";
-import Checkout from "@/components/Checkout";
 import Image from "next/image";
+import React, { useContext } from "react";
+
+import Checkout from "@/components/Checkout";
+import { PageDataContext } from "@/contexts/pageDataContext";
 
 const DonationPage = () => {
   const context = useContext(PageDataContext);

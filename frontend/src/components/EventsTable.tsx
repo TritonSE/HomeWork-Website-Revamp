@@ -2,13 +2,13 @@
 import { Icon, Table } from "@tritonse/tse-constellation";
 import React, { useEffect, useState } from "react";
 
+import EventEditorModal from "./EventEditorModal";
+
 import type { Article } from "@/hooks/useArticles";
 
 import { del, get } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
 import { useRedirectToLogin } from "@/hooks/useRedirect";
-
-import EventEditorModal from "./EventEditorModal";
 
 type ArticleWithStatus = Article & {
   status: "Draft" | "Published";
@@ -55,7 +55,7 @@ const EventsTable: React.FC = () => {
 
   const fetchArticles = async (): Promise<void> => {
     if (!firebaseUser) return;
-    
+
     setIsLoading(true);
     try {
       const headers = await getAuthHeader();
@@ -544,9 +544,7 @@ const EventsTable: React.FC = () => {
         onSuccess={(): void => {
           void fetchArticles();
           showSuccessMessage(
-            selectedArticle
-              ? "Event updated successfully."
-              : "Event published successfully.",
+            selectedArticle ? "Event updated successfully." : "Event published successfully.",
           );
         }}
         selectedArticle={selectedArticle ?? undefined}
