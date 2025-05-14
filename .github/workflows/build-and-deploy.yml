@@ -33,6 +33,7 @@ jobs:
           echo GMAIL_ACCESS_TOKEN=${{secrets.GMAIL_ACCESS_TOKEN}} >> .env
           echo GMAIL_REFRESH_TOKEN=${{secrets.GMAIL_REFRESH_TOKEN}} >> .env
           echo GMAIL_TOKEN_EXPIRY=${{secrets.GMAIL_TOKEN_EXPIRY}} >> .env
+          echo STORAGE_BUCKET=${{secrets.STORAGE_BUCKET}} >> .env
       - name: Create Frontend .env file
         run: |
           cd frontend 

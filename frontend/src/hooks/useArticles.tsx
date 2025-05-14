@@ -11,6 +11,7 @@ export type Article = {
   author: string;
   body?: string | null;
   thumbnail: string;
+  isPublished: boolean;
 };
 
 /**

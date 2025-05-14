@@ -9,6 +9,7 @@ import { devMode, mongoUri, port } from "./config";
 import { errorHandler } from "./errors/handler";
 import articleRoutes from "./routes/article";
 import contactRoute from "./routes/contactRequest";
+import pageDataRoutes from "./routes/pageData";
 import quoteRoutes from "./routes/quote";
 import stripeRoutes from "./routes/stripe";
 import subscriptionRoutes from "./routes/subscriptions";
@@ -39,6 +40,7 @@ app.use("/api/contact", contactRoute);
 app.use("/api/users", userRoute);
 app.use("/api/articles", articleRoutes);
 app.use("/api/quotes", quoteRoutes);
+app.use("/api/pageData", pageDataRoutes);
 app.use("/api/stripe", stripeRoutes);
 
 app.use(errorHandler);

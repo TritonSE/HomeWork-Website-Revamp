@@ -1,21 +1,22 @@
 "use client";
 // app/return/page.tsx
-import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getCheckoutSession } from "../../../api/stripe";
+import { Suspense, useEffect, useState } from "react";
+
 import { APIResult } from "../../../api/requests";
+import { getCheckoutSession } from "../../../api/stripe";
 
 // Define type for our debug information
-interface CheckoutSessionData {
+type CheckoutSessionData = {
   status: string;
   customerEmail?: string;
-}
+};
 
-interface DebugInfo {
+type DebugInfo = {
   sessionId?: string;
   responseData?: APIResult<CheckoutSessionData>;
   errorDetails?: string;
-}
+};
 
 export default function Return() {
   return (
