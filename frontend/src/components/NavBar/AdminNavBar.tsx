@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       <nav className="fixed top-0 left-0 z-50 flex flex-col px-8 h-screen w-[276px] border-r-2 border-[#f0ecec]">
-        <div className="mx-auto">
+        <div className="mx-auto mt-12">
           <Link href="/">
             <Image src="/logo-dark.png" alt="Logo" width={176} height={98} priority />
           </Link>

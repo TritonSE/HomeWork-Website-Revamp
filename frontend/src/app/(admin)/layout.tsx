@@ -9,7 +9,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <UserContextProvider>
       <div className="flex min-h-screen">
-        <div className="flex-none basis-[15%]">
+        <div className="flex-none basis-[276px] grow-0 shrink">
           <AdminNavBar />
         </div>
         <div className="flex-1 p-6">{children}</div>
