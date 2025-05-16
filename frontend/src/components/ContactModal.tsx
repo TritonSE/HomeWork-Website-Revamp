@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import "@fontsource/golos-text/500.css";
-import { post } from "../api/requests"; // Assuming you have a post method for API requests
+import { post } from "../api/requests";
 
 type ContactModalProps = {
   isOpen: boolean;
@@ -37,20 +37,15 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
       return;
     }
 
-    // Log the form data for debugging
-    console.log("Submitting form with data:", { firstName, lastName, email, status, membership });
-
     try {
       // Send the form data to the backend with the correct keys
-      const response = await post("/subscriptions/create", {
-        firstname: firstName, // Changed to "firstname"
-        lastname: lastName, // Changed to "lastname"
+      const _ = await post("/subscriptions/create", {
+        firstname: firstName,
+        lastname: lastName,
         email,
         status,
         membership,
       });
-
-      console.log("Form response:", response); // Log the response for debugging
 
       // Update the form result on successful submission
       setFormResult({
