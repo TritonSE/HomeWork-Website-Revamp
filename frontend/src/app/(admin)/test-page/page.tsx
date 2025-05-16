@@ -1,6 +1,8 @@
+"use client";
 import React, { useState } from "react";
-import ContactModal from "../../../components/ContactModal";
+
 import TestPageComponent from "../../..//components/testPageComponent";
+import ContactModal from "../../../components/ContactModal";
 
 const TestPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);

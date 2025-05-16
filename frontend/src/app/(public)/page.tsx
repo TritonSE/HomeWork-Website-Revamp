@@ -97,7 +97,7 @@ export default function HomePage() {
       {modelData && <HomeworkModel data={modelData} />}
       {successData && <SuccessStories data={successData} />}
       {newsData && <NewsPastEvents data={newsData} />}
-  <div className="mb-10">
+      <div className="mb-10">
         <EventsCarousel>
           <EventsCarouselCard key="1" event={events[0]} />
           <EventsCarouselCard key="2" event={events[1]} />

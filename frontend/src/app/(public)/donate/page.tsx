@@ -6,8 +6,6 @@ import React, { useContext } from "react";
 import Checkout from "@/components/Checkout";
 import { PageDataContext } from "@/contexts/pageDataContext";
 
-import Checkout from "@/components/Checkout";
-
 const DonationPage = () => {
   const context = useContext(PageDataContext);
 
