@@ -30,7 +30,6 @@ const verifyAuthToken = async (req: RequestWithUserId, res: Response, next: Next
   try {
     //This is where we actually check if the token is valid and get user from firebase
     const userInfo: DecodedIdToken = await decodeAuthToken(token);
-
     // Add user info to the request body
     req.body.uid = userInfo.uid;
 
