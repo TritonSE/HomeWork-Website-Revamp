@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useContext, useEffect, useState } from "react";
 
 import { BoxLinkProps } from "@/components/BoxLink";
@@ -98,7 +97,6 @@ export default function HomePage() {
       {modelData && <HomeworkModel data={modelData} />}
       {successData && <SuccessStories data={successData} />}
       {newsData && <NewsPastEvents data={newsData} />}
-
       <div className="mb-10">
         <EventsCarousel>
           <EventsCarouselCard key="1" event={events[0]} />
