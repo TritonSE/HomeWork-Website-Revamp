@@ -1,11 +1,31 @@
 "use client";
-import TestPage from "../../../components/testPageComponent";
-const testPage = () => {
+
+import React, { useState } from "react";
+
+import TestPageComponent from "../../..//components/testPageComponent";
+import ContactModal from "../../../components/ContactModal";
+
+const TestPage = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+
   return (
     <>
-      <TestPage />
+      <TestPageComponent />
+      <button
+        onClick={() => {
+          setModalOpen(true);
+        }}
+      >
+        Open Modal
+      </button>
+      <ContactModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setModalOpen(false);
+        }}
+      />
     </>
   );
 };
 
-export default testPage;
+export default TestPage;
