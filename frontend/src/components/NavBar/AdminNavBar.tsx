@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
       setEmail("");
     };
     return (
-      <div className="bg-white w-[50%] p-8 rounded-xl shadow-xl relative">
+      <div className="bg-white md:w-full w-[60%] mx-auto p-8 rounded-xl shadow-xl relative">
         <div className="w-full">
           <div className="flex justify-end">
             <button onClick={onClose} className=" text-gray-500 hover:text-black text-2xl">
@@ -208,9 +208,21 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </nav>
-      {resetPassword && (
+      {/* {resetPassword && (
         <div className="fixed inset-0 z-[999] bg-slate-500 bg-opacity-25 flex items-center justify-center">
           <ChangePassword onClose={() => setResetPassword(false)} />
+        </div>
+      )} */}
+      {resetPassword && (
+        <div
+          className="fixed inset-0 z-[999] bg-slate-500 bg-opacity-25 flex items-center justify-center"
+          onClick={() => setResetPassword(false)} // close when clicking background
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            {" "}
+            {/* prevent closing when clicking inside */}
+            <ChangePassword onClose={() => setResetPassword(false)} />
+          </div>
         </div>
       )}
     </>
