@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Button, Icon, TextField } from "@tritonse/tse-constellation";
+import { Button, TextField } from "@tritonse/tse-constellation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -177,13 +177,17 @@ const Navbar: React.FC = () => {
                 Create an Account
               </Link>
               <button
-                onClick={() => void setResetPassword(true)}
+                onClick={() => {
+                  setResetPassword(true);
+                }}
                 className="w-full px-4 py-2 hover:bg-gray-100 text-center"
               >
                 Change Password
               </button>
               <button
-                onClick={() => void handleSignOut()}
+                onClick={() => {
+                  void handleSignOut();
+                }}
                 className="w-full px-4 py-2 hover:bg-gray-100 text-center"
               >
                 Sign Out
@@ -208,20 +212,23 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </nav>
-      {/* {resetPassword && (
-        <div className="fixed inset-0 z-[999] bg-slate-500 bg-opacity-25 flex items-center justify-center">
-          <ChangePassword onClose={() => setResetPassword(false)} />
-        </div>
-      )} */}
       {resetPassword && (
         <div
           className="fixed inset-0 z-[999] bg-slate-500 bg-opacity-25 flex items-center justify-center"
-          onClick={() => setResetPassword(false)} // close when clicking background
+          onClick={() => {
+            setResetPassword(false);
+          }}
         >
-          <div onClick={(e) => e.stopPropagation()}>
-            {" "}
-            {/* prevent closing when clicking inside */}
-            <ChangePassword onClose={() => setResetPassword(false)} />
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <ChangePassword
+              onClose={() => {
+                setResetPassword(false);
+              }}
+            />
           </div>
         </div>
       )}
