@@ -1,21 +1,128 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { Button, Icon, TextField } from "@tritonse/tse-constellation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { useAuthState } from "../../contexts/userContext";
+import { auth } from "../../firebase/firebase";
 const Navbar: React.FC = () => {
   const router = useRouter();
   const { loading, firebaseUser, logout } = useAuthState();
   const displayEmail = firebaseUser?.email;
   const displayName = firebaseUser?.displayName;
   const [open, setOpen] = useState(false);
+  const [resetPassword, setResetPassword] = useState(false);
   const toggle = () => {
     setOpen((o) => !o);
   };
   const handleSignOut = async () => {
     await logout();
     router.replace("/login");
+  };
+  type Props = {
+    onClose: () => void;
+  };
+  const ChangePassword: React.FC<Props> = ({ onClose }) => {
+    const [email, setEmail] = useState("");
+    const [emailError, setEmailError] = useState<string>("");
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
+    const handleInputChange = (value: string) => {
+      setEmail(value);
+      setEmailError("");
+    };
+
+    const submitForm = async () => {
+      setIsSubmitting(true);
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        setIsEmailSent(true);
+      } catch (error) {
+        if (error instanceof Error) {
+          setEmailError("Failed to send reset email. Please try again.");
+        }
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      void submitForm();
+    };
+
+    const handleTryAgain = () => {
+      setIsEmailSent(false);
+      setEmail("");
+    };
+    return (
+      <div className="bg-white w-[50%] p-8 rounded-xl shadow-xl relative">
+        <div className="w-full">
+          <div className="flex justify-end">
+            <button onClick={onClose} className=" text-gray-500 hover:text-black text-2xl">
+              ✕
+            </button>
+          </div>
+          <div className="mt-10 flex md:justify-start justify-center">
+            <Image src="/images/homeworkLogo.png" alt="Homework Logo" width={155} height={86} />
+          </div>
+
+          {!isEmailSent ? (
+            <>
+              <h1 className="text-3xl mb-2 md:text-start text-center font-medium py-6">
+                Change Password
+              </h1>
+              <p className="mb-4 text-[#909090]  w-full md:w-[40%]">
+                Don&apos;t worry. Resetting your password is easy, just tell us the email address
+                you registered.
+              </p>
+
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  label="Email Address"
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={handleInputChange}
+                  placeholder="Enter email"
+                  errorText={emailError}
+                />
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#F26522] text-white py-2 rounded-md hover:bg-[#d55416]"
+                >
+                  {isSubmitting ? "Submitting" : "Next"}
+                </Button>
+              </form>
+            </>
+          ) : (
+            <>
+              <h1 className="text-3xl mb-2">Reset Your Password</h1>
+              <p className="mb-4 text-[#909090]">
+                We sent a reset password email to <span className="font-semibold">{email}</span>.
+                Please click the reset password link to set your new password.
+              </p>
+
+              <div className="mt-4">
+                <p className="text-sm text-[#000]">Haven&apos;t received the email?</p>
+                <p className="text-sm text-[#000]">
+                  Please check your spam folder, or{" "}
+                  <button onClick={handleTryAgain} className="text-[#F26522] hover:underline">
+                    try again
+                  </button>
+                  .
+                </p>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    );
   };
   return (
     <>
@@ -69,12 +176,12 @@ const Navbar: React.FC = () => {
               >
                 Create an Account
               </Link>
-              <Link
-                href="/change-password"
-                className="block px-4 py-2 hover:bg-gray-100 text-center"
+              <button
+                onClick={() => void setResetPassword(true)}
+                className="w-full px-4 py-2 hover:bg-gray-100 text-center"
               >
                 Change Password
-              </Link>
+              </button>
               <button
                 onClick={() => void handleSignOut()}
                 className="w-full px-4 py-2 hover:bg-gray-100 text-center"
@@ -101,6 +208,11 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </nav>
+      {resetPassword && (
+        <div className="fixed inset-0 z-[999] bg-slate-500 bg-opacity-25 flex items-center justify-center">
+          <ChangePassword onClose={() => setResetPassword(false)} />
+        </div>
+      )}
     </>
   );
 };
