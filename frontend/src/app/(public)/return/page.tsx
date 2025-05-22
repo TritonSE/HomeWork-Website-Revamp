@@ -164,10 +164,10 @@ function ReturnContent() {
           </div>
 
           <div className="text-[#6C6C6C] font-normal text-[18px] leading-[150%] tracking-[2%] text-center w-[454px] max-h-[54px] mb-[28px]">
-            Check out our
+            Check out our{" "}
             <Link href="/calendar" className="underline">
               upcoming events calendar
-            </Link>
+            </Link>{" "}
             to find more ways to get involved
           </div>
           <Image
