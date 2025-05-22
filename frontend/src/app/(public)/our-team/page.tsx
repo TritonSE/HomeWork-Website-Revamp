@@ -2,53 +2,19 @@
 import DOMPurify from "dompurify";
 import { marked } from "marked";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Header from "@/components/Header";
+import { PageDataContext } from "@/contexts/pageDataContext";
 
 export default function OurTeamPage() {
+  const context = useContext(PageDataContext);
+  const [isVisible, setIsVisible] = useState(false);
+
   const [bioMD, setBioMD] = useState<string[]>();
   const [gridWidth, setGridWidth] = useState(0);
   const imageFrac = 0.25;
 
-  const teamMembers = [
-    {
-      name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
-      bio: "Fire Captain\nFather\nSmart Fella\n<https://www.youtube.com>",
-    },
-    {
-      name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
-      bio: "Fire Captain",
-    },
-    {
-      name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
-      bio: "Fire Captain",
-    },
-    {
-      name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
-      bio: "Fire Captain",
-    },
-    {
-      name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
-      bio: "Fire Captain",
-    },
-    {
-      name: "Jason Shanley",
-      title: "Founder & CEO",
-      imageUrl: "/images/jason-shanley.png",
-      bio: "Fire Captain",
-    },
-  ];
   useEffect(() => {
     const getGridWidth = () => {
       const gridContainer = document.getElementById("grid-container");
@@ -91,8 +57,38 @@ export default function OurTeamPage() {
     };
   }, []);
 
+  useEffect(() => {
+    if (context?.pageData && !context.loading) {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 50);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [context]);
+
+  if (!context) return <div>Error: Page data not available.</div>;
+  const { pageData, loading } = context;
+  if (loading) return null;
+
+  const teamPage = pageData.find((data) => data.pagename === "our-team");
+  if (!teamPage) return <div>No team page data found.</div>;
+
+  const headerField = teamPage.fields.find((field) => field.name === "header");
+  const membersField = teamPage.fields.find((field) => field.name === "members");
+  const teamMembers =
+    (membersField?.data as { name: string; title: string; imageUrl: string; bio: string }[]) ?? [];
+
+  const headerData = headerField?.data as {
+    title: string;
+    description: string;
+  };
+
   return (
-    <div className="min-h-screen bg-white text-text_black">
+    <div
+      className={`min-h-screen bg-white transition-opacity duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}
+    >
       {/* Header */}
       <Header
         imageUrl="/images/our-team-header.png"
@@ -101,15 +97,13 @@ export default function OurTeamPage() {
       />
 
       {/* Team Members Section */}
+      <div className="h-[20px] sm:h-[40px]" />
+
       <div className="p-12">
         <h2 className="text-[16px] font-medium sm:text-[48px] leading-[3rem] sm:leading-[3.5rem] tracking-normal text-left mb-6">
-          Our Team
+          {headerData.title}
         </h2>
-
-        <p className="mb-12 text-[20px]">
-          We’re a team of XX, XX, and XX, actively changing what it means to be previously
-          incarcerated. We’re XX, XX, and XX, and we’re just getting started.
-        </p>
+        <p className="mb-12 text-[20px]">{headerData.description}</p>
 
         {/* Grid Layout */}
         <div

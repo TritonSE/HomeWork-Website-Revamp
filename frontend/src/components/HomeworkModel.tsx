@@ -1,37 +1,25 @@
 import Image from "next/image";
+export type Pillar = {
+  title: string;
+  subtitle: string;
+  icon: string;
+};
 
-export default function HomeworkModel() {
-  const pillars = [
-    {
-      title: "Life Skills Development",
-      subtitle: "Fostering Personal Growth",
-      icon: "/icons/life-skills.svg",
-    },
-    {
-      title: "Family Rebuilding",
-      subtitle: "Restoring Relationships",
-      icon: "/icons/family-rebuilding.svg",
-    },
-    {
-      title: "Community Restoration",
-      subtitle: "Rebuilding Neighborhoods",
-      icon: "/icons/community-restoration.svg",
-    },
-    {
-      title: "Civic Engagement",
-      subtitle: "Advocating For Change",
-      icon: "/icons/civic-engagement.svg",
-    },
-  ];
+export default function HomeworkModel({
+  data,
+}: {
+  data: {
+    title: string;
+    description: string;
+    pillars: Pillar[];
+  };
+}) {
+  const { title, description, pillars } = data;
 
   return (
     <section className="text-text_black pt-12">
-      <h2 className="text-[48px] font-medium ">The Homework Model</h2>
-      <p className="text-lg pt-4">
-        This isn&apos;t employment assistance; we&apos;re a close-knit family dedicated to your
-        journey. Our Friday night meetings go beyond careers—they&apos;re chances for us to connect,
-        share, and grow together. These are the 4 pillars that our organization prides itself on.
-      </p>
+      <h2 className="text-[48px] font-medium ">{title}</h2>
+      <p className="text-lg pt-4">{description}</p>
 
       {/* Pillars Flexbox Layout - Ensuring All Items Stay in One Line */}
       <div className="mt-10 flex flex-nowrap justify-between gap-6 h-60">
