@@ -2,6 +2,8 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
+import FieldRenderer from "./fields/FieldRenderer";
+
 import { get } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
 
@@ -20,16 +22,16 @@ type PageData = {
 
 // Helper function to safely get string values
 const getStringValue = (value: unknown): string => {
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     return value;
   }
-  return '';
+  return "";
 };
 
 // Helper function to safely get image URL
 const getImageUrl = (data: Record<string, unknown>): string => {
   const url = data.imageUrl;
-  return typeof url === 'string' ? url : '';
+  return typeof url === "string" ? url : "";
 };
 
 const EditPage: React.FC = () => {
@@ -39,19 +41,20 @@ const EditPage: React.FC = () => {
   const { firebaseUser } = useAuthState();
   const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+  const [editableFields, setEditableFields] = useState<PageDataField[]>([]);
 
   useEffect(() => {
     const fetchPages = async (): Promise<void> => {
       try {
         if (!firebaseUser) return;
-        
+
         const token = await firebaseUser.getIdToken();
         const headers = {
           Authorization: `Bearer ${token}`,
         };
-        
+
         const response = await get("/pageData/all", headers);
-        const data = await response.json() as PageData[];
+        const data = (await response.json()) as PageData[];
         console.log(data);
         setPages(data);
       } catch (error) {
@@ -115,6 +118,22 @@ const EditPage: React.FC = () => {
     }
   }, [selectedPage]);
 
+  // Update editableFields when selectedPage changes
+  useEffect(() => {
+    if (selectedPage) {
+      setEditableFields(selectedPage.fields.map((field) => ({ ...field })));
+    }
+  }, [selectedPage]);
+
+  // Handler to update a field's data
+  const handleFieldChange = (fieldIndex: number, newData: Record<string, unknown>) => {
+    setEditableFields((prevFields) =>
+      prevFields.map((field, idx) =>
+        idx === fieldIndex ? { ...field, data: { ...field.data, ...newData } } : field,
+      ),
+    );
+  };
+
   if (loading) {
     return <div className="flex justify-center items-center h-64">Loading...</div>;
   }
@@ -144,10 +163,10 @@ const EditPage: React.FC = () => {
                 </button>
               ))}
             </div>
-            
+
             {/* Save and View Changes Buttons */}
             <div className="flex gap-2 ml-4">
-              <button 
+              <button
                 onClick={handleSaveChanges}
                 className="px-4 py-2 bg-[#f26522] text-white rounded-md flex items-center gap-2"
               >
@@ -165,7 +184,7 @@ const EditPage: React.FC = () => {
                 </svg>
                 Save Changes
               </button>
-              <button 
+              <button
                 onClick={handleCloseEditor}
                 className="px-4 py-2 bg-white text-gray-700 rounded-md flex items-center gap-2"
               >
@@ -187,26 +206,26 @@ const EditPage: React.FC = () => {
               </button>
             </div>
           </div>
-          
+
           <div className="space-y-6 bg-white px-6 py-8">
-            {selectedPage.fields.map((field, index) => {
+            {editableFields.map((field, index) => {
               const sectionId = `${field.name}-${index.toString()}`;
               const isExpanded = expandedSections[sectionId] ?? false;
-              
+
               return (
                 <div key={index} className="mb-6">
-                  <div 
+                  <div
                     className="bg-[#f26522] text-white p-3 rounded-t-md flex items-center cursor-pointer"
                     onClick={() => {
                       toggleSection(sectionId);
                     }}
                   >
                     {isExpanded ? (
-                      <svg 
-                        className="w-5 h-5 mr-2 transition-transform duration-200" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24" 
+                      <svg
+                        className="w-5 h-5 mr-2 transition-transform duration-200"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
@@ -217,11 +236,11 @@ const EditPage: React.FC = () => {
                         ></path>
                       </svg>
                     ) : (
-                      <svg 
-                        className="w-5 h-5 mr-2 transition-transform duration-200" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24" 
+                      <svg
+                        className="w-5 h-5 mr-2 transition-transform duration-200"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
@@ -234,348 +253,18 @@ const EditPage: React.FC = () => {
                     )}
                     <span className="font-medium capitalize">{field.name}</span>
                   </div>
-                  
+
                   {isExpanded && (
                     <div className="border border-gray-200 rounded-b-md p-4 space-y-4">
-                      {field.type === "header" && (
-                        <>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Title
-                            </label>
-                            <input
-                              type="text"
-                              defaultValue={getStringValue(field.data.header) ?? getStringValue(field.data.title) ?? ""}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f26522]"
-                            />
-                          </div>
-
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Subtitle
-                            </label>
-                            <textarea
-                              defaultValue={getStringValue(field.data.subheader) ?? getStringValue(field.data.subtitle) ?? ""}
-                              rows={3}
-                              id={`${field.name}-subtitle-${index.toString()}`}
-                              onChange={(e) => {
-                                handleTextChange(`${field.name}-subtitle-${index.toString()}`, e.target.value);
-                              }}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f26522]"
-                            />
-                            <div className="text-xs text-gray-500 mt-1 text-right">
-                              {wordCounts[`${field.name}-subtitle-${index.toString()}`] ??
-                                countWords(getStringValue(field.data.subheader) ?? getStringValue(field.data.subtitle) ?? "")}
-                              /200 words
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Section Image
-                            </label>
-                            <div className="border border-dashed border-gray-300 rounded-md p-4">
-                              {getImageUrl(field.data) ? (
-                                <div className="relative">
-                                  <div className="relative h-32 w-32 mx-auto">
-                                    <Image
-                                      src={getImageUrl(field.data)}
-                                      alt="Section image"
-                                      fill
-                                      style={{ objectFit: "cover" }}
-                                      className="rounded-md"
-                                    />
-                                    <button className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1">
-                                      <svg
-                                        className="w-4 h-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="M6 18L18 6M6 6l12 12"
-                                        ></path>
-                                      </svg>
-                                    </button>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="text-center">
-                                  <svg
-                                    className="mx-auto h-12 w-12 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      d="M12 4v16m8-8H4"
-                                    ></path>
-                                  </svg>
-                                  <p className="mt-1 text-sm text-gray-500">Upload an image</p>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </>
-                      )}
-
-                      {field.type === "text" && (
-                        <>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Title
-                            </label>
-                            <input
-                              type="text"
-                              defaultValue={getStringValue(field.data.title) ?? ""}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f26522]"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Subtext
-                            </label>
-                            <textarea
-                              defaultValue={getStringValue(field.data.description) ?? ""}
-                              rows={4}
-                              id={`${field.name}-description-${index.toString()}`}
-                              onChange={(e) => {
-                                handleTextChange(
-                                  `${field.name}-description-${index.toString()}`,
-                                  e.target.value,
-                                );
-                              }}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f26522]"
-                            />
-                            <div className="text-xs text-gray-500 mt-1 text-right">
-                              {wordCounts[`${field.name}-description-${index.toString()}`] ??
-                                countWords(getStringValue(field.data.description) ?? "")}
-                              /200 words
-                            </div>
-                          </div>
-                        </>
-                      )}
-
-                      {field.type === "section" && (
-                        <>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Subtitle
-                            </label>
-                            <input
-                              type="text"
-                              defaultValue={getStringValue(field.data.title) ?? ""}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f26522]"
-                            />
-                          </div>
-
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Subtext
-                            </label>
-                            {Array.isArray(field.data.paragraphs) ? (
-                              field.data.paragraphs.map((paragraph: unknown, i: number) => (
-                                <div key={i} className="mb-2">
-                                  <textarea
-                                    defaultValue={typeof paragraph === 'string' ? paragraph : ''}
-                                    rows={3}
-                                    id={`${field.name}-paragraph-${index.toString()}-${i.toString()}`}
-                                    onChange={(e) => {
-                                      handleTextChange(
-                                        `${field.name}-paragraph-${index.toString()}-${i.toString()}`,
-                                        e.target.value,
-                                      );
-                                    }}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f26522]"
-                                  />
-                                  <div className="text-xs text-gray-500 mt-1 text-right">
-                                    {wordCounts[`${field.name}-paragraph-${index.toString()}-${i.toString()}`] ??
-                                      countWords(typeof paragraph === 'string' ? paragraph : '')}
-                                    /200 words
-                                  </div>
-                                </div>
-                              ))
-                            ) : (
-                              <div>
-                                <textarea
-                                  defaultValue={getStringValue(field.data.description) ?? ""}
-                                  rows={3}
-                                  id={`${field.name}-description-${index.toString()}`}
-                                  onChange={(e) => {
-                                    handleTextChange(
-                                      `${field.name}-description-${index.toString()}`,
-                                      e.target.value,
-                                    );
-                                  }}
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f26522]"
-                                />
-                                <div className="text-xs text-gray-500 mt-1 text-right">
-                                  {wordCounts[`${field.name}-description-${index.toString()}`] ??
-                                    countWords(getStringValue(field.data.description) ?? "")}
-                                  /200 words
-                                </div>
-                              </div>
-                            )}
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Section Image
-                            </label>
-                            <div className="border border-dashed border-gray-300 rounded-md p-4">
-                              {getImageUrl(field.data) ? (
-                                <div className="relative">
-                                  <div className="relative h-32 w-32 mx-auto">
-                                    <Image
-                                      src={getImageUrl(field.data)}
-                                      alt="Section image"
-                                      fill
-                                      style={{ objectFit: "cover" }}
-                                      className="rounded-md"
-                                    />
-                                    <button className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1">
-                                      <svg
-                                        className="w-4 h-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="M6 18L18 6M6 6l12 12"
-                                        ></path>
-                                      </svg>
-                                    </button>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="text-center">
-                                  <svg
-                                    className="mx-auto h-12 w-12 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      d="M12 4v16m8-8H4"
-                                    ></path>
-                                  </svg>
-                                  <p className="mt-1 text-sm text-gray-500">Upload an image</p>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </>
-                      )}
-
-                      {field.type === "mission" && (
-                        <>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Title
-                            </label>
-                            <input
-                              type="text"
-                              defaultValue={getStringValue(field.data.title) ?? ""}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f26522]"
-                            />
-                          </div>
-
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Description
-                            </label>
-                            <textarea
-                              defaultValue={getStringValue(field.data.description) ?? ""}
-                              rows={3}
-                              id={`${field.name}-description-${index.toString()}`}
-                              onChange={(e) => {
-                                handleTextChange(
-                                  `${field.name}-description-${index.toString()}`,
-                                  e.target.value,
-                                );
-                              }}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f26522]"
-                            />
-                            <div className="text-xs text-gray-500 mt-1 text-right">
-                              {wordCounts[`${field.name}-description-${index.toString()}`] ??
-                                countWords(getStringValue(field.data.description) ?? "")}
-                              /200 words
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Section Image
-                            </label>
-                            <div className="border border-dashed border-gray-300 rounded-md p-4">
-                              {getImageUrl(field.data) ? (
-                                <div className="relative">
-                                  <div className="relative h-32 w-32 mx-auto">
-                                    <Image
-                                      src={getImageUrl(field.data)}
-                                      alt="Mission image"
-                                      fill
-                                      style={{ objectFit: "cover" }}
-                                      className="rounded-md"
-                                    />
-                                    <button className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1">
-                                      <svg
-                                        className="w-4 h-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="M6 18L18 6M6 6l12 12"
-                                        ></path>
-                                      </svg>
-                                    </button>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="text-center">
-                                  <svg
-                                    className="mx-auto h-12 w-12 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      d="M12 4v16m8-8H4"
-                                    ></path>
-                                  </svg>
-                                  <p className="mt-1 text-sm text-gray-500">Upload an image</p>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </>
-                      )}
+                      <FieldRenderer
+                        field={field}
+                        index={index}
+                        onTextChange={handleTextChange}
+                        wordCounts={wordCounts}
+                        countWords={countWords}
+                        getStringValue={getStringValue}
+                        onFieldChange={handleFieldChange}
+                      />
                     </div>
                   )}
                 </div>
@@ -601,7 +290,7 @@ const EditPage: React.FC = () => {
                     (field.type === "header" ||
                       field.type === "mission" ||
                       field.type === "section") &&
-                    getImageUrl(field.data)
+                    getImageUrl(field.data),
                 ) && (
                   <Image
                     src={getImageUrl(
@@ -610,8 +299,8 @@ const EditPage: React.FC = () => {
                           (field.type === "header" ||
                             field.type === "mission" ||
                             field.type === "section") &&
-                          getImageUrl(field.data)
-                      )?.data ?? {}
+                          getImageUrl(field.data),
+                      )?.data ?? {},
                     )}
                     alt={page.pagename}
                     fill
