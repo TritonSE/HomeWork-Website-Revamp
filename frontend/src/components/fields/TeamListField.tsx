@@ -16,17 +16,17 @@ const TeamListField: React.FC<TeamListFieldProps> = ({ data, index, onFieldChang
     const updated = data.map((member, i) =>
       i === memberIndex ? { ...member, ...newMember } : member,
     );
-    onFieldChange(index, { members: updated });
+    onFieldChange(index, { data: updated });
   };
 
   const handleAddMember = () => {
     const updated = [...data, { name: "", title: "", imageUrl: "" }];
-    onFieldChange(index, { members: updated });
+    onFieldChange(index, { data: updated });
   };
 
   const handleRemoveMember = (memberIndex: number) => {
     const updated = data.filter((_, i) => i !== memberIndex);
-    onFieldChange(index, { members: updated });
+    onFieldChange(index, { data: updated });
   };
 
   return (

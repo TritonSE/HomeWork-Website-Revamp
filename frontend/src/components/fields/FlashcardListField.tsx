@@ -14,17 +14,17 @@ type FlashcardListFieldProps = {
 const FlashcardListField: React.FC<FlashcardListFieldProps> = ({ data, index, onFieldChange }) => {
   const handleFlashcardChange = (cardIndex: number, newCard: Partial<Flashcard>) => {
     const updated = data.map((card, i) => (i === cardIndex ? { ...card, ...newCard } : card));
-    onFieldChange(index, { flashcards: updated });
+    onFieldChange(index, { data: updated });
   };
 
   const handleAddFlashcard = () => {
     const updated = [...data, { title: "", icon: "", info: "" }];
-    onFieldChange(index, { flashcards: updated });
+    onFieldChange(index, { data: updated });
   };
 
   const handleRemoveFlashcard = (cardIndex: number) => {
     const updated = data.filter((_, i) => i !== cardIndex);
-    onFieldChange(index, { flashcards: updated });
+    onFieldChange(index, { data: updated });
   };
 
   return (

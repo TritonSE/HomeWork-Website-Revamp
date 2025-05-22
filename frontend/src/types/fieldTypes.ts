@@ -5,6 +5,12 @@ export type BaseField = {
   data: Record<string, unknown>;
 };
 
+export type BaseFieldData = {
+  name: string;
+  type: string;
+  data: Record<string, unknown> | unknown[];
+};
+
 // Vision related types
 export type VisionPillarCard = {
   title: string;

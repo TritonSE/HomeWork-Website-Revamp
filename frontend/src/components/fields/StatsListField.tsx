@@ -12,17 +12,17 @@ type StatsListFieldProps = {
 const StatsListField: React.FC<StatsListFieldProps> = ({ data, index, onFieldChange }) => {
   const handleStatChange = (statIndex: number, newStat: Partial<StatItem>) => {
     const updated = data.map((stat, i) => (i === statIndex ? { ...stat, ...newStat } : stat));
-    onFieldChange(index, { stats: updated });
+    onFieldChange(index, { data: updated });
   };
 
   const handleAddStat = () => {
     const updated = [...data, { number: "", description: "" }];
-    onFieldChange(index, { stats: updated });
+    onFieldChange(index, { data: updated });
   };
 
   const handleRemoveStat = (statIndex: number) => {
     const updated = data.filter((_, i) => i !== statIndex);
-    onFieldChange(index, { stats: updated });
+    onFieldChange(index, { data: updated });
   };
 
   return (

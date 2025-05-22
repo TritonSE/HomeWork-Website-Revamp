@@ -10,7 +10,7 @@ import { useAuthState } from "@/contexts/userContext";
 type PageDataField = {
   name: string;
   type: string;
-  data: Record<string, unknown>;
+  data: Record<string, unknown> | unknown[];
 };
 
 type PageData = {
@@ -127,10 +127,14 @@ const EditPage: React.FC = () => {
 
   // Handler to update a field's data
   const handleFieldChange = (fieldIndex: number, newData: Record<string, unknown>) => {
-    setEditableFields((prevFields) =>
-      prevFields.map((field, idx) =>
-        idx === fieldIndex ? { ...field, data: { ...field.data, ...newData } } : field,
-      ),
+    setEditableFields((prevFields: PageDataField[]) =>
+      prevFields.map((field: PageDataField, idx: number) => {
+        if (idx !== fieldIndex) return field;
+        if ("data" in newData) {
+          return { ...field, data: newData.data as Record<string, unknown> | unknown[] };
+        }
+        return { ...field, data: { newData } };
+      }),
     );
   };
 
@@ -257,7 +261,7 @@ const EditPage: React.FC = () => {
                   {isExpanded && (
                     <div className="border border-gray-200 rounded-b-md p-4 space-y-4">
                       <FieldRenderer
-                        field={field}
+                        field={{ ...field, data: field.data as Record<string, unknown> }}
                         index={index}
                         onTextChange={handleTextChange}
                         wordCounts={wordCounts}
@@ -290,17 +294,17 @@ const EditPage: React.FC = () => {
                     (field.type === "header" ||
                       field.type === "mission" ||
                       field.type === "section") &&
-                    getImageUrl(field.data),
+                    getImageUrl(field.data as Record<string, unknown>),
                 ) && (
                   <Image
                     src={getImageUrl(
-                      page.fields.find(
+                      (page.fields.find(
                         (field) =>
                           (field.type === "header" ||
                             field.type === "mission" ||
                             field.type === "section") &&
-                          getImageUrl(field.data),
-                      )?.data ?? {},
+                          getImageUrl(field.data as Record<string, unknown>),
+                      )?.data ?? {}) as Record<string, unknown>,
                     )}
                     alt={page.pagename}
                     fill

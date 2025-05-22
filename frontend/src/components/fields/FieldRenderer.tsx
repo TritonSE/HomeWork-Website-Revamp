@@ -124,7 +124,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               data={field.data}
               index={index}
               fieldName={field.name}
-              onFieldChange={onFieldChange}
+              onFieldChange={(fieldIndex, newData) => {
+                onFieldChange(fieldIndex, newData);
+              }}
             />
           );
         }
@@ -135,7 +137,14 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               data={field.data}
               index={index}
               fieldName={field.name}
-              onFieldChange={onFieldChange}
+              onFieldChange={(fieldIndex, newData) => {
+                onFieldChange(fieldIndex, newData);
+                console.log("[FieldRenderer] TeamListField onFieldChange", {
+                  fieldIndex,
+                  newData,
+                  prevData: field.data,
+                });
+              }}
             />
           );
         }
@@ -147,7 +156,14 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               data={field.data}
               index={index}
               fieldName={field.name}
-              onFieldChange={onFieldChange}
+              onFieldChange={(fieldIndex, newData) => {
+                onFieldChange(fieldIndex, newData);
+                console.log("[FieldRenderer] StatsListField onFieldChange", {
+                  fieldIndex,
+                  newData,
+                  prevData: field.data,
+                });
+              }}
             />
           );
         }
@@ -183,7 +199,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               data={field.data}
               index={index}
               fieldName={field.name}
-              onFieldChange={onFieldChange}
+              onFieldChange={(fieldIndex, newData) => {
+                onFieldChange(fieldIndex, { data: newData });
+              }}
             />
           );
         }
@@ -207,7 +225,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               data={field.data}
               index={index}
               fieldName={field.name}
-              onFieldChange={onFieldChange}
+              onFieldChange={(fieldIndex, newData) => {
+                onFieldChange(fieldIndex, { data: newData });
+              }}
             />
           );
         }
