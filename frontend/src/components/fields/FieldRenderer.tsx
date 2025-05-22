@@ -200,7 +200,7 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               index={index}
               fieldName={field.name}
               onFieldChange={(fieldIndex, newData) => {
-                onFieldChange(fieldIndex, { data: newData });
+                onFieldChange(fieldIndex, newData);
               }}
             />
           );
