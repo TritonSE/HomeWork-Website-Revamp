@@ -13,7 +13,7 @@ export type NewsPastEventsData = {
 export default function NewsPastEvents({ data }: { data: NewsPastEventsData }) {
   const { title, description, buttonText, buttonLink } = data;
   return (
-    <section className="flex text-text_black flex-col md:flex-row items-center justify-between py-12">
+    <section className="flex text-text_black flex-col md:flex-row items-center justify-between p-12">
       <div>
         <h2 className="text-[48px] font-medium">{title}</h2>
         <p className="mt-4 mb-6">{description}</p>

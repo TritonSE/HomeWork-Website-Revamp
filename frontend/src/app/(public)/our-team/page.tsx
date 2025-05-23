@@ -7,10 +7,15 @@ import { useContext, useEffect, useState } from "react";
 import Header from "@/components/Header";
 import { PageDataContext } from "@/contexts/pageDataContext";
 
+type Member = { name: string; title: string; imageUrl: string; bio: string };
+type Intro = { title: string; description: string };
+
 export default function OurTeamPage() {
   const context = useContext(PageDataContext);
   const [isVisible, setIsVisible] = useState(false);
 
+  const [members, setMembers] = useState<Member[]>();
+  const [headerData, setHeaderData] = useState<Intro>();
   const [bioMD, setBioMD] = useState<string[]>();
   const [gridWidth, setGridWidth] = useState(0);
   const imageFrac = 0.25;
@@ -37,21 +42,6 @@ export default function OurTeamPage() {
       }
     });
 
-    void (async () => {
-      const sanitizedBios = await Promise.all(
-        teamMembers.map(async (member) => {
-          // convert markdown to html
-          const rawHtml = await marked(member.bio);
-          // sanitize html to prevent injection
-          return DOMPurify.sanitize(rawHtml, {
-            ALLOWED_TAGS: ["a", "b", "i", "em", "strong", "p", "br", "ul", "ol", "li"],
-            ALLOWED_ATTR: ["href", "target", "rel"],
-          });
-        }),
-      );
-      setBioMD(sanitizedBios);
-    })();
-
     return () => {
       window.removeEventListener("resize", getGridWidth);
     };
@@ -59,6 +49,14 @@ export default function OurTeamPage() {
 
   useEffect(() => {
     if (context?.pageData && !context.loading) {
+      const { pageData } = context;
+      const teamPage = pageData.find((data) => data.pagename === "our-team");
+
+      const headerField = teamPage?.fields.find((field) => field.name === "header");
+      const membersField = teamPage?.fields.find((field) => field.name === "members");
+      setMembers(membersField?.data as Member[]);
+      setHeaderData(headerField?.data as Intro);
+
       const timer = setTimeout(() => {
         setIsVisible(true);
       }, 50);
@@ -68,22 +66,25 @@ export default function OurTeamPage() {
     }
   }, [context]);
 
-  if (!context) return <div>Error: Page data not available.</div>;
-  const { pageData, loading } = context;
-  if (loading) return null;
-
-  const teamPage = pageData.find((data) => data.pagename === "our-team");
-  if (!teamPage) return <div>No team page data found.</div>;
-
-  const headerField = teamPage.fields.find((field) => field.name === "header");
-  const membersField = teamPage.fields.find((field) => field.name === "members");
-  const teamMembers =
-    (membersField?.data as { name: string; title: string; imageUrl: string; bio: string }[]) ?? [];
-
-  const headerData = headerField?.data as {
-    title: string;
-    description: string;
-  };
+  useEffect(() => {
+    if (members) {
+      void (async () => {
+        const sanitizedBios = await Promise.all(
+          members.map(async (member) => {
+            if (!member.bio) return "";
+            // convert markdown to html
+            const rawHtml = await marked(member.bio.replace(/\\n/g, "\n"));
+            // sanitize html to prevent injection
+            return DOMPurify.sanitize(rawHtml, {
+              ALLOWED_TAGS: ["a", "b", "i", "em", "strong", "p", "br", "ul", "ol", "li"],
+              ALLOWED_ATTR: ["href", "target", "rel"],
+            });
+          }),
+        );
+        setBioMD(sanitizedBios);
+      })();
+    }
+  }, [members]);
 
   return (
     <div
@@ -101,9 +102,9 @@ export default function OurTeamPage() {
 
       <div className="p-12">
         <h2 className="text-[16px] font-medium sm:text-[48px] leading-[3rem] sm:leading-[3.5rem] tracking-normal text-left mb-6">
-          {headerData.title}
+          {headerData?.title}
         </h2>
-        <p className="mb-12 text-[20px]">{headerData.description}</p>
+        <p className="mb-12 text-[20px]">{headerData?.description}</p>
 
         {/* Grid Layout */}
         <div
@@ -111,7 +112,7 @@ export default function OurTeamPage() {
           style={{ gap: `20px ${(gridWidth * (1 - 3 * imageFrac)) / 2}px` }}
           className="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 hidden"
         >
-          {teamMembers.map((member, index) => (
+          {members?.map((member, index) => (
             <div key={index}>
               <div
                 className="relative"

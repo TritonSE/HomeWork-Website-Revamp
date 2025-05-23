@@ -8,8 +8,6 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 
 import Header from "@/components/Header";
-import DemoButton from "@/components/Notifications/DemoButton";
-import { NotificationProvider } from "@/components/Notifications/NotificationProvider";
 import ScrollThrough from "@/components/ScrollThrough/ScrollThrough";
 import { PageDataContext } from "@/contexts/pageDataContext";
 
@@ -162,9 +160,6 @@ const AboutUsPage = () => {
           </div>
         </div>
       )}
-      <NotificationProvider>
-        <DemoButton />
-      </NotificationProvider>
       {/* Our History Section */}
       {historyField && (
         <ScrollThrough heading={historyData.heading} slidesData={historyData.slidesData} />

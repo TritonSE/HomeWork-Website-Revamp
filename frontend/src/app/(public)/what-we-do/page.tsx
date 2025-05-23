@@ -183,13 +183,12 @@ const FlashcardPage: React.FC = () => {
           </div>
         </div>
         {heroData && (
-          <div className="md:px-8">
+          <div className="md:ml-20 md:mr-12 md:max-w-[35%] w-full bg-gray-300 md:h-full h-[520px] relative">
             <Image
               src={heroData.imageUrl}
               alt={heroData.title}
-              width={800}
-              height={600}
-              className="h-full w-full object-contain"
+              fill={true}
+              className="object-cover"
               priority
             />
           </div>

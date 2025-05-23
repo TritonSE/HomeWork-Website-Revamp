@@ -17,7 +17,7 @@ export default function HomeworkModel({
   const { title, description, pillars } = data;
 
   return (
-    <section className="text-text_black pt-12">
+    <section className="text-text_black p-12">
       <h2 className="text-[48px] font-medium ">{title}</h2>
       <p className="text-lg pt-4">{description}</p>
 

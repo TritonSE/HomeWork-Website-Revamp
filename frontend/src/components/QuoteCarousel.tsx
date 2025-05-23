@@ -17,7 +17,7 @@ type QuoteCarouselProps = {
  */
 const QuoteCarousel: React.FC<QuoteCarouselProps> = ({ slides = [] }) => {
   // Use provided slides or fall back to defaults
-  const slidesToDisplay = slides;
+  const slidesToDisplay = slides.length > 5 ? slides : slides.concat(slides);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -56,7 +56,6 @@ const QuoteCarousel: React.FC<QuoteCarouselProps> = ({ slides = [] }) => {
     // Normalize the index differences to handle wrapping
     const diff = (index - activeIndex + slidesToDisplay.length) % slidesToDisplay.length;
 
-    console.log(diff);
     if (diff === 0) return "center";
     if (diff === 1) return "right";
     if (diff === slidesToDisplay.length - 1) return "left";
@@ -69,7 +68,7 @@ const QuoteCarousel: React.FC<QuoteCarouselProps> = ({ slides = [] }) => {
       {/* Main carousel container */}
       {/* Slides */}
       {slidesToDisplay.map((slide, index) => (
-        <QuoteCarouselCard key={slide.id} slide={slide} position={getSlidePosition(index)} />
+        <QuoteCarouselCard key={index} slide={slide} position={getSlidePosition(index)} />
       ))}
 
       {/* Navigation buttons */}

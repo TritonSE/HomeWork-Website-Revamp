@@ -16,7 +16,7 @@ export default function Mission({ data }: { data: MissionData }) {
   const { title, description, imageUrl, buttonText, buttonLink } = data;
 
   return (
-    <section className="flex flex-col md:flex-row items-center justify-between text-text_black">
+    <section className="p-12 flex flex-col md:flex-row items-center justify-between text-text_black">
       <div className="md:w-1/2">
         <p className="text-[48px] font-medium ">{title}</p>
         <p className="mt-4 text-lg">{description}</p>

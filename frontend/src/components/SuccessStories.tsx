@@ -13,7 +13,7 @@ export default function SuccessStories({ data }: { data: SuccessStoriesData }) {
   const { title, description, slides } = data;
 
   return (
-    <section className="pt-12 text-text_black">
+    <section className="p-12 text-text_black">
       <h2 className="text-[48px] font-medium">{title}</h2>
       <p className="text-lg mt-4">{description}</p>
 
