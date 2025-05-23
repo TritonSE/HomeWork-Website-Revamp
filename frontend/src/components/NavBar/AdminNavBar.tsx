@@ -35,6 +35,10 @@ const Navbar: React.FC = () => {
     };
 
     const submitForm = async () => {
+      if (email !== displayEmail) {
+        setEmailError("The email entered does not match your account.");
+        return;
+      }
       setIsSubmitting(true);
 
       try {
@@ -75,7 +79,7 @@ const Navbar: React.FC = () => {
               <h1 className="text-3xl mb-2 md:text-start text-center font-medium py-6">
                 Change Password
               </h1>
-              <p className="mb-4 text-[#909090]  w-full md:w-[40%]">
+              <p className="mb-4 text-[#909090]  w-full md:w-[60%]">
                 Don&apos;t worry. Resetting your password is easy, just tell us the email address
                 you registered.
               </p>
