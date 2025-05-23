@@ -77,7 +77,7 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ children }) => {
   const carouselFormat = numChildren > 0 ? "justify-center gap-1" : "justify-between h-96";
 
   return (
-    <div className={`flex flex-row ${carouselFormat}`}>
+    <div className={`flex flex-row px-12 mb-5 ${carouselFormat}`}>
       <Image
         src="/icons/leftArrow.svg"
         alt="Event carousel left arrow"
@@ -91,7 +91,7 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ children }) => {
         className="
                 flex flex-row gap-5 
                 w-full mr-5 ml-5 
-                overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hidden"
+                overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hidden pb-10"
       >
         {children}
       </div>

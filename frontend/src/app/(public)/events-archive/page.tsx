@@ -33,7 +33,9 @@ const EventCard: React.FC<{ article: Article }> = ({ article }) => {
           <Image src="/icons/learnMore.svg" width={20} height={20} alt="Learn more" />
         </Link>
       </div>
-      <img src={article.thumbnail} alt="" className="w-5/12 h-auto object-cover" />
+      <div className="w-5/12 h-auto object-cover relative">
+        <Image src={article.thumbnail} alt={article.header} fill={true} objectFit="cover" />
+      </div>
     </div>
   );
 };
@@ -131,7 +133,9 @@ const EventsArchiveContent: React.FC = () => {
           <EventCard article={a} key={i} />
         ))}
       </section>
-      <Pagination current={currPage} totalPages={totalPages} />
+      <div className="pt-6">
+        <Pagination current={currPage} totalPages={totalPages} />
+      </div>
     </div>
   );
 };
@@ -167,7 +171,7 @@ const EventsArchivePage: React.FC = () => {
           fancy={headerData.fancy}
         />
       )}
-      <div className="p-5">
+      <div className="px-12 py-[24px]">
         <section className="flex flex-col gap-5 mb-5 font-golos">
           <h1 className="text-2xl sm:text-4xl font-medium">{descData.title}</h1>
           <p className="text-sm sm:text-base pt-4">{descData.description}</p>
