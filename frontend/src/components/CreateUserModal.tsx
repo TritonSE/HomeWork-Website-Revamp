@@ -25,13 +25,14 @@ const CreateUserModal: React.FC<Props> = ({ onClose }) => {
       return;
     }
 
-    try {
-      await createUser(form);
+    const result = await createUser(form);
+
+    if (result.success) {
       alert("Account created successfully");
       onClose();
-    } catch (err) {
-      alert("Error creating account");
-      console.error(err);
+    } else {
+      alert(`Error creating account: ${result.error}`);
+      console.error(result.error);
     }
   };
 
