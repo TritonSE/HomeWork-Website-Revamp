@@ -138,7 +138,7 @@ function ReturnContent() {
   // Complete state
   if (status === "complete") {
     return (
-      <div className="pageWrapper mx-[122px] my-[107px]">
+      <div className="pageWrapper mx-[122px] my-[170px]">
         <div className="flex items-start">
           <Link href="/" className="text-[#B4B4B4] hover:underline flex items-center gap-2">
             <Icon name="ic_arrowback" fill="#B4B4B4" size={16} />
