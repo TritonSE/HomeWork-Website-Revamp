@@ -63,7 +63,7 @@ const Navbar: React.FC<{ opaque?: boolean }> = ({ opaque = false }) => {
               title: "Get Involved",
               href: "/get-involved",
               links: [
-                { label: "Upcoming Events", href: "/events" },
+                { label: "Upcoming Events", href: "/calendar" },
                 { label: "Donate", href: "/donate" },
               ],
             },
