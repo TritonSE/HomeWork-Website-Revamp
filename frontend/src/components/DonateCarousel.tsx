@@ -19,13 +19,13 @@ const DonateCarousel: React.FC<DonateCarouselProps> = ({ images }) => {
   };
 
   return (
-    <div className="relative flex flex-col justify-center items-center max-w-[1336px] mx-auto overflow-hidden px-[24px]">
+    <div className="relative flex flex-col justify-center items-center max-w-full h-[550px] overflow-hidden m-6">
       {/* Carousel Image Container */}
-      <div className="flex flex-row gap-[24px] max-w-full items-center justify-center">
+      <div className="flex flex-row gap-[24px] w-full h-full items-center justify-center">
         {/* Previous Arrow */}
         <div className="flex items-center">
           <Image
-            src="carousel_arrow_left.svg"
+            src="/carousel_arrow_left.svg"
             alt="Previous"
             width={20}
             height={34.5}
@@ -34,24 +34,17 @@ const DonateCarousel: React.FC<DonateCarouselProps> = ({ images }) => {
           />
         </div>
 
-        <div className="relative flex-1 min-w-[200px] overflow-hidden">
+        <div className="relative flex-1 min-w-[200px] h-full flex-auto overflow-hidden">
           {/* Image Sliding Animation */}
           <div
-            className="flex transition-transform duration-500 ease-in-out"
+            className="flex transition-transform duration-500 ease-in-out h-full"
             style={{
               transform: `translateX(-${String(currentIndex * 100)}%)`, // Shifts images based on the index
             }}
           >
             {images.map((image, index) => (
-              <div key={index} className="w-full flex-shrink-0 pt-[48px] pb-[48px]">
-                <Image
-                  src={image}
-                  alt={`Slide ${String(index)}`}
-                  layout="responsive"
-                  width={500}
-                  height={200}
-                  className="w-full h-full object-cover"
-                />
+              <div key={index} className="min-w-full h-full relative">
+                <Image src={image} alt={`Slide ${String(index)}`} fill={true} objectFit="cover" />
               </div>
             ))}
           </div>
@@ -60,7 +53,7 @@ const DonateCarousel: React.FC<DonateCarouselProps> = ({ images }) => {
         {/* Next Arrow */}
         <div className="flex items-center">
           <Image
-            src="carousel_arrow_right.svg"
+            src="/carousel_arrow_right.svg"
             alt="Next"
             width={20}
             height={34.5}

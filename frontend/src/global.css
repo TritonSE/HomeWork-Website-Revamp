@@ -34,7 +34,7 @@
   }
 }
 
-/* Swiper */
+/* Swiper 
 .swiper-pagination-bullet {
   background-color: black !important;
 }
@@ -74,7 +74,7 @@
   .back {
     transform: rotateX(180deg);
   }
-}
+}*/
 
 .perspective {
   perspective: 1000px;

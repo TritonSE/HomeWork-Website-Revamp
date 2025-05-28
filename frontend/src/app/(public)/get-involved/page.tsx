@@ -1,16 +1,12 @@
 "use client";
 
+import { Button } from "@tritonse/tse-constellation";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 
 import Header from "@/components/Header";
 import { PageDataContext } from "@/contexts/pageDataContext";
-
-const Button: React.FC<{ text: string }> = ({ text }) => (
-  <button className="p-3 pr-5 pl-5 w-fit rounded bg-orange-600 text-white font-golos text-xs sm:text-sm hover:bg-orange-500">
-    {text}
-  </button>
-);
 
 const GetInvolvedPage: React.FC = () => {
   const context = useContext(PageDataContext);
@@ -59,7 +55,7 @@ const GetInvolvedPage: React.FC = () => {
 
   return (
     <div
-      className={`flex flex-col gap-5 sm:gap-10 w-full p-5 transition-opacity duration-700 ${
+      className={`flex flex-col gap-5 sm:gap-10 w-full transition-opacity duration-700 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
     >
@@ -74,34 +70,36 @@ const GetInvolvedPage: React.FC = () => {
       )}
 
       {/* Attend Section */}
-      <section className="flex flex-col sm:flex-row justify-between items-center gap-6 w-full p-5">
-        <div className="flex flex-col gap-5 sm:w-7/12 sm:pr-5">
-          <h1 className="mb-2 text-2xl sm:text-4xl font-medium font-golos">{attendData.title}</h1>
-          <p className="text-sm sm:text-base">{attendData.description}</p>
-          <Button text={attendData.buttonText} />
+      <section className="flex flex-col sm:flex-row justify-between items-center gap-6 w-full px-12">
+        <div className="md:w-1/2">
+          <h1 className="mb-6 text-[48px] sm:text-4xl font-medium font-golos">
+            {attendData.title}
+          </h1>
+          <p className="text-sm sm:text-lg mb-6">{attendData.description}</p>
+          <Link href="/calendar">
+            <Button>{attendData.buttonText}</Button>
+          </Link>
         </div>
-        <Image
-          src={attendData.imageUrl}
-          width={500}
-          height={250}
-          alt="get involved attend"
-          className="sm:w-5/12"
-        />
+        <div className="w-[590px] flex h-[369px] relative">
+          <Image src={attendData.imageUrl} alt="Our Mission" fill={true} objectFit="cover" />
+        </div>
       </section>
 
       {/* Donate Section */}
-      <section className="flex flex-col-reverse sm:flex-row justify-between items-center gap-6 w-full p-5">
-        <Image
-          src={donateData.imageUrl}
-          width={500}
-          height={250}
-          alt="get involved donate"
-          className="sm:w-5/12"
-        />
-        <div className="flex flex-col gap-5 sm:w-7/12 sm:pl-5">
-          <h1 className="mb-2 text-2xl sm:text-4xl font-medium font-golos">{donateData.title}</h1>
-          <p className="text-sm sm:text-base">{donateData.description}</p>
-          <Button text={donateData.buttonText} />
+
+      <section className="flex flex-col sm:flex-row justify-between items-center gap-6 w-full px-12 py-16">
+        <div className="w-[590px] flex h-[369px] relative">
+          <Image src={donateData.imageUrl} alt="Our Mission" fill={true} objectFit="cover" />
+        </div>
+
+        <div className="md:w-1/2">
+          <h1 className="mb-6 text-[48px] sm:text-4xl font-medium font-golos">
+            {donateData.title}
+          </h1>
+          <p className="text-sm sm:text-lg mb-6">{donateData.description}</p>
+          <Link href="/calendar">
+            <Button>{donateData.buttonText}</Button>
+          </Link>
         </div>
       </section>
     </div>
