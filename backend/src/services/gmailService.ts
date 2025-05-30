@@ -17,9 +17,13 @@ oauth2Client.setCredentials({
 });
 
 const getAuthorizedGmail = async () => {
-  console.log("Getting fresh access token...");
-  const token = await oauth2Client.getAccessToken();
-  console.log("Access Token:", token.token);
+  if (!oauth2Client.credentials.expiry_date || oauth2Client.credentials.expiry_date < Date.now()) {
+    console.log("Refreshing access token...");
+    await oauth2Client.refreshAccessToken();
+  } else {
+    console.log("Using cached access token.");
+  }
+
   return google.gmail({ version: "v1", auth: oauth2Client });
 };
 
