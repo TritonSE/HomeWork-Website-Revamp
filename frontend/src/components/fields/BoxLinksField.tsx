@@ -14,17 +14,17 @@ type BoxLinksFieldProps = {
 const BoxLinksField: React.FC<BoxLinksFieldProps> = ({ data, index, onFieldChange }) => {
   const handleBoxLinkChange = (boxIndex: number, newBox: Partial<BoxLink>) => {
     const updated = data.map((box, i) => (i === boxIndex ? { ...box, ...newBox } : box));
-    onFieldChange(index, { boxLinks: updated });
+    onFieldChange(index, { data: updated });
   };
 
   const handleAddBoxLink = () => {
     const updated = [...data, { tall: false, src: "", header: "", body: "", link: "" }];
-    onFieldChange(index, { boxLinks: updated });
+    onFieldChange(index, { data: updated });
   };
 
   const handleRemoveBoxLink = (boxIndex: number) => {
     const updated = data.filter((_, i) => i !== boxIndex);
-    onFieldChange(index, { boxLinks: updated });
+    onFieldChange(index, { data: updated });
   };
 
   return (

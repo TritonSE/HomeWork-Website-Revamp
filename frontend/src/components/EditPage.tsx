@@ -47,12 +47,12 @@ const EditPage: React.FC = () => {
     const fetchPages = async (): Promise<void> => {
       try {
         if (!firebaseUser) return;
-
+        
         const token = await firebaseUser.getIdToken();
         const headers = {
           Authorization: `Bearer ${token}`,
         };
-
+        
         const response = await get("/pageData/all", headers);
         const data = (await response.json()) as PageData[];
         console.log(data);
@@ -130,11 +130,11 @@ const EditPage: React.FC = () => {
     setEditableFields((prevFields: PageDataField[]) =>
       prevFields.map((field: PageDataField, idx: number) => {
         if (idx !== fieldIndex) return field;
-        if ("data" in newData) {
-          return { ...field, data: newData.data as Record<string, unknown> | unknown[] };
+        if ('data' in newData) {
+          return { ...field, data: newData.data as Record<string, unknown> | unknown[]};
         }
-        return { ...field, data: { newData } };
-      }),
+        return { ...field, data: { ...field.data, ...newData } };
+      })
     );
   };
 
@@ -167,10 +167,10 @@ const EditPage: React.FC = () => {
                 </button>
               ))}
             </div>
-
+            
             {/* Save and View Changes Buttons */}
             <div className="flex gap-2 ml-4">
-              <button
+              <button 
                 onClick={handleSaveChanges}
                 className="px-4 py-2 bg-[#f26522] text-white rounded-md flex items-center gap-2"
               >
@@ -188,7 +188,7 @@ const EditPage: React.FC = () => {
                 </svg>
                 Save Changes
               </button>
-              <button
+              <button 
                 onClick={handleCloseEditor}
                 className="px-4 py-2 bg-white text-gray-700 rounded-md flex items-center gap-2"
               >
@@ -210,26 +210,26 @@ const EditPage: React.FC = () => {
               </button>
             </div>
           </div>
-
+          
           <div className="space-y-6 bg-white px-6 py-8">
             {editableFields.map((field, index) => {
               const sectionId = `${field.name}-${index.toString()}`;
               const isExpanded = expandedSections[sectionId] ?? false;
-
+              
               return (
                 <div key={index} className="mb-6">
-                  <div
+                  <div 
                     className="bg-[#f26522] text-white p-3 rounded-t-md flex items-center cursor-pointer"
                     onClick={() => {
                       toggleSection(sectionId);
                     }}
                   >
                     {isExpanded ? (
-                      <svg
-                        className="w-5 h-5 mr-2 transition-transform duration-200"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                      <svg 
+                        className="w-5 h-5 mr-2 transition-transform duration-200" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24" 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
@@ -240,11 +240,11 @@ const EditPage: React.FC = () => {
                         ></path>
                       </svg>
                     ) : (
-                      <svg
-                        className="w-5 h-5 mr-2 transition-transform duration-200"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                      <svg 
+                        className="w-5 h-5 mr-2 transition-transform duration-200" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24" 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
@@ -257,7 +257,7 @@ const EditPage: React.FC = () => {
                     )}
                     <span className="font-medium capitalize">{field.name}</span>
                   </div>
-
+                  
                   {isExpanded && (
                     <div className="border border-gray-200 rounded-b-md p-4 space-y-4">
                       <FieldRenderer

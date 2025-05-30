@@ -139,11 +139,7 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               fieldName={field.name}
               onFieldChange={(fieldIndex, newData) => {
                 onFieldChange(fieldIndex, newData);
-                console.log("[FieldRenderer] TeamListField onFieldChange", {
-                  fieldIndex,
-                  newData,
-                  prevData: field.data,
-                });
+                console.log('[FieldRenderer] TeamListField onFieldChange', { fieldIndex, newData, prevData: field.data });
               }}
             />
           );
@@ -158,11 +154,7 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               fieldName={field.name}
               onFieldChange={(fieldIndex, newData) => {
                 onFieldChange(fieldIndex, newData);
-                console.log("[FieldRenderer] StatsListField onFieldChange", {
-                  fieldIndex,
-                  newData,
-                  prevData: field.data,
-                });
+                console.log('[FieldRenderer] StatsListField onFieldChange', { fieldIndex, newData, prevData: field.data });
               }}
             />
           );
@@ -201,6 +193,7 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               fieldName={field.name}
               onFieldChange={(fieldIndex, newData) => {
                 onFieldChange(fieldIndex, newData);
+                console.log('[FieldRenderer] FlashcardListField onFieldChange', { fieldIndex, newData, prevData: field.data });
               }}
             />
           );
@@ -226,7 +219,8 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               index={index}
               fieldName={field.name}
               onFieldChange={(fieldIndex, newData) => {
-                onFieldChange(fieldIndex, { data: newData });
+                onFieldChange(fieldIndex, newData);
+                console.log('[FieldRenderer] BoxLinksField onFieldChange', { fieldIndex, newData, prevData: field.data });
               }}
             />
           );
