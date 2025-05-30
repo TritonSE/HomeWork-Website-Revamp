@@ -10,6 +10,8 @@ type SubscriptionBody = {
   firstname: string;
   lastname: string;
   email: string;
+  membership: "community" | "family";
+  status: "active" | "error";
 };
 
 export const createSubscription: RequestHandler<object, object, SubscriptionBody> = async (
@@ -17,12 +19,10 @@ export const createSubscription: RequestHandler<object, object, SubscriptionBody
   res,
 ) => {
   try {
-    console.log("Received body:", req.body);
-
     const errors = validationResult(req);
     validationErrorParser(errors);
 
-    const { firstname, lastname, email } = req.body;
+    const { firstname, lastname, email, membership, status } = req.body;
 
     const subscription = await SubscriptionModel.findOne({ email });
     if (subscription) {
@@ -42,8 +42,10 @@ export const createSubscription: RequestHandler<object, object, SubscriptionBody
       firstname,
       lastname,
       email,
+      membership,
+      status,
       threadId,
-      status: "active",
+      joined: new Date(),
     });
 
     res.status(201).json(newSubscription);
@@ -75,5 +77,64 @@ export const removeSubscription: RequestHandler = async (
     res.status(200).json(result);
   } catch (error) {
     next(error);
+  }
+};
+
+export const removeSubscriptions: RequestHandler<object, object, { emails: string[] }> = async (
+  req,
+  res,
+  next,
+) => {
+  const { emails } = req.body;
+
+  if (!Array.isArray(emails) || emails.length === 0) {
+    res.status(400).json({ message: "No e-mails supplied for deletion." });
+    return;
+  }
+
+  try {
+    const result = await SubscriptionModel.deleteMany({
+      email: { $in: emails },
+    });
+
+    res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateSubscription: RequestHandler<
+  object,
+  object,
+  {
+    email: string;
+    firstname: string;
+    lastname: string;
+    status: "active" | "error";
+    membership: "community" | "family";
+  }
+> = async (req, res, next) => {
+  try {
+    const { email, firstname, lastname, status, membership } = req.body;
+
+    const sub = await SubscriptionModel.findOneAndUpdate(
+      { email },
+      {
+        firstname,
+        lastname,
+        status,
+        membership,
+      },
+      { new: true },
+    );
+
+    if (!sub) {
+      res.status(404).json({ message: "Subscription not found." });
+      return;
+    }
+
+    res.status(200).json(sub);
+  } catch (err) {
+    next(err);
   }
 };
