@@ -172,7 +172,7 @@ const MailingList: React.FC = () => {
       header: "Status",
       accessorKey: "status",
       cell: ({ row }) => {
-        const val = row.getValue("status");
+        const val: User["status"] = row.getValue("status");
         const classes =
           val === "Active" ? "bg-[#AFF4C6] text-[#1B1B1B]" : "bg-[#FCB3AD] text-[#1B1B1B]";
         return <span className={`px-2 py-1 rounded-sm text-sm ${classes}`}>{val}</span>;
