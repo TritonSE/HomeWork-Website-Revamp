@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 import FieldRenderer from "./fields/FieldRenderer";
+import { updatePageData as apiUpdatePageData } from "@/api/pageData";
 
 import { get } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
@@ -80,9 +81,43 @@ const EditPage: React.FC = () => {
     setSelectedPage(null);
   };
 
-  const handleSaveChanges = (): void => {
-    alert("Save changes functionality would go here");
-    // This would update the page data on the backend
+  const handleSaveChanges = async (): Promise<void> => {
+    if (!firebaseUser || !selectedPage) return;
+
+    try {
+      // 1) Get fresh JWT
+      const token = await firebaseUser.getIdToken();
+
+      // 2) Build payload
+      const payload = {
+        pagename: selectedPage.pagename,
+        fields: editableFields.map((f) => ({
+          name: f.name,
+          data: f.data,
+        })),
+      };
+
+      const result = await apiUpdatePageData(token, payload);
+
+      if (!result.success) {
+        alert(`Save failed: ${result.error}`);
+        return;
+      }
+
+      const updated = result.data;
+      setSelectedPage((prev) =>
+        prev ? { ...prev, lastUpdate: updated.lastUpdate, fields: editableFields } : prev,
+      );
+      setPages((prev) =>
+        prev.map((p) =>
+          p.pagename === updated.pagename ? { ...p, lastUpdate: updated.lastUpdate } : p,
+        ),
+      );
+      alert("Page saved successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while saving.");
+    }
   };
 
   const countWords = (text: string): number => {
@@ -170,8 +205,9 @@ const EditPage: React.FC = () => {
 
             {/* Save and View Changes Buttons */}
             <div className="flex gap-2 ml-4">
+              +{" "}
               <button
-                onClick={handleSaveChanges}
+                onClick={() => void handleSaveChanges()}
                 className="px-4 py-2 bg-[#f26522] text-white rounded-md flex items-center gap-2"
               >
                 <svg
