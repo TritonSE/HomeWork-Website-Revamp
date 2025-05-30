@@ -1,67 +1,74 @@
 "use client";
 
-import React, { FC } from "react";
-import { Icon } from "@tritonse/tse-constellation"; // adjust import path if different
+import React from "react";
+import ReactDOM from "react-dom";
 
-interface ConfirmationModalProps {
+type Props = {
   open: boolean;
-  selectedCount: number;
   onCancel: () => void;
   onConfirm: () => void;
-}
+  count?: number;
+  title?: string;
+  description?: string;
+};
 
-/**
- * A centered confirmation dialog used when the user attempts to delete contacts.
- *
- * Dimensions: 423 px × 324 px
- * Colours:
- *   – Primary (danger): #F05629
- *   – Neutral button:    #909090
- */
-const ConfirmationModal: FC<ConfirmationModalProps> = ({
+const ConfirmationModal: React.FC<Props> = ({
   open,
-  selectedCount,
+  count,
   onCancel,
   onConfirm,
+  title,
+  description,
 }) => {
   if (!open) return null;
+  const heading =
+    title ??
+    (count === 1
+      ? "Are you sure you want to delete this contact?"
+      : `Are you sure you want to delete these contacts (${String(count ?? 0)})?`);
 
-  return (
+  const bodyText = description ?? "This action cannot be undone.";
+
+  return ReactDOM.createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div
-        className="flex flex-col items-center rounded-lg bg-white p-8"
-        style={{ width: 423, height: 324 }}
+        className="bg-white rounded-md shadow-xl flex flex-col justify-between p-8 text-center"
+        style={{ width: 433, height: 324 }}
       >
-        {/* Alert icon */}
-        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#F05629]">
-          <Icon name="ic_alert" fill="white" className="h-8 w-8" />
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-12 h-12">
+            <img
+              src="/icons/ic_exclamation.svg"
+              alt="!"
+              className="absolute inset-0 w-full h-full"
+            />
+            <img
+              src="/icons/ic_exclamationMark.svg"
+              alt="!"
+              className="absolute inset-0 m-auto w-8 h-8"
+            />
+          </div>
+
+          <h2 className="text-lg font-semibold leading-snug">{heading}</h2>
+          <p
+            className="text-center leading-6 text-base font-normal"
+            style={{ fontFamily: "'Golos Text', sans-serif" }}
+          >
+            {bodyText}
+          </p>
         </div>
 
-        <h2 className="mb-3 text-center text-2xl font-semibold leading-snug text-[#1B1B1B]">
-          Are you sure you want to<br />
-          delete these contacts ({selectedCount})?
-        </h2>
-
-        <p className="mb-8 text-center text-base text-[#1B1B1B] underline">
-          This action cannot be undone.
-        </p>
-
-        <div className="flex w-full flex-col gap-3 px-4">
-          <button
-            className="h-12 w-full rounded-md bg-[#F05629] text-md font-medium text-white"
-            onClick={onCancel}
-          >
+        <div className="mt-8 flex flex-col gap-2">
+          <button onClick={onCancel} className="h-11 rounded-md bg-[#E05432] text-white">
             No, Cancel
           </button>
-          <button
-            className="h-12 w-full rounded-md bg-[#909090] text-md font-medium text-white"
-            onClick={onConfirm}
-          >
+          <button onClick={onConfirm} className="h-11 rounded-md bg-gray-400 text-white">
             Yes, Continue
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 

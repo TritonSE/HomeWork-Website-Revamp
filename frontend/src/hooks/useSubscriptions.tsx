@@ -1,50 +1,59 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { get } from "@/api/requests";
+import { useAuthState } from "@/contexts/userContext";
 
-/** Raw document returned by the backend */
-type RawSubscription = { _id: string; name: string; email?: string };
+export type Subscription = {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  joined: string | number | Date;
+  status: "active" | "error";
+  membership: "community" | "family";
+  threadId: string;
+  createdAt: string;
+};
 
-/** Shape the table expects */
-export interface Subscription {
-  firstName: string;
-  lastName: string;
-  emailAdd: string;
-}
-
-/**
- * Fetches all subscriptions from `/subscription` on mount.
- * Returns `[rows, loading]`, exactly like `useArticles`.
- */
 export const useSubscriptions = (): [Subscription[], boolean] => {
-  const [rows, setRows] = useState<Subscription[]>([]);
+  const { loading: authLoading, firebaseUser } = useAuthState();
+
+  const [subs, setSubs] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
 
+  /** Build the header exactly once per token refresh */
+  const getAuthHeader = async (): Promise<Record<string, string>> => {
+    if (!firebaseUser) throw new Error("User not authenticated");
+    const token = await firebaseUser.getIdToken(/* forceRefresh = */ true);
+    return { Authorization: `Bearer ${token}` };
+  };
+
   useEffect(() => {
+    // Don’t fire the network call until we know auth is ready
+    if (authLoading) return;
+
     const fetchSubs = async () => {
       try {
-        const res = await get("/subscription");          // ← string path only
-        const data: RawSubscription[] = await res.json();
+        const headers = await getAuthHeader();
+        const response = await get("/subscriptions", headers);
+        if (!response.ok) throw new Error(await response.text());
 
-        const mapped = data.map<Subscription>((d) => {
-          const [firstName, ...rest] = d.name.trim().split(" ");
-          return {
-            firstName,
-            lastName: rest.join(" "),
-            emailAdd: d.email ?? "",
-          };
-        });
-        setRows(mapped);
+        const data = (await response.json()) as Subscription[];
+
+        data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        setSubs(data);
       } catch (err) {
-        console.error("Error fetching subscriptions:", err);
+        console.error("Failed to fetch subscriptions:", err);
+        setSubs([]); // or leave previous data
       } finally {
         setLoading(false);
       }
     };
 
     void fetchSubs();
-  }, []);
+  }, [authLoading, firebaseUser]);
 
-  return [rows, loading];
+  return [subs, authLoading || loading];
 };
