@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import "@fontsource/golos-text/500.css";
 import { post } from "../api/requests";
 
+import ConfirmationModal from "./ConfirmationModal";
+
 type AddContactModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -21,6 +23,12 @@ const AddContactModal: React.FC<AddContactModalProps> = ({ isOpen, onClose, onSa
   const [showMessage, setShowMessage] = useState(false);
   const [membership, setMembership] = useState<string>("community");
   const [status, setStatus] = useState<string>("active");
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showUnsavedPrompt, setShowUnsavedPrompt] = useState(false);
+
+  const markDirty = () => {
+    setHasUnsavedChanges(true);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -81,14 +89,22 @@ const AddContactModal: React.FC<AddContactModalProps> = ({ isOpen, onClose, onSa
     }, 5000);
   };
 
+  const handleAttemptClose = () => {
+    if (hasUnsavedChanges) {
+      setShowUnsavedPrompt(true);
+    } else {
+      handleDiscard();
+    }
+  };
+
   const handleDiscard = () => {
-    // Reset the form fields to their initial empty states
     setFirstName("");
     setLastName("");
     setEmail("");
-    setMembership("community"); // Reset membership to default
-    setStatus("active"); // Reset status to default
-    onClose(); // Close the modal
+    setMembership("community");
+    setStatus("active");
+    setHasUnsavedChanges(false);
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -126,6 +142,7 @@ const AddContactModal: React.FC<AddContactModalProps> = ({ isOpen, onClose, onSa
               value={firstName}
               onChange={(e) => {
                 setFirstName(e.target.value);
+                markDirty();
               }}
             />
 
@@ -241,7 +258,7 @@ const AddContactModal: React.FC<AddContactModalProps> = ({ isOpen, onClose, onSa
             <div className="flex flex-row gap-3 items-center justify-end">
               <button
                 type="button"
-                onClick={handleDiscard} // Call the handleDiscard function
+                onClick={handleAttemptClose}
                 className="w-[227px] h-12 pt-3 pb-3 pr-6 pl-6 gap-1.5 rounded-md border-2 border-[#b93b3b] flex flex-row items-center justify-center font-golos-text font-normal text-base leading-6 tracking-normal text-center align-middle text-[#b93b3b]"
               >
                 <>
@@ -276,6 +293,18 @@ const AddContactModal: React.FC<AddContactModalProps> = ({ isOpen, onClose, onSa
           )}
         </div>
       </div>
+      <ConfirmationModal
+        open={showUnsavedPrompt}
+        onCancel={() => {
+          setShowUnsavedPrompt(false);
+        }}
+        onConfirm={() => {
+          setShowUnsavedPrompt(false);
+          handleDiscard();
+        }}
+        title="Are you sure you want to exit without saving?"
+        description="Unsaved changes will be lost."
+      />
     </div>
   );
 };
