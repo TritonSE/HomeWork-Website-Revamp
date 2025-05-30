@@ -85,10 +85,8 @@ const EditPage: React.FC = () => {
     if (!firebaseUser || !selectedPage) return;
 
     try {
-      // 1) Get fresh JWT
       const token = await firebaseUser.getIdToken();
 
-      // 2) Build payload
       const payload = {
         pagename: selectedPage.pagename,
         fields: editableFields.map((f) => ({

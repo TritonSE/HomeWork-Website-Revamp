@@ -1,52 +1,119 @@
-import React, { useRef } from "react";
+// src/components/fields/FieldImageUpload.tsx
+"use client";
+
+import React, { useRef, useState } from "react";
+import {
+  ref as storageRef,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
+import { storage } from "@/firebase/firebase"; // adjust path as needed
 
 type FieldImageUploadProps = {
+  /** The current download URL (or empty string) */
   value: string;
-  onChange: (value: string) => void;
+  /**
+   * Called with the new download URL (or "" if removed)
+   */
+  onChange: (url: string) => void;
 };
 
 export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({ value, onChange }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        onChange(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+  /** Given a download URL, delete that file from Storage */
+  const deleteFirebaseFile = async (fileUrl: string) => {
+    try {
+      // Extract the path portion from the URL
+      const urlObj = new URL(fileUrl);
+      // Firebase URLs look like /o/<encodedPath>?...
+      const encodedPath = urlObj.pathname.split("/o/")[1];
+      const fullPath = decodeURIComponent(encodedPath);
+      const fileRef = storageRef(storage, fullPath);
+      await deleteObject(fileRef);
+    } catch (err) {
+      console.error("Error deleting old file:", err);
     }
   };
 
-  const handleClick = () => {
-    fileInputRef.current?.click();
+  /** Handle user selecting a new file */
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Remove previous file if one exists
+    if (value) {
+      await deleteFirebaseFile(value);
+    }
+
+    setUploading(true);
+    setProgress(0);
+
+    // Create a unique path in your bucket
+    const path = `page-images/${Date.now()}-${file.name}`;
+    const ref = storageRef(storage, path);
+    const uploadTask = uploadBytesResumable(ref, file);
+
+    // Listen for progress / errors / completion
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const pct = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(pct);
+      },
+      (error) => {
+        console.error("Upload error:", error);
+        setUploading(false);
+      },
+      async () => {
+        // On success, get public URL
+        const url = await getDownloadURL(uploadTask.snapshot.ref);
+        setUploading(false);
+        setProgress(0);
+        onChange(url);
+      },
+    );
   };
 
-  const handleRemove = (e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
+  /** Open the hidden file input */
+  const handleClick = () => {
+    if (!uploading) fileInputRef.current?.click();
+  };
+
+  /** Remove the current image and delete it from Storage */
+  const handleRemove = async (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (value) {
+      await deleteFirebaseFile(value);
+    }
     onChange("");
   };
 
   return (
     <div
       className="relative w-40 h-40 rounded-xl border border-gray-300 bg-white flex items-center justify-center cursor-pointer transition hover:shadow-sm"
-      onClick={value ? undefined : handleClick}
+      onClick={handleClick}
     >
       <input
         type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
         accept="image/*"
         className="hidden"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        disabled={uploading}
       />
-      {value ? (
+
+      {uploading ? (
+        <div className="text-center">Uploading… {Math.round(progress)}%</div>
+      ) : value ? (
         <>
           <img
             src={value}
             alt="Preview"
-            className="object-contain w-32 h-32 rounded-lg mx-auto bg-gray-100"
-            style={{ display: "block" }}
+            className="object-contain w-32 h-32 rounded-lg bg-gray-100"
           />
           <button
             type="button"
@@ -54,13 +121,7 @@ export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({ value, onCha
             className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center shadow hover:bg-red-600 z-10"
             tabIndex={-1}
           >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -78,7 +139,6 @@ export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({ value, onCha
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
             >
               <rect x="3" y="5" width="18" height="14" rx="2" fill="#e5eaf4" />
               <path
