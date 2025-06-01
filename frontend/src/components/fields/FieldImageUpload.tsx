@@ -8,14 +8,10 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
-import { storage } from "@/firebase/firebase"; // adjust path as needed
+import { storage } from "@/firebase/firebase";
 
 type FieldImageUploadProps = {
-  /** The current download URL (or empty string) */
   value: string;
-  /**
-   * Called with the new download URL (or "" if removed)
-   */
   onChange: (url: string) => void;
 };
 
@@ -27,9 +23,8 @@ export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({ value, onCha
   /** Given a download URL, delete that file from Storage */
   const deleteFirebaseFile = async (fileUrl: string) => {
     try {
-      // Extract the path portion from the URL
       const urlObj = new URL(fileUrl);
-      // Firebase URLs look like /o/<encodedPath>?...
+
       const encodedPath = urlObj.pathname.split("/o/")[1];
       const fullPath = decodeURIComponent(encodedPath);
       const fileRef = storageRef(storage, fullPath);
@@ -52,7 +47,7 @@ export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({ value, onCha
     setUploading(true);
     setProgress(0);
 
-    // Create a unique path in your bucket
+    // Create a unique path in bucket
     const path = `page-images/${Date.now()}-${file.name}`;
     const ref = storageRef(storage, path);
     const uploadTask = uploadBytesResumable(ref, file);

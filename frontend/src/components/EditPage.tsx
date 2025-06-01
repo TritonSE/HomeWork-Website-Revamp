@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 import FieldRenderer from "./fields/FieldRenderer";
-import { updatePageData as apiUpdatePageData } from "@/api/pageData";
+import { updatePageData } from "@/api/pageData";
 
 import { get } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
@@ -95,7 +95,7 @@ const EditPage: React.FC = () => {
         })),
       };
 
-      const result = await apiUpdatePageData(token, payload);
+      const result = await updatePageData(token, payload);
 
       if (!result.success) {
         alert(`Save failed: ${result.error}`);
