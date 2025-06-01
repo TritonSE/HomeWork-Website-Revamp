@@ -166,7 +166,7 @@ const EditPage: React.FC = () => {
         if ("data" in newData) {
           return { ...field, data: newData.data as Record<string, unknown> | unknown[] };
         }
-        return { ...field, data: { newData } };
+        return { ...field, data: { ...field.data, ...newData } };
       }),
     );
   };
@@ -203,7 +203,6 @@ const EditPage: React.FC = () => {
 
             {/* Save and View Changes Buttons */}
             <div className="flex gap-2 ml-4">
-              +{" "}
               <button
                 onClick={() => void handleSaveChanges()}
                 className="px-4 py-2 bg-[#f26522] text-white rounded-md flex items-center gap-2"
