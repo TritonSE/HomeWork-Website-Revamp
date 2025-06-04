@@ -82,9 +82,10 @@ const EventsTable: React.FC = () => {
     ...article,
     status: article.isPublished ? "Published" : "Draft",
   }));
-
-  const filteredArticles = articlesWithStatus.filter((article) =>
-    article.header.toLowerCase().startsWith(searchQuery.toLowerCase()),
+  const filteredArticles = articlesWithStatus.filter(
+    (article) =>
+      article.status === "Published" &&
+      article.header.toLowerCase().startsWith(searchQuery.toLowerCase()),
   );
 
   const totalPages = Math.ceil(filteredArticles.length / itemsPerPage);

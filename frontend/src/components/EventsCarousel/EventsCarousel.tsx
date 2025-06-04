@@ -4,7 +4,6 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 import { EventsCarouselCard } from "./EventsCarouselCard";
-
 type EventsCarouselProps = {
   children?:
     | React.ReactElement<typeof EventsCarouselCard>
