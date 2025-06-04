@@ -25,7 +25,7 @@ type Event = {
 export default function HomePage() {
   const context = useContext(PageDataContext);
   const [isVisible, setIsVisible] = useState(false);
-  const { articles, loading: articlesLoading } = useContext(ArticleContext);
+  const { articles } = useContext(ArticleContext);
   useEffect(() => {
     if (context && !context.loading) {
       const timer = setTimeout(() => {
