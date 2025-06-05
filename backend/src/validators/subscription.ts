@@ -35,9 +35,7 @@ const makeEmailValidator = () =>
 
 const makeMembershipValidator = () =>
   body("membership")
-    .exists()
-    .withMessage("membership is required")
-    .bail()
+    .optional()
     .isString()
     .withMessage("membership must be a string")
     .bail()
@@ -46,9 +44,7 @@ const makeMembershipValidator = () =>
 
 const makeStatusValidator = () =>
   body("status")
-    .exists()
-    .withMessage("status is required")
-    .bail()
+    .optional()
     .isString()
     .withMessage("status must be a string")
     .bail()

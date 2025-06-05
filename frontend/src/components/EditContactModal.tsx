@@ -111,7 +111,7 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
   if (!isOpen || !contact) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black/50 z-[50] flex items-center justify-center">
       <div className="bg-white rounded-lg w-[932px] h-[703px] p-14 gap-6">
         <div className="flex flex-col gap-7 w-full h-full">
           <h2 className="font-golos-text font-bold text-3xl mb-5">Edit Contact</h2>

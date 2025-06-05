@@ -8,10 +8,11 @@ import ConfirmationModal from "./ConfirmationModal";
 import EditContactModal from "./EditContactModal";
 import { NotificationCard } from "./Notifications/NotificationCard";
 
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, SortingState } from "@tanstack/react-table";
 
 import { del } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
+import { useRedirectToLogin } from "@/hooks/useRedirect";
 import { useSubscriptions } from "@/hooks/useSubscriptions";
 
 type User = {
@@ -36,6 +37,7 @@ const useAuthHeader = () => {
 };
 
 const MailingList: React.FC = () => {
+  useRedirectToLogin();
   const [subs, loading] = useSubscriptions();
   const [data, setData] = useState<User[]>([]);
   const buildAuthHeader = useAuthHeader();
@@ -62,6 +64,7 @@ const MailingList: React.FC = () => {
     setData(rows);
   }, [subs]);
 
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -85,9 +88,22 @@ const MailingList: React.FC = () => {
       (f ?? "").toLowerCase().includes(searchQuery.toLowerCase()),
     ),
   );
-  const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
-  const paginated = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
+  const sorted = [...filtered];
+
+  if (sorting.length > 0) {
+    const { id, desc } = sorting[0];
+    sorted.sort((a, b) => {
+      const valA = (a[id as keyof User] ?? "").toString().toLowerCase();
+      const valB = (b[id as keyof User] ?? "").toString().toLowerCase();
+      if (valA < valB) return desc ? 1 : -1;
+      if (valA > valB) return desc ? -1 : 1;
+      return 0;
+    });
+  }
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
+  const paginated = sorted.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   const toggleAll = () => {
     const allSelected = paginated.every((_, idx) => rowSelection[idx]);
     const next: Record<number, boolean> = {};
@@ -121,10 +137,55 @@ const MailingList: React.FC = () => {
         );
       },
     },
-    { header: "First Name", accessorKey: "firstName" },
-    { header: "Last Name", accessorKey: "lastName" },
     {
-      header: "Email",
+      header: () => (
+        <span
+          className="cursor-pointer"
+          onClick={() => {
+            setSorting((prev) =>
+              prev[0]?.id === "firstName" && !prev[0].desc
+                ? [{ id: "firstName", desc: true }]
+                : [{ id: "firstName", desc: false }],
+            );
+          }}
+        >
+          First Name {sorting[0]?.id === "firstName" ? (sorting[0].desc ? "↓" : "↑") : ""}
+        </span>
+      ),
+      accessorKey: "firstName",
+    },
+    {
+      header: () => (
+        <span
+          className="cursor-pointer"
+          onClick={() => {
+            setSorting((prev) =>
+              prev[0]?.id === "lastName" && !prev[0].desc
+                ? [{ id: "lastName", desc: true }]
+                : [{ id: "lastName", desc: false }],
+            );
+          }}
+        >
+          Last Name {sorting[0]?.id === "lastName" ? (sorting[0].desc ? "↓" : "↑") : ""}
+        </span>
+      ),
+      accessorKey: "lastName",
+    },
+    {
+      header: () => (
+        <span
+          className="cursor-pointer"
+          onClick={() => {
+            setSorting((prev) =>
+              prev[0]?.id === "emailAdd" && !prev[0].desc
+                ? [{ id: "emailAdd", desc: true }]
+                : [{ id: "emailAdd", desc: false }],
+            );
+          }}
+        >
+          Email {sorting[0]?.id === "emailAdd" ? (sorting[0].desc ? "↓" : "↑") : ""}
+        </span>
+      ),
       accessorKey: "emailAdd",
       cell: ({ row }) => {
         const email = String(row.getValue("emailAdd") ?? "");
@@ -152,9 +213,38 @@ const MailingList: React.FC = () => {
         );
       },
     },
-    { header: "Join Date", accessorKey: "joinDate" },
     {
-      header: "Membership",
+      header: () => (
+        <span
+          className="cursor-pointer"
+          onClick={() => {
+            setSorting((prev) =>
+              prev[0]?.id === "joinDate" && !prev[0].desc
+                ? [{ id: "joinDate", desc: true }]
+                : [{ id: "joinDate", desc: false }],
+            );
+          }}
+        >
+          Join Date {sorting[0]?.id === "joinDate" ? (sorting[0].desc ? "↓" : "↑") : ""}
+        </span>
+      ),
+      accessorKey: "joinDate",
+    },
+    {
+      header: () => (
+        <span
+          className="cursor-pointer"
+          onClick={() => {
+            setSorting((prev) =>
+              prev[0]?.id === "membership" && !prev[0].desc
+                ? [{ id: "membership", desc: true }]
+                : [{ id: "membership", desc: false }],
+            );
+          }}
+        >
+          Membership {sorting[0]?.id === "membership" ? (sorting[0].desc ? "↓" : "↑") : ""}
+        </span>
+      ),
       accessorKey: "membership",
       cell: ({ row }) => {
         const val = String(row.getValue("membership") ?? "");
@@ -169,7 +259,20 @@ const MailingList: React.FC = () => {
     },
 
     {
-      header: "Status",
+      header: () => (
+        <span
+          className="cursor-pointer"
+          onClick={() => {
+            setSorting((prev) =>
+              prev[0]?.id === "status" && !prev[0].desc
+                ? [{ id: "status", desc: true }]
+                : [{ id: "status", desc: false }],
+            );
+          }}
+        >
+          Status {sorting[0]?.id === "status" ? (sorting[0].desc ? "↓" : "↑") : ""}
+        </span>
+      ),
       accessorKey: "status",
       cell: ({ row }) => {
         const val: User["status"] = row.getValue("status");
@@ -258,7 +361,7 @@ const MailingList: React.FC = () => {
   if (loading) return <p className="p-6">Loading subscriptions…</p>;
 
   return (
-    <div className="flex flex-col gap-4 p-6">
+    <div className="min-h-screen flex flex-col justify-between p-6">
       <div className="fixed top-4 left-1/2 -translate-x-1/2 flex flex-col gap-3 items-center z-[100]">
         {notifications.map((n) => (
           <NotificationCard
@@ -272,7 +375,12 @@ const MailingList: React.FC = () => {
           />
         ))}
       </div>
-      <h1 className="text-3xl font-bold mb-4">Mailing List</h1>
+      <h1
+        className="font-golos-text font-normal mb-4"
+        style={{ fontSize: "36px", lineHeight: "150%", letterSpacing: "0%" }}
+      >
+        Mailing List
+      </h1>
       <div className="flex justify-between items-center gap-4 mb-2">
         <div className="relative flex-1">
           <Icon name="ic_search" fill="black" className="absolute left-3 top-2.5 h-5 w-5" />
@@ -332,8 +440,8 @@ const MailingList: React.FC = () => {
         )}
       </div>
 
-      <div className="flex items-center justify-between mt-6 relative">
-        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4">
+      <div className="flex items-center justify-center mt-auto pt-6">
+        <div className="flex items-center gap-4">
           <button
             onClick={() => {
               setCurrentPage((p) => Math.max(p - 1, 1));
@@ -361,22 +469,7 @@ const MailingList: React.FC = () => {
             <Icon name="ic_caretright" fill="black" />
           </button>
         </div>
-
-        {selectionCount > 0 && (
-          <div className="ml-auto">
-            <button
-              onClick={() => {
-                setShowConfirm(true);
-              }}
-              style={{ width: 235 }}
-              className="flex items-center justify-center px-6 h-[48px] rounded-md border-2 border-[#B93B3B] text-[#B93B3B]"
-            >
-              Delete Contacts ({selectionCount})
-            </button>
-          </div>
-        )}
       </div>
-
       {/* styles (unchanged + new checkbox rules) */}
       <style jsx>{`
         :global(.tse-table th),

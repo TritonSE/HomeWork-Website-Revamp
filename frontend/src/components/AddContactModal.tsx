@@ -111,7 +111,7 @@ const AddContactModal: React.FC<AddContactModalProps> = ({ isOpen, onClose, onSa
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center"
+      className="fixed top-0 left-0 w-full h-full bg-black/50 z-[50] flex items-center justify-center"
       aria-hidden="true"
     >
       <div className="bg-white rounded-lg relative w-[932px] h-[703px] gap-6 p-14">
@@ -250,7 +250,7 @@ const AddContactModal: React.FC<AddContactModalProps> = ({ isOpen, onClose, onSa
                     : "border-transparent"
                 }`}
               >
-                <span className="w-[61px] h-7 bg-[#dceeff] rounded-md flex items-center justify-center text-sm text-[#8a226f]">
+                <span className="w-[61px] h-7 bg-[#FAE1FA] rounded-md flex items-center justify-center text-sm text-[#8A226F]">
                   Family
                 </span>
               </button>
