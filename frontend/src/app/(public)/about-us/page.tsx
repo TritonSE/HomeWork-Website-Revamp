@@ -87,7 +87,7 @@ const Stat: React.FC<{ percentage: number; description: string }> = ({
 }) => (
   <div className="flex flex-col items-center">
     <div className="font-libre-baskerville text-[96px] font-bold text-secondary_highlight_1 pb-4">
-      {percentage}%
+      {percentage}
     </div>
     <div className="font-golos text-[20px] font-normal">{description}</div>
   </div>
