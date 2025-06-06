@@ -209,7 +209,7 @@ const EventsTable: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 min-h-screen">
       {successMessage && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-[#AFF4C6] text-[#1B1B1B] px-6 py-3 rounded-md flex items-center gap-2 z-[9998] shadow-lg">
           <svg
@@ -296,7 +296,7 @@ const EventsTable: React.FC = () => {
         </div>
       )}
 
-      <div className="bg-white rounded-lg p-6">
+      <div className="bg-white rounded-lg p-6 flex flex-col flex-grow">
         <style jsx>{`
           :global(._headerCell_1autq_27) {
             color: #ffffff !important;
@@ -317,10 +317,6 @@ const EventsTable: React.FC = () => {
           }
           :global(._sortToggleContainer_1autq_41 svg) {
             fill: #ffffff !important;
-          }
-          :global(.tse-table [class*="paginationContainer"]) {
-            display: flex !important;
-            justify-content: center !important;
           }
         `}</style>
 
@@ -352,7 +348,7 @@ const EventsTable: React.FC = () => {
           </button>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto flex-grow flex flex-col">
           <Table
             columns={columns}
             data={filteredArticles}
@@ -360,6 +356,7 @@ const EventsTable: React.FC = () => {
             enablePagination={true}
             enableSorting={true}
             enableGlobalFiltering={false}
+            autoResetPageIndex={true}
           />
           {filteredArticles.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 px-4">
