@@ -219,7 +219,7 @@ const EventEditorModal: React.FC<EventEditorModalProps> = ({
           thumbnail: thumbnailUrl,
           isPublished: shouldPublish,
         },
-        headers,
+        { ...headers, "Content-Type": "application/json" },
       );
 
       if (response.ok) {
