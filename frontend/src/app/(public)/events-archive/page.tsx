@@ -112,14 +112,17 @@ const EventsArchiveContent: React.FC = () => {
       </p>
     );
   }
-
-  const totalPages = Math.ceil(articles.length / EVENTS_PER_PAGE);
+  const published = articles.filter((a) => a.isPublished);
+  const totalPages = Math.ceil(published.length / EVENTS_PER_PAGE);
   const pageParam = searchParams.get("page");
   const currPage =
     !isNaN(Number(pageParam)) && Number(pageParam) >= 0 && Number(pageParam) < totalPages
       ? Number(pageParam)
       : 0;
-  const pageArticles = articles.slice(currPage * EVENTS_PER_PAGE, (currPage + 1) * EVENTS_PER_PAGE);
+  const pageArticles = published.slice(
+    currPage * EVENTS_PER_PAGE,
+    (currPage + 1) * EVENTS_PER_PAGE,
+  );
 
   return (
     <div className="p-5">
