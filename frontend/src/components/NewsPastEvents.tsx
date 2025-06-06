@@ -1,5 +1,7 @@
+"use client";
+
+import { Button } from "@tritonse/tse-constellation";
 import Link from "next/link";
-import React from "react";
 
 export type NewsPastEventsData = {
   title: string;
@@ -10,19 +12,13 @@ export type NewsPastEventsData = {
 
 export default function NewsPastEvents({ data }: { data: NewsPastEventsData }) {
   const { title, description, buttonText, buttonLink } = data;
-
   return (
-    <section className="flex flex-col md:flex-row items-center justify-between px-8 md:px-16 py-12">
-      <div className="my-14 ml-4 max-w-lg">
-        <h2 className="text-[48px] font-bold text-left">{title}</h2>
-        <p className="text-gray-600 mt-2 text-left">{description}</p>
+    <section className="flex text-text_black flex-col md:flex-row items-center justify-between p-12">
+      <div>
+        <h2 className="text-[48px] font-medium">{title}</h2>
+        <p className="mt-4 mb-6">{description}</p>
         <Link href={buttonLink}>
-          <button
-            className="mt-4 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition"
-            aria-label={buttonText}
-          >
-            {buttonText}
-          </button>
+          <Button>{buttonText}</Button>
         </Link>
       </div>
     </section>

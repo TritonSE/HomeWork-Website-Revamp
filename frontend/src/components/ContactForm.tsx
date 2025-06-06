@@ -79,13 +79,13 @@ const ContactForm: React.FC = () => {
         subheader="Have questions or want to get involved? We’re here to help! Reach out to our team for more information about our programs, events, or ways to contribute."
       />
       <div className="flex flex-col md2:flex-row">
-        <div className="p-8 md2:w-[calc(48%)]">
-          <div className="relative flex flex-col">
-            <h1 className="text-[48px] font-golos font-medium text-left pt-8">Get in Touch</h1>
+        <div className="md2:w-[calc(48%)]">
+          <div className="relative flex flex-col p-12 ">
+            <h1 className="text-[48px] font-golos font-medium text-left">Get in Touch</h1>
             <p className="text-left mb-2 text-[20px]">
               Send us a quick message and we&apos;ll reach back out to you soon.
             </p>
-            <p className="text-left mb-2 text-[20px]">We&apos;re excited to have you here!</p>
+            <p className="text-left mb-6 text-[20px]">We&apos;re excited to have you here!</p>
             <form
               onSubmit={(e) => {
                 void handleSubmit(e);

@@ -17,6 +17,6 @@ export const useRedirectToPortalIfLoggedIn = () => {
   const { loading, firebaseUser } = useAuthState();
   const router = useRouter();
   useEffect(() => {
-    if (!loading && firebaseUser) router.replace("/test-page");
+    if (!loading && firebaseUser) router.replace("/events");
   }, [loading, firebaseUser, router]);
 };

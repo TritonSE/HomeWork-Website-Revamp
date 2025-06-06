@@ -1,16 +1,11 @@
 "use client";
 
-//import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { Button } from "@tritonse/tse-constellation";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
 import { post } from "../api/requests";
-
-//import AdminLogin from "@/../public/images/adminLogin.svg";
-//import Facebook from "@/../public/images/facebook.svg";
-//import Logo from "@/../public/images/homeworkLogo.png";
-//import Instagram from "@/../public/images/instagram.svg";
 
 type LinkProps = {
   text: string;
@@ -147,13 +142,8 @@ const SubscriptionForm: React.FC = () => {
             setFullName(e.target.value);
           }}
         />
-        <div className="flex flex-row gap-3 items-center">
-          <button
-            type="submit"
-            className="w-1/3 min-w-fit max-w-32 mt-2 p-2 bg-orange-600 rounded text-white text-sm"
-          >
-            Subscribe
-          </button>
+        <div className="flex pt-2 flex-row gap-3 items-center">
+          <Button type="submit">Subscribe</Button>
           <p className={`${showMessage ? "opacity-100" : "opacity-0"} transition-opacity text-sm`}>
             {formResult.result}
           </p>

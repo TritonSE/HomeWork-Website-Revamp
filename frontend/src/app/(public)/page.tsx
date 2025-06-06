@@ -91,7 +91,6 @@ export default function HomePage() {
   return (
     <div className={`transition-opacity duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}>
       <Header imageUrl={imageUrl} header={header} subheader={subheader} fancy={fancy} />
-
       {missionData && <Mission data={missionData} />}
       {boxLinks.length > 0 && <BoxLinkGroup data={boxLinks} />}
       {modelData && <HomeworkModel data={modelData} />}
@@ -99,10 +98,7 @@ export default function HomePage() {
       {newsData && <NewsPastEvents data={newsData} />}
       <div className="mb-10">
         <EventsCarousel>
-          <EventsCarouselCard key="1" event={events[0]} />
-          <EventsCarouselCard key="2" event={events[1]} />
-          <EventsCarouselCard key="3" event={events[1]} />
-          <EventsCarouselCard key="4" event={events[1]} />
+          {events?.map((event, index) => <EventsCarouselCard key={index} event={event} />)}
         </EventsCarousel>
       </div>
     </div>

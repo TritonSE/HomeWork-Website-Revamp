@@ -318,18 +318,6 @@ const EventsTable: React.FC = () => {
           :global(._sortToggleContainer_1autq_41 svg) {
             fill: #ffffff !important;
           }
-          :global(.tse-table._container_1autq_1) {
-            flex: 1 1 auto !important;
-            min-height: 0 !important;
-            display: flex !important;
-            flex-direction: column !important;
-          }
-          :global(.tse-table [class*="paginationContainer"]) {
-            display: flex !important;
-            justify-content: center !important;
-            margin-top: auto !important;
-            bottom: 0 !important;
-          }
         `}</style>
 
         <h1 className="text-4xl font-medium mb-8">Event Manager</h1>
