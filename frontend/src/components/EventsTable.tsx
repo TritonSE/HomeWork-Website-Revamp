@@ -329,6 +329,7 @@ const EventsTable: React.FC = () => {
             justify-content: center !important;
             margin-top: auto !important;
             bottom: 0 !important;
+            margin-bottom: 24px !important;
           }
         `}</style>
 
