@@ -64,7 +64,7 @@ const QuoteCarousel: React.FC<QuoteCarouselProps> = ({ slides = [] }) => {
   };
 
   return (
-    <div className="relative w-screen mx-auto px-10 pt-12 overflow-hidden h-screen">
+    <div className="relative w-screen mx-auto px-2 md:px-10 pt-12 overflow-hidden h-screen">
       {/* Main carousel container */}
       {/* Slides */}
       {slidesToDisplay.map((slide, index) => (
@@ -74,7 +74,7 @@ const QuoteCarousel: React.FC<QuoteCarouselProps> = ({ slides = [] }) => {
       {/* Navigation buttons */}
       <button
         onClick={prevSlide}
-        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-40 bg-white rounded-full p-2 shadow-lg focus:outline-none hover:bg-gray-100 transition-colors"
+        className="absolute md:left-6 top-1/2 transform -translate-y-1/2 z-40 bg-white rounded-full p-2 shadow-lg focus:outline-none hover:bg-gray-100 transition-colors"
         disabled={isAnimating}
         aria-label="Previous slide"
       >
@@ -83,7 +83,7 @@ const QuoteCarousel: React.FC<QuoteCarouselProps> = ({ slides = [] }) => {
 
       <button
         onClick={nextSlide}
-        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-40 bg-white rounded-full p-2 shadow-lg focus:outline-none hover:bg-gray-100 transition-colors"
+        className="absolute right-2 md:right-6 top-1/2 transform -translate-y-1/2 z-40 bg-white rounded-full p-2 shadow-lg focus:outline-none hover:bg-gray-100 transition-colors"
         disabled={isAnimating}
         aria-label="Next slide"
       >
