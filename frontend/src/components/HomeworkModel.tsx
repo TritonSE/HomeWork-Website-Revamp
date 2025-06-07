@@ -17,9 +17,9 @@ export default function HomeworkModel({
   const { title, description, pillars } = data;
 
   return (
-    <section className="text-text_black p-12">
-      <h2 className="text-[48px] font-medium ">{title}</h2>
-      <p className="text-lg pt-4">{description}</p>
+    <section className="text-text_black md:p-12 p-6">
+      <h2 className="text-[28px] md:text-[48px] font-medium ">{title}</h2>
+      <p className="text-[14px] md:text-lg pt-4">{description}</p>
 
       {/* Pillars Flexbox Layout - Ensuring All Items Stay in One Line */}
       <div className="mt-10 flex flex-nowrap justify-between gap-6 h-60">

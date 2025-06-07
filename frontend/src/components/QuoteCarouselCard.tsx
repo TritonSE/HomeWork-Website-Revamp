@@ -35,7 +35,7 @@ const QuoteCarouselCard: React.FC<QuoteCarouselCardProps> = ({ slide, position }
 
   return (
     <div
-      className={`absolute w-full max-w-[40%] max-h-[80%] h-full rounded-lg bg-white p-6 border-2 border-black transition-all duration-500 ease-in-out transform 
+      className={`absolute w-full max-w-full md:max-w-[40%] max-h-[80%] h-full rounded-lg bg-white p-2 md:p-6 border-2 border-black transition-all duration-500 ease-in-out transform 
         ${position === "center" ? "shadow-xl" : "shadow-lg"}
         ${positionClasses[position]}
       `}
@@ -44,9 +44,9 @@ const QuoteCarouselCard: React.FC<QuoteCarouselCardProps> = ({ slide, position }
         <div className="w-full h-[60%] bg-gray-100 relative">
           {<Image src={slide.image} layout="fill" className="object-cover" alt="testimonial" />}
         </div>
-        <div className="text-center p-6">
-          <p className="mb-6">{quote}</p>
-          <p>-- {slide.author}</p>
+        <div className="text-center p-2 md:p-6">
+          <p className="mb-6 leading-[21px] md:leading-md text-[14px] md:text-lg">{quote}</p>
+          <p className=" text-[14px] md:text-lg">-- {slide.author}</p>
         </div>
       </div>
     </div>
