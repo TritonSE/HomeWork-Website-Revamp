@@ -171,19 +171,19 @@ const FlashcardPage: React.FC = () => {
           fancy={headerData.fancy}
         />
       )}{" "}
-      <div className="flex md:flex-row flex-col w-full justify-between pt-12">
+      <div className="flex md:flex-row flex-col w-full justify-between h-[500px] pt-12">
         <div className="font-golos md:pb-0 pb-20 flex flex-col md:flex-row w-full">
-          <div className="px-4 md:pl-12 pb-6 md:pb-0 md:w-[60%] md:max-w-4xl ">
+          <div className="md:pl-12 pb-6 md:pb-0 md:w-[80%] md:max-w-4xl ">
             {heroData && <div className="text-[32px] mb-8 weight-500">{heroData.title}</div>}
             {heroData?.description.map((line, i) => (
-              <div className={i > 0 ? "mt-6" : ""} key={i}>
+              <div className={i > 0 ? "mt-6 text-[20px]" : "text-[20px]"} key={i}>
                 {line}
               </div>
             ))}
           </div>
         </div>
         {heroData && (
-          <div className="md:ml-20 md:mr-12 md:max-w-[35%] w-full bg-gray-300 md:h-full h-[520px] relative">
+          <div className="md:mr-12 md:max-w-[35%] w-full bg-gray-300 h-full relative">
             <Image
               src={heroData.imageUrl}
               alt={heroData.title}

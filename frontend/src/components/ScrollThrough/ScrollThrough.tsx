@@ -26,7 +26,7 @@ export default function ScrollThrough({ heading, slidesData }: ScrollThroughProp
   return (
     <section className="w-full py-8 flex px-12">
       {/* Main container */}
-      <div className="w-full max-w-[1336px] h-auto md:h-[742px] flex flex-col px-4 md:px-0">
+      <div className="w-full h-auto md:h-[742px] flex flex-col px-4 md:px-0">
         {/* Heading (left-aligned) */}
         <h2 className="text-left font-golos text-[32px] md:text-[48px] font-medium leading-[130%] mb-6">
           {heading}
