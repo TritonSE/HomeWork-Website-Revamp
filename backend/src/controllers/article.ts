@@ -72,7 +72,6 @@ export const updateArticle: RequestHandler = async (req, res, next) => {
         }
       } catch (error) {
         console.error("Error deleting old thumbnail from Firebase:", error);
-        // Continue with article update even if thumbnail deletion fails
       }
     }
 
@@ -96,7 +95,6 @@ export const deleteArticle: RequestHandler = async (req, res, next) => {
       throw createHttpError(404, "Article not found at id " + id);
     }
 
-    // Delete thumbnail from Firebase Storage if it exists
     if (article.thumbnail) {
       try {
         const thumbnailUrl = article.thumbnail;
@@ -112,7 +110,6 @@ export const deleteArticle: RequestHandler = async (req, res, next) => {
       }
     }
 
-    // Delete the article from MongoDB
     await ArticleModel.findByIdAndDelete(id);
 
     res.status(200).json({ message: "Article deleted successfully" });
