@@ -26,16 +26,16 @@ const Header: React.FC<HeaderComponents> = ({
         backgroundPosition: "center", // Center the image
       }}
     >
-      <div className="flex flex-col items-start gap-[20px] max-w-[1336px] mx-[52px] text-white text-left ">
+      <div className="flex flex-col items-start gap-[20px] max-w-[1336px] md:mx-[52px] text-white text-left ">
         {fancy && (
-          <div className="z-0 absolute pt-4 -ml-4">
+          <div className="z-0 absolute pt-4 md:-ml-4">
             <Image src="/icons/headerSquiggle.svg" width="396" height="53" alt="squiggle" />
           </div>
         )}
-        <div className="relative font-[Baskerville] text-[64px] leading-[96px] max-w-[1195px]">
+        <div className="relative font-[Baskerville] text-[32px] md:text-[64px] leading-[48px] md:leading-[96px] max-w-[1195px]">
           {header}
         </div>
-        <div className="font-[Golos Text] text-[20px] font-normal leading-[26px] max-w-[790px] mt-0">
+        <div className="font-[Golos Text] text-[14px] md:text-[20px] font-normal leading-[20px] md:leading-[26px] max-w-[790px] mt-0">
           {subheader}
         </div>
 
