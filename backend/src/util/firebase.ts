@@ -7,8 +7,9 @@
 
 import * as firebaseAdmin from "firebase-admin/app";
 import { getAuth as getAdminAuth } from "firebase-admin/auth";
+import { getStorage } from "firebase-admin/storage";
 
-import { serviceAccountKey } from "../config";
+import { serviceAccountKey, storageBucket } from "../config";
 
 /**
  * This will initialize the firebase app to store
@@ -18,8 +19,10 @@ import { serviceAccountKey } from "../config";
 // Uses service account key from .env
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.cert(JSON.parse(serviceAccountKey) as string),
+  storageBucket,
 });
 
 const firebaseAdminAuth = getAdminAuth();
+const firebaseStorage = getStorage();
 
-export { firebaseAdminAuth };
+export { firebaseAdminAuth, firebaseStorage };

@@ -20,9 +20,9 @@ export const EventsCarouselCard: React.FC<EventProps> = ({ event }) => {
   return (
     <div
       className="
-            flex-shrink-0 sm:w-2/5 w-full max-w-xl h-full p-4 pt-5 pb-5 
-            rounded-lg border border-gray-400 shadow-md 
-            snap-normal snap-start"
+            flex-shrink-0 sm:w-2/5 w-full max-w-xl h-full p-4 pt-5 pb-6 
+            rounded-lg border border-gray-400
+            snap-normal snap-start hover:shadow-lg"
     >
       <div className="flex flex-col gap-2 w-full">
         <div className="relative w-full h-72">
@@ -41,7 +41,9 @@ export const EventsCarouselCard: React.FC<EventProps> = ({ event }) => {
       </div>
 
       <a href={event.learnMoreUrl} className="flex flex-row justify-end gap-2 w-full mt-6">
-        <span className="font-manrope md:text-sm text-xs font-bold text-gray-400">LEARN MORE</span>
+        <span className="font-manrope md:text-sm text-xs font-bold text-gray-400 hover:text-[#6C6C6C]">
+          LEARN MORE
+        </span>
         <Image src="/icons/learnMore.svg" alt="Learn more arrow" width={24} height={24} />
       </a>
     </div>

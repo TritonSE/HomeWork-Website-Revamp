@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { createUser } from "../api/user";
+
 import { useAuthState } from "@/contexts/userContext";
 
 type Props = {
@@ -39,7 +40,7 @@ const CreateUserModal: React.FC<Props> = ({ onClose }) => {
     }
     try {
       const token = await getAuthToken();
-      const response = await createUser({...form, token});
+      const response = await createUser({ ...form, token });
       if (response.success) {
         alert("Account created successfully");
         onClose();

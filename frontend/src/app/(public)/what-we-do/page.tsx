@@ -1,44 +1,21 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-
 import Image from "next/image";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import Flashcard from "../../../components/Flashcard/Flashcard";
 import Header from "../../../components/Header";
 
+import { PageDataContext } from "@/contexts/pageDataContext";
+
+type FlashcardData = {
+  title: string;
+  icon: string;
+  info: string;
+};
+
 const FlashcardPage: React.FC = () => {
-  const flashcards = [
-    {
-      title: "Attending a Life Skills Workshop",
-      icon: "/images/flashcards/flashcard1.png",
-      info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    },
-    {
-      title: "Rebuilding Families",
-      icon: "/images/flashcards/flashcard2.png",
-      info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    },
-    {
-      title: "Supporting the Community",
-      icon: "/images/flashcards/flashcard3.png",
-      info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    },
-    {
-      title: "Participating in Civic Engagement",
-      icon: "/images/flashcards/flashcard4.png",
-      info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    },
-    {
-      title: "Entering the Union",
-      icon: "/images/flashcards/flashcard5.png",
-      info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    },
-    {
-      title: "Joining the Homework Family",
-      icon: "/images/flashcards/flashcard6.png",
-      info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    },
-  ];
+  const context = useContext(PageDataContext);
+
   const flashcardHeight = 408;
   const [viewport, setViewport] = useState({ h: 1000 }); // default placeholder
 
@@ -102,16 +79,45 @@ const FlashcardPage: React.FC = () => {
     };
   }, [flashcardsTop, flashcardsHeight, viewport.h]);
 
+  if (!context) return <div>Error: Page data not available.</div>;
+  const { pageData } = context;
+
+  const pageEntry = pageData.find((p) => p.pagename === "what-we-do");
+
+  const headerField = pageEntry?.fields.find((f) => f.name === "header");
+  const heroField = pageEntry?.fields.find((f) => f.name === "hero");
+  const modelHeadingField = pageEntry?.fields.find((f) => f.name === "modelHeading");
+  const flashcardsField = pageEntry?.fields.find((f) => f.name === "flashcards");
+
+  const headerData = headerField?.data as {
+    imageUrl: string;
+    header: string;
+    subheader: string;
+    fancy?: boolean;
+  };
+
+  const heroData = heroField?.data as {
+    title: string;
+    description: string[];
+    imageUrl: string;
+  };
+
+  const modelHeading = modelHeadingField?.data as {
+    text: string;
+  };
+
+  const flashcards = (flashcardsField?.data as FlashcardData[]) ?? [];
+
   const SEG = 0.08;
   const segIndex = Math.min(Math.floor(progress / SEG), 9);
   const segT = (progress - segIndex * SEG) / SEG;
 
-  const maxRightPosition = screenWidth - 360;
-  const maxLeftPosition = 223;
+  const maxRightPosition = screenWidth - 380;
+  const maxLeftPosition = 230;
   const [ballXPosDesktop, ballYPositionDesktop] = (() => {
     switch (segIndex) {
       case 0:
-        return [500 + segT * (maxRightPosition - 500), flashcardHeight * 0.5];
+        return [480 + segT * (maxRightPosition - 500), flashcardHeight * 0.5];
       case 1:
         return [maxRightPosition, flashcardHeight * (0.5 + segT)];
       case 2:
@@ -157,52 +163,49 @@ const FlashcardPage: React.FC = () => {
 
   return (
     <div>
-      <Header
-        imageUrl="/images/what-we-do_header_img.png"
-        header="What We Do"
-        subheader="Prioritizing life skills, our goal extends beyond job placement to ensure excellence and leadership in chosen careers. "
-      />
-
+      {headerData && (
+        <Header
+          imageUrl={headerData.imageUrl}
+          header={headerData.header}
+          subheader={headerData.subheader}
+          fancy={headerData.fancy}
+        />
+      )}{" "}
       <div className="flex md:flex-row flex-col w-full justify-between pt-12">
-        <div className="font-golos  md:w-[calc(60%)] md:max-w-4xl w-full px-8 md:pb-0 pb-20">
-          <div className="text-[32px] mb-8 weight-500">
-            Transforming Lives, Empowering Communities
-          </div>
-          <div className="text-[20px] weight-400">
-            <div>
-              By leveraging community resources, we establish a supportive peer mentoring
-              environment that empowers San Diegans towards lasting change and success.
-            </div>
-            <div className="mt-6">
-              Our transformative approach to post-incarceration support emphasizes continuous
-              assistance during employment rather than solely focusing on pre-employment readiness.
-            </div>
+        <div className="font-golos md:pb-0 pb-20 flex flex-col md:flex-row w-full">
+          <div className="px-4 md:pl-12 pb-6 md:pb-0 md:w-[60%] md:max-w-4xl ">
+            {heroData && <div className="text-[32px] mb-8 weight-500">{heroData.title}</div>}
+            {heroData?.description.map((line, i) => (
+              <div className={i > 0 ? "mt-6" : ""} key={i}>
+                {line}
+              </div>
+            ))}
           </div>
         </div>
-        <div className="md:px-8">
-          <Image
-            src="/images/whatwedo.png"
-            alt="Illustration of our program"
-            width={800}
-            height={600}
-            className="h-full w-full object-contain"
-            priority
-          />
-        </div>
+        {heroData && (
+          <div className="md:ml-20 md:mr-12 md:max-w-[35%] w-full bg-gray-300 md:h-full h-[520px] relative">
+            <Image
+              src={heroData.imageUrl}
+              alt={heroData.title}
+              fill={true}
+              className="object-cover"
+              priority
+            />
+          </div>
+        )}
       </div>
-
       <div className="px-8">
-        <div className="text-5xl font-golos pb-8 mt-20">Our Model</div>
+        {modelHeading && <div className="text-5xl font-golos pb-8 mt-20">{modelHeading.text}</div>}
 
-        <div ref={flashcardsRef} className="relative flex flex-col">
+        <div ref={flashcardsRef} className="relative flex pb-20 flex-col">
           {!isMobile && (
             <>
               <div
                 className="lineX absolute"
                 style={{
-                  left: 525 + 5,
+                  left: 480,
                   top: flashcardHeight * 0.5,
-                  width: fill(0) * (maxRightPosition - 500),
+                  width: fill(0) * (maxRightPosition - 450),
                 }}
               />
               <div
@@ -310,7 +313,7 @@ const FlashcardPage: React.FC = () => {
               <div
                 key={index}
                 className={`relative flex ${rowClass} items-center`}
-                style={{ opacity: cardOpacity(index), transition: "opacity 2s linear" }}
+                style={{ opacity: cardOpacity(index), transition: "opacity 0.5s ease-in" }}
               >
                 <Flashcard {...flashcard} />
               </div>

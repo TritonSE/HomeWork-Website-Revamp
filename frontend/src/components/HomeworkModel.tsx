@@ -1,44 +1,36 @@
-export default function HomeworkModel() {
-  const pillars = [
-    {
-      title: "Life Skills Development",
-      subtitle: "Fostering Personal Growth",
-      icon: "/icons/life-skills.svg",
-    },
-    {
-      title: "Family Rebuilding",
-      subtitle: "Restoring Relationships",
-      icon: "/icons/family-rebuilding.svg",
-    },
-    {
-      title: "Community Restoration",
-      subtitle: "Rebuilding Neighborhoods",
-      icon: "/icons/community-restoration.svg",
-    },
-    {
-      title: "Civic Engagement",
-      subtitle: "Advocating For Change",
-      icon: "/icons/civic-engagement.svg",
-    },
-  ];
+import Image from "next/image";
+export type Pillar = {
+  title: string;
+  subtitle: string;
+  icon: string;
+};
+
+export default function HomeworkModel({
+  data,
+}: {
+  data: {
+    title: string;
+    description: string;
+    pillars: Pillar[];
+  };
+}) {
+  const { title, description, pillars } = data;
 
   return (
-    <section className="px-8 md:px-16 py-12">
-      <h2 className="text-[48px] font-bold text-gray-900">The Homework Model</h2>
-      <p className="text-gray-600 mt-4 max-w-2xl">
-        This isn&apos;t employment assistance; we&apos;re a close-knit family dedicated to your
-        journey. Our Friday night meetings go beyond careers—they&apos;re chances for us to connect,
-        share, and grow together. These are the 4 pillars that our organization prides itself on.
-      </p>
+    <section className="text-text_black p-12">
+      <h2 className="text-[48px] font-medium ">{title}</h2>
+      <p className="text-lg pt-4">{description}</p>
 
       {/* Pillars Flexbox Layout - Ensuring All Items Stay in One Line */}
-      <div className="mt-10 flex flex-nowrap justify-between gap-4">
+      <div className="mt-10 flex flex-nowrap justify-between gap-6 h-60">
         {pillars.map((pillar, index) => (
           <div
             key={index}
-            className="bg-gray-100 rounded-lg p-6 text-center shadow-sm w-1/4 min-w-[200px]"
+            className="bg-gray-100 rounded-xl px-6 md:px-0 py-12 text-center shadow-sm w-1/4 min-w-[200px] h-full"
           >
-            <img src={pillar.icon} alt={pillar.title} className="mx-auto h-16 mb-4" />
+            <div className="mx-auto w-1/3 h-[60%] mb-4 relative">
+              <Image src={pillar.icon} alt={pillar.title} fill={true} className="object-fill" />
+            </div>
             <h3 className="text-xl font-semibold">{pillar.title}</h3>
             <p className="text-gray-600">{pillar.subtitle}</p>
           </div>

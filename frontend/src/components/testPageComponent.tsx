@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 
-import { useRedirectToLogin } from "@/hooks/useRedirect";
 import CreateUserModal from "@/components/CreateUserModal";
+import { useRedirectToLogin } from "@/hooks/useRedirect";
 
 const TestPage: React.FC = () => {
   useRedirectToLogin();
