@@ -76,10 +76,17 @@ export const updateArticle: RequestHandler = async (req, res, next) => {
     }
 
     // Update the article
-    const article = await ArticleModel.findByIdAndUpdate(id, reqBody, {
-      new: true,
-      runValidators: true,
-    });
+    const article = await ArticleModel.findByIdAndUpdate(
+      id,
+      {
+        ...reqBody,
+        dateCreated: new Date().toISOString(),
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
 
     res.status(200).json(article);
   } catch (error) {
