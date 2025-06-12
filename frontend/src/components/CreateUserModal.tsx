@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
 import { createUser } from "../api/user";
+import { useAuthState } from "@/contexts/userContext";
 
 type Props = {
   onClose: () => void;
 };
 
 const CreateUserModal: React.FC<Props> = ({ onClose }) => {
+  const { firebaseUser } = useAuthState();
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -14,6 +16,17 @@ const CreateUserModal: React.FC<Props> = ({ onClose }) => {
     password: "",
     confirmPassword: "",
   });
+
+  const getAuthToken = async (): Promise<string> => {
+    if (!firebaseUser) {
+      throw new Error("User not authenticated");
+    }
+    const token = await firebaseUser.getIdToken();
+    if (!token) {
+      throw new Error("No authentication token available");
+    }
+    return token;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -24,13 +37,17 @@ const CreateUserModal: React.FC<Props> = ({ onClose }) => {
       alert("Passwords do not match");
       return;
     }
-
     try {
-      await createUser(form);
-      alert("Account created successfully");
-      onClose();
+      const token = await getAuthToken();
+      const response = await createUser({...form, token});
+      if (response.success) {
+        alert("Account created successfully");
+        onClose();
+      } else {
+        alert("Error creating account");
+        console.error(response.error);
+      }
     } catch (err) {
-      alert("Error creating account");
       console.error(err);
     }
   };
