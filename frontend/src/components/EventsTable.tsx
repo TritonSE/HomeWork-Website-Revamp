@@ -80,7 +80,6 @@ const EventsTable: React.FC = () => {
     ...article,
     status: article.isPublished ? "Published" : "Draft",
   }));
-
   const filteredArticles = articlesWithStatus.filter((article) =>
     article.header.toLowerCase().startsWith(searchQuery.toLowerCase()),
   );
