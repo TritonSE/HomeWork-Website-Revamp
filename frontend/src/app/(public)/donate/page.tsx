@@ -59,11 +59,7 @@ const DonationPage = () => {
       </Header>
 
       <DonateCarousel
-        images={[
-          "/images/donate-carousel-1.png",
-          "/images/donate-carousel-1.png",
-          "/images/donate-carousel-1.png",
-        ]}
+        images={["/images/donation-1.JPG", "/images/donation-2.JPG", "/images/donation-3.JPG"]}
       />
       <div className="mx-8 my-16 grid md:grid-cols-2 gap-8">
         {/* Left Column - Impact Information */}
