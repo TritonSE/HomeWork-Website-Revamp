@@ -6,6 +6,7 @@ import BoxLinkGroup from "@/components/BoxLinkGroup";
 import { EventsCarousel } from "@/components/EventsCarousel/EventsCarousel";
 import { EventsCarouselCard } from "@/components/EventsCarousel/EventsCarouselCard";
 import Header from "@/components/Header";
+import { ArticleContext } from "@/contexts/articleContext";
 import HomeworkModel from "@/components/HomeworkModel";
 import Mission from "@/components/Mission";
 import NewsPastEvents, { NewsPastEventsData } from "@/components/NewsPastEvents";
@@ -24,7 +25,7 @@ type Event = {
 export default function HomePage() {
   const context = useContext(PageDataContext);
   const [isVisible, setIsVisible] = useState(false);
-
+  const { articles } = useContext(ArticleContext);
   useEffect(() => {
     if (context && !context.loading) {
       const timer = setTimeout(() => {
@@ -85,9 +86,14 @@ export default function HomePage() {
   const newsData = (newsField?.data as NewsPastEventsData) ?? null;
 
   // events carousel
-  const eventsField = homeData.fields.find((f) => f.name === "events");
-  const events: Event[] = (eventsField?.data as Event[]) ?? [];
-
+  const publishedArticles = (articles ?? []).filter((a) => a.isPublished);
+  const events: Event[] = publishedArticles.map((article) => ({
+    header: article.header,
+    dateCreated: article.dateCreated,
+    body: article.body ?? "",
+    thumbnail: article.thumbnail,
+    learnMoreUrl: `/article-viewer?articleId=${article._id}`,
+  }));
   return (
     <div className={`transition-opacity duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}>
       <Header imageUrl={imageUrl} header={header} subheader={subheader} fancy={fancy} />

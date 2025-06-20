@@ -30,7 +30,7 @@ export const getRecentMessages = async (maxResults = 50) => {
   });
 
   const messagePromises = (list.data.messages ?? [])
-    .filter((msg): msg is { id: string; threadId: string } => Boolean(msg.id && msg.threadId)) // ✅ Narrow type safely
+    .filter((msg): msg is { id: string; threadId: string } => Boolean(msg.id && msg.threadId))
     .map(async (msg) => {
       const full = await gmail.users.messages.get({
         userId: "me",

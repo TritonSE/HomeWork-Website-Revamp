@@ -14,6 +14,8 @@ router.post(
 
 router.get("/", [verifyAuthToken], SubscriptionController.getAllSubscriptions);
 
-router.delete("/", [verifyAuthToken], SubscriptionController.removeSubscription);
+router.delete("/", [verifyAuthToken], SubscriptionController.removeSubscriptions);
+
+router.put("/update", [verifyAuthToken], SubscriptionController.updateSubscription);
 
 export default router;

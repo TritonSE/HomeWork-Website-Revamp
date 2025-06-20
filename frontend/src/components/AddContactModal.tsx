@@ -3,16 +3,19 @@ import React, { useState } from "react";
 import "@fontsource/golos-text/500.css";
 import { post } from "../api/requests";
 
-type ContactModalProps = {
+import ConfirmationModal from "./ConfirmationModal";
+
+type AddContactModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  onSaved?: (msg: string) => void;
 };
 
 type ErrorMessage = {
   message: string;
 };
 
-const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
+const AddContactModal: React.FC<AddContactModalProps> = ({ isOpen, onClose, onSaved }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,6 +23,12 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
   const [showMessage, setShowMessage] = useState(false);
   const [membership, setMembership] = useState<string>("community");
   const [status, setStatus] = useState<string>("active");
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showUnsavedPrompt, setShowUnsavedPrompt] = useState(false);
+
+  const markDirty = () => {
+    setHasUnsavedChanges(true);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,6 +55,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
         status,
         membership,
       });
+
+      onSaved?.("New contact added successfully");
 
       // Update the form result on successful submission
       setFormResult({
@@ -78,21 +89,29 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     }, 5000);
   };
 
+  const handleAttemptClose = () => {
+    if (hasUnsavedChanges) {
+      setShowUnsavedPrompt(true);
+    } else {
+      handleDiscard();
+    }
+  };
+
   const handleDiscard = () => {
-    // Reset the form fields to their initial empty states
     setFirstName("");
     setLastName("");
     setEmail("");
-    setMembership("community"); // Reset membership to default
-    setStatus("active"); // Reset status to default
-    onClose(); // Close the modal
+    setMembership("community");
+    setStatus("active");
+    setHasUnsavedChanges(false);
+    onClose();
   };
 
   if (!isOpen) return null;
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center"
+      className="fixed top-0 left-0 w-full h-full bg-black/50 z-[50] flex items-center justify-center"
       aria-hidden="true"
     >
       <div className="bg-white rounded-lg relative w-[932px] h-[703px] gap-6 p-14">
@@ -123,6 +142,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
               value={firstName}
               onChange={(e) => {
                 setFirstName(e.target.value);
+                markDirty();
               }}
             />
 
@@ -158,86 +178,91 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
               }}
             />
 
-            {/* Status */}
             <div className="font-golos-text font-medium text-xl leading-[130%] tracking-normal text-[#484848]">
               Status
             </div>
-            <div className="w-[168px] h-11 gap-3 flex flex-row">
+            <div className="flex gap-3 h-11 mb-5">
               <button
                 type="button"
                 onClick={() => {
                   setStatus("active");
                 }}
                 aria-pressed={status === "active"}
-                className={`relative inline-flex items-center justify-center bg-transparent border-2 border-transparent cursor-pointer transition-border-color duration-300 ease-in-out w-[82px] h-11 rounded-lg border-width-[1px] ${status === "active" ? "border-gray-300 shadow-[0px_1px_4px_0px_rgba(12,12,13,0.05)]" : ""} p-2`}
+                className={`relative inline-flex items-center justify-center w-[82px] rounded-lg border-2 ${
+                  status === "active"
+                    ? "border-gray-300 shadow-[0px_1px_4px_rgba(12,12,13,0.05)]"
+                    : "border-transparent"
+                }`}
               >
-                <div className="w-[58px] h-7 rounded-md bg-[#aff4c6] flex items-center justify-center">
-                  <span className="font-golos-text text-sm leading-5 tracking-normal text-[#02542d]">
-                    Active
-                  </span>
-                </div>
+                <span className="w-[58px] h-7 bg-[#aff4c6] rounded-md flex items-center justify-center text-sm text-[#02542d]">
+                  Active
+                </span>
               </button>
+
               <button
                 type="button"
                 onClick={() => {
-                  setStatus("inactive");
+                  setStatus("error");
                 }}
-                aria-pressed={status === "inactive"}
-                className={`relative inline-flex items-center justify-center bg-transparent border-2 border-transparent cursor-pointer transition-border-color duration-300 ease-in-out w-[82px] h-11 rounded-lg border-width-[1px] ${status === "inactive" ? "border-gray-300 shadow-[0px_1px_4px_0px_rgba(12,12,13,0.05)]" : ""} p-2`}
+                aria-pressed={status === "error"}
+                className={`relative inline-flex items-center justify-center w-[82px] rounded-lg border-2 ${
+                  status === "error"
+                    ? "border-gray-300 shadow-[0px_1px_4px_rgba(12,12,13,0.05)]"
+                    : "border-transparent"
+                }`}
               >
-                <div className="w-[58px] h-7 rounded-md bg-[#fcb3ad] flex items-center justify-center">
-                  <span className="font-golos-text text-sm leading-5 tracking-normal text-[#1b1b1b]">
-                    Inactive
-                  </span>
-                </div>
+                <span className="w-[58px] h-7 bg-[#fcb3ad] rounded-md flex items-center justify-center text-sm text-[#1b1b1b]">
+                  Error
+                </span>
               </button>
             </div>
 
-            {/* Membership */}
             <div className="font-golos-text font-medium text-xl leading-[130%] tracking-normal text-[#484848]">
               Membership
             </div>
-            <div className="w-[168px] h-11 gap-3 flex flex-row">
+            <div className="flex gap-3 h-11 mb-5">
               <button
                 type="button"
                 onClick={() => {
                   setMembership("community");
                 }}
                 aria-pressed={membership === "community"}
-                className={`relative inline-flex items-center justify-center bg-transparent border-2 border-transparent cursor-pointer transition-border-color duration-300 ease-in-out w-[118px] h-11 rounded-lg border-width-[1px] ${membership === "community" ? "border-gray-300 shadow-[0px_1px_4px_0px_rgba(12,12,13,0.05)]" : ""} p-2`}
+                className={`relative inline-flex items-center justify-center w-[118px] rounded-lg border-2 ${
+                  membership === "community"
+                    ? "border-gray-300 shadow-[0px_1px_4px_rgba(12,12,13,0.05)]"
+                    : "border-transparent"
+                }`}
               >
-                <div className="w-[94px] h-7 rounded-md bg-[#ffe8a3] flex items-center justify-center">
-                  <span className="font-golos-text text-sm leading-5 tracking-normal text-[#975102]">
-                    Community
-                  </span>
-                </div>
+                <span className="w-[94px] h-7 bg-[#ffe8a3] rounded-md flex items-center justify-center text-sm text-[#975102]">
+                  Community
+                </span>
               </button>
+
               <button
                 type="button"
                 onClick={() => {
                   setMembership("family");
                 }}
                 aria-pressed={membership === "family"}
-                className={`relative inline-flex items-center justify-center bg-transparent border-2 border-transparent cursor-pointer transition-border-color duration-300 ease-in-out w-[82px] h-11 rounded-lg border-width-[1px] ${membership === "family" ? "border-gray-300 shadow-[0px_1px_4px_0px_rgba(12,12,13,0.05)]" : ""} p-2`}
+                className={`relative inline-flex items-center justify-center w-[82px] rounded-lg border-2 ${
+                  membership === "family"
+                    ? "border-gray-300 shadow-[0px_1px_4px_rgba(12,12,13,0.05)]"
+                    : "border-transparent"
+                }`}
               >
-                <div className="w-[61px] h-7 rounded-md bg-[#fae1fa] flex items-center justify-center">
-                  <span className="font-golos-text text-sm leading-5 tracking-normal text-[#8a226f]">
-                    Family
-                  </span>
-                </div>
+                <span className="w-[61px] h-7 bg-[#FAE1FA] rounded-md flex items-center justify-center text-sm text-[#8A226F]">
+                  Family
+                </span>
               </button>
             </div>
-
-            {/* Submit and Cancel */}
             <div className="flex flex-row gap-3 items-center justify-end">
-              {/* cancel button */}
               <button
                 type="button"
-                onClick={handleDiscard} // Call the handleDiscard function
+                onClick={handleAttemptClose}
                 className="w-[227px] h-12 pt-3 pb-3 pr-6 pl-6 gap-1.5 rounded-md border-2 border-[#b93b3b] flex flex-row items-center justify-center font-golos-text font-normal text-base leading-6 tracking-normal text-center align-middle text-[#b93b3b]"
               >
                 <>
-                  <img src="cross_exit.svg" width={14} height={14} alt="Discard" />
+                  <img src="/icons/ic_crossExit.svg" width={14} height={14} alt="Discard" />
                   DISCARD CONTACT
                 </>
               </button>
@@ -248,14 +273,13 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                 className="w-[197px] h-12 gap-1.5 rounded-md bg-[#f05629] flex flex-row items-center justify-center font-golos-text font-normal text-base leading-6 tracking-normal text-white"
               >
                 <>
-                  <img src="submit_check.svg" width={15} height={13} alt="Save" />
+                  <img src="/icons/ic_submitCheck.svg" width={15} height={13} alt="Save" />
                   SAVE CONTACT
                 </>
               </button>
             </div>
           </form>
 
-          {/* Success/Failure Message */}
           {showMessage && (
             <div
               className={`form-result ${
@@ -269,8 +293,20 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
           )}
         </div>
       </div>
+      <ConfirmationModal
+        open={showUnsavedPrompt}
+        onCancel={() => {
+          setShowUnsavedPrompt(false);
+        }}
+        onConfirm={() => {
+          setShowUnsavedPrompt(false);
+          handleDiscard();
+        }}
+        title="Are you sure you want to exit without saving?"
+        description="Unsaved changes will be lost."
+      />
     </div>
   );
 };
 
-export default ContactModal;
+export default AddContactModal;
