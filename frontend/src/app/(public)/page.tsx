@@ -6,11 +6,11 @@ import BoxLinkGroup from "@/components/BoxLinkGroup";
 import { EventsCarousel } from "@/components/EventsCarousel/EventsCarousel";
 import { EventsCarouselCard } from "@/components/EventsCarousel/EventsCarouselCard";
 import Header from "@/components/Header";
-import { ArticleContext } from "@/contexts/articleContext";
 import HomeworkModel from "@/components/HomeworkModel";
 import Mission from "@/components/Mission";
 import NewsPastEvents, { NewsPastEventsData } from "@/components/NewsPastEvents";
 import SuccessStories, { SuccessStoriesData } from "@/components/SuccessStories";
+import { ArticleContext } from "@/contexts/articleContext";
 import { PageDataContext } from "@/contexts/pageDataContext";
 
 type Event = {
