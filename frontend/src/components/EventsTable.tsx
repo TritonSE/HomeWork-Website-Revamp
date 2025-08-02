@@ -327,6 +327,7 @@ const EventsTable: React.FC = () => {
             display: flex !important;
             justify-content: center !important;
             margin-top: auto !important;
+            padding-top: 24px !important;
             bottom: 0 !important;
             margin-bottom: 24px !important;
           }
