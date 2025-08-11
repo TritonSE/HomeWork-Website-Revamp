@@ -1,9 +1,10 @@
 "use client";
-
 import Image from "next/image";
 import React, { useContext } from "react";
 
 import Checkout from "@/components/Checkout";
+import DonateCarousel from "@/components/DonateCarousel";
+import Header from "@/components/Header";
 import { PageDataContext } from "@/contexts/pageDataContext";
 
 const DonationPage = () => {
@@ -35,10 +36,34 @@ const DonationPage = () => {
     imageUrl: string;
   };
   return (
-    <div className="pt-24">
-      <div className="px-8 grid md:grid-cols-2 gap-8 mb-16">
+    <>
+      <Header
+        imageUrl={"/images/donate-header.png"}
+        header={"Donate"}
+        subheader={
+          "Make a difference today! Your generous support helps us continue empowering families and creating meaningful change in our community. Every contribution, big or small, fuels our mission and brings us closer to a brighter future."
+        }
+      >
+        <button
+          onClick={() => {
+            const el = document.getElementById("content");
+            if (el) {
+              const y = el.getBoundingClientRect().top + window.scrollY - 150;
+              window.scrollTo({ top: y, behavior: "smooth" });
+            }
+          }}
+          className="border rounded-lg px-6 py-4 bg-transparent hover:bg-white/25"
+        >
+          Donate Now
+        </button>
+      </Header>
+
+      <DonateCarousel
+        images={["/images/donation-1.JPG", "/images/donation-2.JPG", "/images/donation-3.JPG"]}
+      />
+      <div className="mx-8 my-16 grid md:grid-cols-2 gap-8">
         {/* Left Column - Impact Information */}
-        <div className="space-y-6">
+        <div id="content" className="space-y-6">
           <h1 className="text-4xl mb-4">{intro.title}</h1>
           <p className="text-[#1b1b1b] mb-6">{intro.description}</p>
 
@@ -86,7 +111,7 @@ const DonationPage = () => {
           />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

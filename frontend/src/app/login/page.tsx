@@ -1,5 +1,4 @@
-import LoginForm from "../../../components/loginForm";
-
+import LoginForm from "@/components/loginForm";
 import { UserContextProvider } from "@/contexts/userContext";
 const LoginPage = () => {
   return (

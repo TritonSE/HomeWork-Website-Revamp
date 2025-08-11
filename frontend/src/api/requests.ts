@@ -144,8 +144,17 @@ export async function patch(
  * @param headers The headers of the request (optional)
  * @returns The Response object returned by `fetch()`
  */
-export async function del(url: string, headers: Record<string, string> = {}): Promise<Response> {
-  const response = await fetchRequest("DELETE", `${API_BASE_URL}${url}`, undefined, headers);
+export async function del(
+  url: string,
+  headers: Record<string, string> = {},
+  body?: unknown, //  ← new
+): Promise<Response> {
+  const response = await fetchRequest(
+    "DELETE",
+    `${API_BASE_URL}${url}`,
+    body, //  ← pass through
+    headers,
+  );
   await assertOk(response);
   return response;
 }

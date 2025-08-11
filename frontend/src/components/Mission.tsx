@@ -1,3 +1,7 @@
+"use client";
+
+import { Button } from "@tritonse/tse-constellation";
+import Image from "next/image";
 import Link from "next/link";
 
 type MissionData = {
@@ -12,18 +16,16 @@ export default function Mission({ data }: { data: MissionData }) {
   const { title, description, imageUrl, buttonText, buttonLink } = data;
 
   return (
-    <section className="flex flex-col md:flex-row items-center justify-between px-8 md:px-16 py-12">
+    <section className="p-12 flex flex-col md:flex-row items-center justify-between text-text_black">
       <div className="md:w-1/2">
-        <h2 className="text-[48px] font-bold">{title}</h2>
-        <p className="mt-4 text-lg text-gray-700">{description}</p>
+        <p className="text-[48px] font-medium ">{title}</p>
+        <p className="mt-4 text-lg">{description}</p>
         <Link href={buttonLink}>
-          <button className="mt-6 bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition">
-            {buttonText}
-          </button>
+          <Button className="mt-6 px-6 py-3 rounded-lg transition">{buttonText}</Button>
         </Link>
       </div>
-      <div className="md:w-1/2 flex justify-center mt-8 md:mt-0">
-        <img src={imageUrl} alt="Our Mission" className="w-full max-w-md shadow-lg" />
+      <div className="w-[612px] flex h-[373px] relative">
+        <Image src={imageUrl} alt="Our Mission" fill={true} objectFit="cover" />
       </div>
     </section>
   );

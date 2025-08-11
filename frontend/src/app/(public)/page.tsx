@@ -10,6 +10,7 @@ import HomeworkModel from "@/components/HomeworkModel";
 import Mission from "@/components/Mission";
 import NewsPastEvents, { NewsPastEventsData } from "@/components/NewsPastEvents";
 import SuccessStories, { SuccessStoriesData } from "@/components/SuccessStories";
+import { ArticleContext } from "@/contexts/articleContext";
 import { PageDataContext } from "@/contexts/pageDataContext";
 
 type Event = {
@@ -24,7 +25,7 @@ type Event = {
 export default function HomePage() {
   const context = useContext(PageDataContext);
   const [isVisible, setIsVisible] = useState(false);
-
+  const { articles } = useContext(ArticleContext);
   useEffect(() => {
     if (context && !context.loading) {
       const timer = setTimeout(() => {
@@ -85,13 +86,17 @@ export default function HomePage() {
   const newsData = (newsField?.data as NewsPastEventsData) ?? null;
 
   // events carousel
-  const eventsField = homeData.fields.find((f) => f.name === "events");
-  const events: Event[] = (eventsField?.data as Event[]) ?? [];
-
+  const publishedArticles = (articles ?? []).filter((a) => a.isPublished);
+  const events: Event[] = publishedArticles.map((article) => ({
+    header: article.header,
+    dateCreated: article.dateCreated,
+    body: article.body ?? "",
+    thumbnail: article.thumbnail,
+    learnMoreUrl: `/article-viewer?articleId=${article._id}`,
+  }));
   return (
     <div className={`transition-opacity duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}>
       <Header imageUrl={imageUrl} header={header} subheader={subheader} fancy={fancy} />
-
       {missionData && <Mission data={missionData} />}
       {boxLinks.length > 0 && <BoxLinkGroup data={boxLinks} />}
       {modelData && <HomeworkModel data={modelData} />}
@@ -99,10 +104,7 @@ export default function HomePage() {
       {newsData && <NewsPastEvents data={newsData} />}
       <div className="mb-10">
         <EventsCarousel>
-          <EventsCarouselCard key="1" event={events[0]} />
-          <EventsCarouselCard key="2" event={events[1]} />
-          <EventsCarouselCard key="3" event={events[1]} />
-          <EventsCarouselCard key="4" event={events[1]} />
+          {events?.map((event, index) => <EventsCarouselCard key={index} event={event} />)}
         </EventsCarousel>
       </div>
     </div>
