@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import React, { ReactNode } from "react";
 
 import { useWindowSize } from "@/hooks/useWindowSize";
-import Link from "next/link";
 
 export type HeaderComponents = {
   imageUrl: string;
@@ -35,13 +35,7 @@ const Header: React.FC<HeaderComponents> = ({
       {isMobile && (
         <div className="flex justify-center w-full">
           <Link href="/">
-            <Image
-              src="/logo.png" // Changes logo on scroll
-              alt="Logo"
-              width={176}
-              height={98}
-              priority
-            />
+            <Image src="/homework_logo.svg" alt="Logo" width={176} height={98} priority />
           </Link>
         </div>
       )}

@@ -4,10 +4,9 @@ import "@/global.css";
 import { PageDataContextProvider } from "../../contexts/pageDataContext";
 
 import { Footer } from "@/components/Footer";
-import NavBar from "@/components/NavBar/NavBar";
 import MobileNavBar from "@/components/NavBar/MobileNavBar";
+import NavBar from "@/components/NavBar/NavBar";
 import { ArticleContextProvider } from "@/contexts/articleContext";
-
 import { useWindowSize } from "@/hooks/useWindowSize";
 
 export default function RootLayout({
