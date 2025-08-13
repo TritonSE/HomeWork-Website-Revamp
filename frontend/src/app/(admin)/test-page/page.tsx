@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 import TestPageComponent from "../../..//components/testPageComponent";
-import ContactModal from "../../../components/ContactModal";
+import AddContactModal from "../../../components/AddContactModal";
 
 const TestPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -18,7 +18,7 @@ const TestPage = () => {
       >
         Open Modal
       </button>
-      <ContactModal
+      <AddContactModal
         isOpen={isModalOpen}
         onClose={() => {
           setModalOpen(false);
