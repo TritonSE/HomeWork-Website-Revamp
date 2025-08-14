@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+
 import CollapsibleSection from "../../../components/CollapsibleSection";
+
 import SignupForm from "@/components/SignupForm";
 
 export default function PageEditor() {
@@ -29,7 +31,9 @@ export default function PageEditor() {
                 <input
                   type="text"
                   defaultValue="Amplifying the voices of previously incarcerated individuals"
-                  onChange={(e) => updateField("header.title", e.target.value)}
+                  onChange={(e) => {
+                    updateField("header.title", e.target.value);
+                  }}
                   className="w-full border border-[#D9D9D9] rounded-sm px-3 py-2 text-base leading-5"
                 />
               </div>
@@ -43,7 +47,9 @@ export default function PageEditor() {
                   defaultValue={
                     "We're committed to amplifying the voices of those rebuilding their lives, offering support, mentorship, and guidance for enduring personal growth within a nurturing community."
                   }
-                  onChange={(e) => updateField("header.subtext", e.target.value)}
+                  onChange={(e) => {
+                    updateField("header.subtext", e.target.value);
+                  }}
                   className="w-full border border-[#D9D9D9] rounded-sm px-3 py-2 text-base leading-5 text-gray-900 h-28"
                 />
                 <div className="text-sm text-gray-500 text-right mt-1">20 / 200 words</div>
@@ -68,7 +74,9 @@ export default function PageEditor() {
           <button
             type="button"
             className="px-6 py-3 bg-orange-500 text-white rounded-none"
-            onClick={() => console.log("Save Changes clicked")}
+            onClick={() => {
+              console.log("Save Changes clicked");
+            }}
           >
             Save Changes
           </button>

@@ -9,9 +9,20 @@ type ImageFieldProps = {
   index: number;
   fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
+  pendingFiles?: Map<string, File>;
+  onPendingFile?: (blobUrl: string, file: File) => void;
+  onRemovePending?: (blobUrl: string) => void;
 };
 
-const ImageField: React.FC<ImageFieldProps> = ({ data, index, onFieldChange }) => {
+const ImageField: React.FC<ImageFieldProps> = ({
+  data,
+  index,
+fieldName,
+onFieldChange,
+  pendingFiles,
+  onPendingFile,
+  onRemovePending,
+}) => {
   const handleAltChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onFieldChange(index, { ...data, alt: e.target.value });
   };
@@ -19,12 +30,15 @@ const ImageField: React.FC<ImageFieldProps> = ({ data, index, onFieldChange }) =
   return (
     <div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">Image</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
         <FieldImageUpload
           value={data.imageUrl || ""}
           onChange={(url) => {
             onFieldChange(index, { ...data, imageUrl: url });
           }}
+          pendingFiles={pendingFiles}
+          onPendingFile={onPendingFile}
+          onRemovePending={onRemovePending}
         />
       </div>
       <div className="mb-4">

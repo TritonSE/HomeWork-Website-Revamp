@@ -1,30 +1,38 @@
 // src/components/fields/FieldImageUpload.tsx
 "use client";
 
-import React, { useRef, useState } from "react";
-import {
-  ref as storageRef,
-  uploadBytesResumable,
-  getDownloadURL,
-  deleteObject,
-} from "firebase/storage";
+import { deleteObject, ref as storageRef } from "firebase/storage";
+import React, { useEffect, useRef, useState } from "react";
+
 import { storage } from "@/firebase/firebase";
 
 type FieldImageUploadProps = {
   value: string;
-  onChange: (url: string) => void;
+  onChange: (url: string, file?: File) => void;
+  pendingFiles?: Map<string, File>;
+  onPendingFile?: (url: string, file: File) => void;
+  onRemovePending?: (url: string) => void;
 };
 
-export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({ value, onChange }) => {
+export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({
+  value,
+  onChange,
+  pendingFiles = new Map(),
+  onPendingFile,
+  onRemovePending,
+}) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  // Check if current value is a blob URL (pending)
+  const isPending = value.startsWith("blob:");
+  const hasFile = pendingFiles.has(value);
 
   /** Given a download URL, delete that file from Storage */
   const deleteFirebaseFile = async (fileUrl: string) => {
     try {
       const urlObj = new URL(fileUrl);
-
       const encodedPath = urlObj.pathname.split("/o/")[1];
       const fullPath = decodeURIComponent(encodedPath);
       const fileRef = storageRef(storage, fullPath);
@@ -39,38 +47,18 @@ export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({ value, onCha
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Remove previous file if one exists
-    if (value) {
-      await deleteFirebaseFile(value);
+    // If there's a current blob URL, revoke it and remove from pending
+    if (value && isPending) {
+      URL.revokeObjectURL(value);
+      onRemovePending?.(value);
     }
 
-    setUploading(true);
-    setProgress(0);
+    // Create local blob URL for preview
+    const blobUrl = URL.createObjectURL(file);
 
-    // Create a unique path in bucket
-    const path = `page-images/${Date.now()}-${file.name}`;
-    const ref = storageRef(storage, path);
-    const uploadTask = uploadBytesResumable(ref, file);
-
-    // Listen for progress / errors / completion
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const pct = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setProgress(pct);
-      },
-      (error) => {
-        console.error("Upload error:", error);
-        setUploading(false);
-      },
-      async () => {
-        // On success, get public URL
-        const url = await getDownloadURL(uploadTask.snapshot.ref);
-        setUploading(false);
-        setProgress(0);
-        onChange(url);
-      },
-    );
+    // Track the file for later upload
+    onPendingFile?.(blobUrl, file);
+    onChange(blobUrl, file);
   };
 
   /** Open the hidden file input */
@@ -78,14 +66,28 @@ export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({ value, onCha
     if (!uploading) fileInputRef.current?.click();
   };
 
-  /** Remove the current image and delete it from Storage */
+  /** Remove the current image */
   const handleRemove = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
     if (value) {
-      await deleteFirebaseFile(value);
+      if (isPending) {
+        // If it's a blob URL, revoke it and remove from pending
+        URL.revokeObjectURL(value);
+        onRemovePending?.(value);
+      }
+      // If it's a saved Firebase URL, don't delete from storage yet
+      onChange("");
     }
-    onChange("");
   };
+
+  // Cleanup blob URLs when component unmounts
+  useEffect(() => {
+    return () => {
+      if (value && isPending) {
+        URL.revokeObjectURL(value);
+      }
+    };
+  }, [value, isPending]);
 
   return (
     <div
@@ -100,6 +102,13 @@ export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({ value, onCha
         onChange={handleFileChange}
         disabled={uploading}
       />
+
+      {/* Show pending indicator */}
+      {isPending && (
+        <div className="absolute top-1 left-1 bg-yellow-500 text-white text-xs px-2 py-1 rounded z-10">
+          Pending
+        </div>
+      )}
 
       {uploading ? (
         <div className="text-center">Uploading… {Math.round(progress)}%</div>

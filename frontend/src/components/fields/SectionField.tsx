@@ -9,9 +9,19 @@ type SectionFieldProps = {
   index: number;
   fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
+  pendingFiles?: Map<string, File>;
+  onPendingFile?: (blobUrl: string, file: File) => void;
+  onRemovePending?: (blobUrl: string) => void;
 };
 
-const SectionField: React.FC<SectionFieldProps> = ({ data, index, onFieldChange }) => {
+const SectionField: React.FC<SectionFieldProps> = ({
+data,
+index,
+onFieldChange,
+  pendingFiles,
+  onPendingFile,
+  onRemovePending,
+}) => {
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onFieldChange(index, { ...data, title: e.target.value });
   };
@@ -101,6 +111,9 @@ const SectionField: React.FC<SectionFieldProps> = ({ data, index, onFieldChange 
           onChange={(url) => {
             onFieldChange(index, { ...data, imageUrl: url });
           }}
+pendingFiles={pendingFiles}
+          onPendingFile={onPendingFile}
+          onRemovePending={onRemovePending}
         />
       </div>
     </div>

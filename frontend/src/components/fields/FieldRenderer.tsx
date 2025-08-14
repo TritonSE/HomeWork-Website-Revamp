@@ -45,6 +45,9 @@ type FieldRendererProps = {
   countWords: (text: string) => number;
   getStringValue: (value: unknown) => string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
+  pendingFiles?: Map<string, File>;
+  onPendingFile?: (blobUrl: string, file: File) => void;
+  onRemovePending?: (blobUrl: string) => void;
 };
 
 const FieldRenderer: React.FC<FieldRendererProps> = ({
@@ -55,6 +58,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
   countWords,
   getStringValue,
   onFieldChange,
+  pendingFiles,
+  onPendingFile,
+  onRemovePending,
 }) => {
   const renderField = () => {
     switch (field.type) {
@@ -85,6 +91,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               countWords={countWords}
               getStringValue={getStringValue}
               onFieldChange={onFieldChange}
+              pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }
@@ -113,6 +122,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               index={index}
               fieldName={field.name}
               onFieldChange={onFieldChange}
+pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }
@@ -127,6 +139,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               onFieldChange={(fieldIndex, newData) => {
                 onFieldChange(fieldIndex, newData);
               }}
+pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }
@@ -139,8 +154,15 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               fieldName={field.name}
               onFieldChange={(fieldIndex, newData) => {
                 onFieldChange(fieldIndex, newData);
-                console.log('[FieldRenderer] TeamListField onFieldChange', { fieldIndex, newData, prevData: field.data });
+                console.log("[FieldRenderer] TeamListField onFieldChange", {
+                  fieldIndex,
+                  newData,
+                  prevData: field.data,
+                });
               }}
+pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }
@@ -154,7 +176,11 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               fieldName={field.name}
               onFieldChange={(fieldIndex, newData) => {
                 onFieldChange(fieldIndex, newData);
-                console.log('[FieldRenderer] StatsListField onFieldChange', { fieldIndex, newData, prevData: field.data });
+                console.log("[FieldRenderer] StatsListField onFieldChange", {
+                  fieldIndex,
+                  newData,
+                  prevData: field.data,
+                });
               }}
             />
           );
@@ -168,6 +194,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               index={index}
               fieldName={field.name}
               onFieldChange={onFieldChange}
+              pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }
@@ -180,6 +209,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               index={index}
               fieldName={field.name}
               onFieldChange={onFieldChange}
+              pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }
@@ -193,8 +225,15 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               fieldName={field.name}
               onFieldChange={(fieldIndex, newData) => {
                 onFieldChange(fieldIndex, newData);
-                console.log('[FieldRenderer] FlashcardListField onFieldChange', { fieldIndex, newData, prevData: field.data });
+                console.log("[FieldRenderer] FlashcardListField onFieldChange", {
+                  fieldIndex,
+                  newData,
+                  prevData: field.data,
+                });
               }}
+pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }
@@ -207,6 +246,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               index={index}
               fieldName={field.name}
               onFieldChange={onFieldChange}
+              pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }
@@ -220,8 +262,15 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               fieldName={field.name}
               onFieldChange={(fieldIndex, newData) => {
                 onFieldChange(fieldIndex, newData);
-                console.log('[FieldRenderer] BoxLinksField onFieldChange', { fieldIndex, newData, prevData: field.data });
+                console.log("[FieldRenderer] BoxLinksField onFieldChange", {
+                  fieldIndex,
+                  newData,
+                  prevData: field.data,
+                });
               }}
+pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }
@@ -234,6 +283,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               index={index}
               fieldName={field.name}
               onFieldChange={onFieldChange}
+pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }
@@ -246,6 +298,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               index={index}
               fieldName={field.name}
               onFieldChange={onFieldChange}
+pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }
@@ -270,6 +325,9 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               index={index}
               fieldName={field.name}
               onFieldChange={onFieldChange}
+pendingFiles={pendingFiles}
+              onPendingFile={onPendingFile}
+              onRemovePending={onRemovePending}
             />
           );
         }

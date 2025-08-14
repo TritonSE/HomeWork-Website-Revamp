@@ -9,9 +9,20 @@ type ScrollFieldProps = {
   index: number;
   fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
+  pendingFiles?: Map<string, File>;
+  onPendingFile?: (blobUrl: string, file: File) => void;
+  onRemovePending?: (blobUrl: string) => void;
 };
 
-const ScrollField: React.FC<ScrollFieldProps> = ({ data, index, onFieldChange }) => {
+const ScrollField: React.FC<ScrollFieldProps> = ({
+  data,
+  index,
+  fieldName,
+onFieldChange,
+onPendingFile,
+  onRemovePending,
+pendingFiles,
+}) => {
   const handleSlideChange = (slideIndex: number, newSlide: Partial<ScrollSlide>) => {
     const updatedSlides = (data.slidesData || []).map((slide, i) =>
       i === slideIndex ? { ...slide, ...newSlide } : slide,
@@ -89,6 +100,9 @@ const ScrollField: React.FC<ScrollFieldProps> = ({ data, index, onFieldChange })
                       onChange={(url) => {
                         handleSlideChange(slideIndex, { image: url });
                       }}
+                      pendingFiles={pendingFiles}
+                      onPendingFile={onPendingFile}
+                      onRemovePending={onRemovePending}
                     />
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, ReactNode } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import React, { ReactNode, useState } from "react";
 
 export type CollapsibleSectionProps = {
   title: string;
@@ -21,7 +21,9 @@ export default function CollapsibleSection({
       <div className="w-[1028px] bg-white px-6 py-8">
         {/* Header bar */}
         <button
-          onClick={() => setIsOpen((o) => !o)}
+          onClick={() => {
+            setIsOpen((o) => !o);
+          }}
           className="flex items-center w-full bg-[#F05629] text-white px-4 rounded-none"
           style={{ height: "33px" }}
           aria-expanded={isOpen}

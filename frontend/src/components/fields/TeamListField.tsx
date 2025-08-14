@@ -9,9 +9,20 @@ type TeamListFieldProps = {
   index: number;
   fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
+pendingFiles?: Map<string, File>;
+  onPendingFile?: (blobUrl: string, file: File) => void;
+  onRemovePending?: (blobUrl: string) => void;
 };
 
-const TeamListField: React.FC<TeamListFieldProps> = ({ data, index, onFieldChange }) => {
+const TeamListField: React.FC<TeamListFieldProps> = ({ 
+data, 
+index,
+  fieldName,
+onFieldChange,
+  pendingFiles,
+  onPendingFile,
+  onRemovePending,
+}) => {
   const handleMemberChange = (memberIndex: number, newMember: Partial<TeamMember>) => {
     const updated = data.map((member, i) =>
       i === memberIndex ? { ...member, ...newMember } : member,
@@ -74,6 +85,9 @@ const TeamListField: React.FC<TeamListFieldProps> = ({ data, index, onFieldChang
                   onChange={(url) => {
                     handleMemberChange(memberIndex, { imageUrl: url });
                   }}
+pendingFiles={pendingFiles}
+                  onPendingFile={onPendingFile}
+                  onRemovePending={onRemovePending}
                 />
               </div>
               <div className="flex-1">

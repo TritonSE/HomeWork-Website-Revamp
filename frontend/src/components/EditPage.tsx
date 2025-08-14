@@ -1,12 +1,19 @@
 "use client";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref as storageRef,
+  uploadBytesResumable,
+} from "firebase/storage";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 import FieldRenderer from "./fields/FieldRenderer";
-import { updatePageData } from "@/api/pageData";
 
+import { updatePageData } from "@/api/pageData";
 import { get } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
+import { storage } from "@/firebase/firebase";
 
 type PageDataField = {
   name: string;
@@ -35,6 +42,62 @@ const getImageUrl = (data: Record<string, unknown>): string => {
   return typeof url === "string" ? url : "";
 };
 
+// Helper function to delete file from Firebase Storage
+const deleteFirebaseFile = async (fileUrl: string) => {
+  try {
+    const urlObj = new URL(fileUrl);
+    const encodedPath = urlObj.pathname.split("/o/")[1];
+    const fullPath = decodeURIComponent(encodedPath);
+    const fileRef = storageRef(storage, fullPath);
+    await deleteObject(fileRef);
+  } catch (err) {
+    console.error("Error deleting file:", err);
+  }
+};
+
+// Helper function to recursively find all image URLs in data structures
+const extractAllImageUrls = (data: unknown, urls: Set<string> = new Set()): Set<string> => {
+  if (typeof data === "string" && (data.startsWith("http") || data.startsWith("blob:"))) {
+    urls.add(data);
+  } else if (Array.isArray(data)) {
+    data.forEach((item) => extractAllImageUrls(item, urls));
+  } else if (data && typeof data === "object") {
+    Object.entries(data).forEach(([key, value]) => {
+      // Look for common image field names
+      if (
+        key === "imageUrl" ||
+        key === "image" ||
+        key === "thumbnail" ||
+        key === "icon" ||
+        key === "src"
+      ) {
+        if (typeof value === "string" && (value.startsWith("http") || value.startsWith("blob:"))) {
+          urls.add(value);
+        }
+      }
+      // Recursively check nested objects and arrays
+      extractAllImageUrls(value, urls);
+    });
+  }
+  return urls;
+};
+
+// Helper function to recursively replace blob URLs with Firebase URLs
+const replaceImageUrls = (data: unknown, urlMapping: Map<string, string>): unknown => {
+  if (typeof data === "string" && urlMapping.has(data)) {
+    return urlMapping.get(data);
+  } else if (Array.isArray(data)) {
+    return data.map((item) => replaceImageUrls(item, urlMapping));
+  } else if (data && typeof data === "object") {
+    const result: Record<string, unknown> = {};
+    Object.entries(data).forEach(([key, value]) => {
+      result[key] = replaceImageUrls(value, urlMapping);
+    });
+    return result;
+  }
+  return data;
+};
+
 const EditPage: React.FC = () => {
   const [pages, setPages] = useState<PageData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,6 +106,9 @@ const EditPage: React.FC = () => {
   const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
   const [editableFields, setEditableFields] = useState<PageDataField[]>([]);
+  const [pendingFiles, setPendingFiles] = useState<Map<string, File>>(new Map());
+  const [originalImageUrls, setOriginalImageUrls] = useState<Set<string>>(new Set());
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const fetchPages = async (): Promise<void> => {
@@ -75,9 +141,23 @@ const EditPage: React.FC = () => {
 
   const handleOpenEditor = (page: PageData): void => {
     setSelectedPage(page);
+
+    // Extract all image URLs from nested structures
+    const imageUrls = new Set<string>();
+    page.fields.forEach((field) => {
+      extractAllImageUrls(field.data, imageUrls);
+    });
+    setOriginalImageUrls(imageUrls);
   };
 
-  const handleCloseEditor = (): void => {
+  const handleCloseEditor = async (): Promise<void> => {
+    // Clean up any blob URLs
+    for (const blobUrl of pendingFiles.keys()) {
+      URL.revokeObjectURL(blobUrl);
+    }
+
+    setPendingFiles(new Map());
+    setOriginalImageUrls(new Set());
     setSelectedPage(null);
   };
 
@@ -85,11 +165,37 @@ const EditPage: React.FC = () => {
     if (!firebaseUser || !selectedPage) return;
 
     try {
+      setUploading(true);
       const token = await firebaseUser.getIdToken();
+
+      // Upload all pending files first
+      const uploadPromises: Promise<{ blobUrl: string; firebaseUrl: string }>[] = [];
+
+      for (const [blobUrl, file] of pendingFiles.entries()) {
+        const uploadPromise = uploadFileToFirebase(file).then((firebaseUrl) => ({
+          blobUrl,
+          firebaseUrl,
+        }));
+        uploadPromises.push(uploadPromise);
+      }
+
+      const uploadResults = await Promise.all(uploadPromises);
+
+      // Create a mapping of blob URLs to Firebase URLs
+      const urlMapping = new Map<string, string>();
+      uploadResults.forEach(({ blobUrl, firebaseUrl }) => {
+        urlMapping.set(blobUrl, firebaseUrl);
+      });
+
+      // Update editableFields to replace ALL blob URLs with Firebase URLs recursively
+      const updatedFields = editableFields.map((field) => ({
+        ...field,
+        data: replaceImageUrls(field.data, urlMapping) as Record<string, unknown> | unknown[],
+      }));
 
       const payload = {
         pagename: selectedPage.pagename,
-        fields: editableFields.map((f) => ({
+        fields: updatedFields.map((f) => ({
           name: f.name,
           data: f.data,
         })),
@@ -103,8 +209,32 @@ const EditPage: React.FC = () => {
       }
 
       const updated = result.data;
+
+      // Clean up old images that were replaced
+      const currentImageUrls = new Set<string>();
+      updatedFields.forEach((field) => {
+        extractAllImageUrls(field.data, currentImageUrls);
+      });
+
+      // Delete original images that are no longer being used
+      for (const originalUrl of originalImageUrls) {
+        if (!currentImageUrls.has(originalUrl)) {
+          await deleteFirebaseFile(originalUrl);
+        }
+      }
+
+      // Clean up blob URLs
+      for (const blobUrl of pendingFiles.keys()) {
+        URL.revokeObjectURL(blobUrl);
+      }
+
+      // Clear pending state and update local state with Firebase URLs
+      setPendingFiles(new Map());
+      setOriginalImageUrls(currentImageUrls);
+      setEditableFields(updatedFields);
+
       setSelectedPage((prev) =>
-        prev ? { ...prev, lastUpdate: updated.lastUpdate, fields: editableFields } : prev,
+        prev ? { ...prev, lastUpdate: updated.lastUpdate, fields: updatedFields } : prev,
       );
       setPages((prev) =>
         prev.map((p) =>
@@ -115,7 +245,34 @@ const EditPage: React.FC = () => {
     } catch (err) {
       console.error(err);
       alert("An error occurred while saving.");
+    } finally {
+      setUploading(false);
     }
+  };
+
+  // Helper function to upload file to Firebase
+  const uploadFileToFirebase = async (file: File): Promise<string> => {
+    const path = `page-images/${Date.now()}-${file.name}`;
+    const ref = storageRef(storage, path);
+    const uploadTask = uploadBytesResumable(ref, file);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Track upload progress
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done`);
+        },
+        (error) => {
+          reject(error);
+        },
+        async () => {
+          const url = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(url);
+        },
+      );
+    });
   };
 
   const countWords = (text: string): number => {
@@ -137,6 +294,19 @@ const EditPage: React.FC = () => {
       ...prev,
       [sectionId]: !prev[sectionId],
     }));
+  };
+
+  // Handle pending file tracking
+  const handlePendingFile = (blobUrl: string, file: File) => {
+    setPendingFiles((prev) => new Map(prev).set(blobUrl, file));
+  };
+
+  const handleRemovePending = (blobUrl: string) => {
+    setPendingFiles((prev) => {
+      const newMap = new Map(prev);
+      newMap.delete(blobUrl);
+      return newMap;
+    });
   };
 
   // Initialize expanded state for sections when page changes
@@ -206,6 +376,7 @@ const EditPage: React.FC = () => {
               <button
                 onClick={() => void handleSaveChanges()}
                 className="px-4 py-2 bg-[#f26522] text-white rounded-md flex items-center gap-2"
+                disabled={uploading}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -219,10 +390,15 @@ const EditPage: React.FC = () => {
                     fill="white"
                   />
                 </svg>
-                Save Changes
+                {uploading ? "Saving..." : "Save Changes"}
+                {pendingFiles.size > 0 && (
+                  <span className="bg-yellow-400 text-black text-xs px-2 py-1 rounded-full">
+                    {pendingFiles.size}
+                  </span>
+                )}
               </button>
               <button
-                onClick={handleCloseEditor}
+                onClick={() => void handleCloseEditor()}
                 className="px-4 py-2 bg-white text-gray-700 rounded-md flex items-center gap-2"
               >
                 <svg
@@ -301,6 +477,9 @@ const EditPage: React.FC = () => {
                         countWords={countWords}
                         getStringValue={getStringValue}
                         onFieldChange={handleFieldChange}
+                        pendingFiles={pendingFiles}
+                        onPendingFile={handlePendingFile}
+                        onRemovePending={handleRemovePending}
                       />
                     </div>
                   )}

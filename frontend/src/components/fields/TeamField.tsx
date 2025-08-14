@@ -9,9 +9,20 @@ type TeamFieldProps = {
   index: number;
   fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
+pendingFiles?: Map<string, File>;
+  onPendingFile?: (blobUrl: string, file: File) => void;
+  onRemovePending?: (blobUrl: string) => void;
 };
 
-const TeamField: React.FC<TeamFieldProps> = ({ data, index, onFieldChange }) => {
+const TeamField: React.FC<TeamFieldProps> = ({ 
+data, 
+index, 
+fieldName,
+onFieldChange,
+  pendingFiles,
+  onPendingFile,
+  onRemovePending,
+}) => {
   return (
     <>
       <div className="mb-4">
@@ -43,6 +54,9 @@ const TeamField: React.FC<TeamFieldProps> = ({ data, index, onFieldChange }) => 
           onChange={(url) => {
             onFieldChange(index, { ...data, imageUrl: url });
           }}
+pendingFiles={pendingFiles}
+          onPendingFile={onPendingFile}
+          onRemovePending={onRemovePending}
         />
       </div>
       <div className="mb-4">

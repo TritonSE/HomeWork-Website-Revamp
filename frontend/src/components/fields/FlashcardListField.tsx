@@ -9,9 +9,20 @@ type FlashcardListFieldProps = {
   index: number;
   fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
+pendingFiles?: Map<string, File>;
+  onPendingFile?: (blobUrl: string, file: File) => void;
+  onRemovePending?: (blobUrl: string) => void;
 };
 
-const FlashcardListField: React.FC<FlashcardListFieldProps> = ({ data, index, onFieldChange }) => {
+const FlashcardListField: React.FC<FlashcardListFieldProps> = ({ 
+data, 
+index, 
+  fieldName,
+onFieldChange,
+  pendingFiles,
+  onPendingFile,
+  onRemovePending,
+}) => {
   const handleFlashcardChange = (cardIndex: number, newCard: Partial<Flashcard>) => {
     const updated = data.map((card, i) => (i === cardIndex ? { ...card, ...newCard } : card));
     onFieldChange(index, { data: updated });
@@ -72,6 +83,9 @@ const FlashcardListField: React.FC<FlashcardListFieldProps> = ({ data, index, on
                   onChange={(url) => {
                     handleFlashcardChange(cardIndex, { icon: url });
                   }}
+pendingFiles={pendingFiles}
+                  onPendingFile={onPendingFile}
+                  onRemovePending={onRemovePending}
                 />
               </div>
               <div className="flex-1">

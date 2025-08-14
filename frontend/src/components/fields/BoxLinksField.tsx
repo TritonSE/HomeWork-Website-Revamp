@@ -9,9 +9,20 @@ type BoxLinksFieldProps = {
   index: number;
   fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
+  pendingFiles?: Map<string, File>;
+  onPendingFile?: (blobUrl: string, file: File) => void;
+  onRemovePending?: (blobUrl: string) => void;
 };
 
-const BoxLinksField: React.FC<BoxLinksFieldProps> = ({ data, index, onFieldChange }) => {
+const BoxLinksField: React.FC<BoxLinksFieldProps> = ({
+data, 
+index, 
+fieldName,
+  onFieldChange,
+  pendingFiles,
+  onPendingFile,
+  onRemovePending,
+}) => {
   const handleBoxLinkChange = (boxIndex: number, newBox: Partial<BoxLink>) => {
     const updated = data.map((box, i) => (i === boxIndex ? { ...box, ...newBox } : box));
     onFieldChange(index, { data: updated });
@@ -72,6 +83,9 @@ const BoxLinksField: React.FC<BoxLinksFieldProps> = ({ data, index, onFieldChang
                   onChange={(url) => {
                     handleBoxLinkChange(boxIndex, { src: url });
                   }}
+pendingFiles={pendingFiles}
+                  onPendingFile={onPendingFile}
+                  onRemovePending={onRemovePending}
                 />
               </div>
               <div className="flex-1">
