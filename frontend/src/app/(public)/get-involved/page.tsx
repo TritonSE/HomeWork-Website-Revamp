@@ -7,10 +7,12 @@ import React, { useContext, useEffect, useState } from "react";
 
 import Header from "@/components/Header";
 import { PageDataContext } from "@/contexts/pageDataContext";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 const GetInvolvedPage: React.FC = () => {
   const context = useContext(PageDataContext);
   const [isVisible, setIsVisible] = useState(false);
+  const { isMobile } = useWindowSize();
 
   useEffect(() => {
     if (context?.pageData && !context.loading) {
@@ -70,9 +72,9 @@ const GetInvolvedPage: React.FC = () => {
       )}
 
       {/* Attend Section */}
-      <section className="flex flex-col sm:flex-row justify-between items-center gap-6 w-full px-12">
+      <section className="flex flex-col sm:flex-row justify-between items-center gap-6 w-full px-6 md:px-12">
         <div className="md:w-1/2">
-          <h1 className="mb-6 text-[48px] sm:text-4xl font-medium font-golos">
+          <h1 className="mb-6 text-[28px] md:text-[48px] sm:text-4xl font-medium font-golos">
             {attendData.title}
           </h1>
           <p className="text-sm sm:text-lg mb-6">{attendData.description}</p>
@@ -80,20 +82,20 @@ const GetInvolvedPage: React.FC = () => {
             <Button>{attendData.buttonText}</Button>
           </Link>
         </div>
-        <div className="w-[590px] flex h-[369px] relative">
+        <div className="w-full md:w-[590px] flex h-[280px] md:h-[369px] relative">
           <Image src={attendData.imageUrl} alt="Our Mission" fill={true} objectFit="cover" />
         </div>
       </section>
 
       {/* Donate Section */}
 
-      <section className="flex flex-col sm:flex-row justify-between items-center gap-6 w-full px-12 py-16">
-        <div className="w-[590px] flex h-[369px] relative">
+      <section className="flex flex-col sm:flex-row justify-between items-center gap-6 w-full px-6 md:px-12 py-6 md:py-16">
+        <div className="w-full md:w-[590px] flex h-[280px] md:h-[369px] relative order-2 sm:order-1">
           <Image src={donateData.imageUrl} alt="Our Mission" fill={true} objectFit="cover" />
         </div>
 
-        <div className="md:w-1/2">
-          <h1 className="mb-6 text-[48px] sm:text-4xl font-medium font-golos">
+        <div className="md:w-1/2 order-1 sm:order-2">
+          <h1 className="mb-6 text-[28px] sm:text-[48px] font-medium font-golos">
             {donateData.title}
           </h1>
           <p className="text-sm sm:text-lg mb-6">{donateData.description}</p>
