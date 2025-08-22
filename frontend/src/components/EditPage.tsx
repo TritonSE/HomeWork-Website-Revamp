@@ -14,6 +14,7 @@ import { updatePageData } from "@/api/pageData";
 import { get } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
 import { storage } from "@/firebase/firebase";
+import { HeaderData } from "@/types/fieldTypes";
 
 type PageDataField = {
   name: string;
@@ -366,7 +367,10 @@ const EditPage: React.FC = () => {
                     setSelectedPage(page);
                   }}
                 >
-                  {page.pagename}
+                  {page.pagename
+                    .split("-")
+                    .map((value) => value.charAt(0).toUpperCase() + value.slice(1))
+                    .join(" ")}
                 </button>
               ))}
             </div>
@@ -525,7 +529,12 @@ const EditPage: React.FC = () => {
                 )}
               </div>
               <div className="p-4">
-                <h3 className="text-lg font-medium">{page.pagename}</h3>
+                <h3 className="text-lg font-medium">
+                  {page.pagename
+                    .split("-")
+                    .map((value) => value.charAt(0).toUpperCase() + value.slice(1))
+                    .join(" ")}
+                </h3>
                 <p className="text-sm text-gray-500">Last Updated: {formatDate(page.lastUpdate)}</p>
                 <button
                   onClick={() => {

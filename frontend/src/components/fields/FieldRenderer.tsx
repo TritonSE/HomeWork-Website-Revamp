@@ -122,7 +122,7 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
               index={index}
               fieldName={field.name}
               onFieldChange={onFieldChange}
-pendingFiles={pendingFiles}
+              pendingFiles={pendingFiles}
               onPendingFile={onPendingFile}
               onRemovePending={onRemovePending}
             />
@@ -139,7 +139,7 @@ pendingFiles={pendingFiles}
               onFieldChange={(fieldIndex, newData) => {
                 onFieldChange(fieldIndex, newData);
               }}
-pendingFiles={pendingFiles}
+              pendingFiles={pendingFiles}
               onPendingFile={onPendingFile}
               onRemovePending={onRemovePending}
             />
@@ -160,7 +160,7 @@ pendingFiles={pendingFiles}
                   prevData: field.data,
                 });
               }}
-pendingFiles={pendingFiles}
+              pendingFiles={pendingFiles}
               onPendingFile={onPendingFile}
               onRemovePending={onRemovePending}
             />
@@ -231,7 +231,7 @@ pendingFiles={pendingFiles}
                   prevData: field.data,
                 });
               }}
-pendingFiles={pendingFiles}
+              pendingFiles={pendingFiles}
               onPendingFile={onPendingFile}
               onRemovePending={onRemovePending}
             />
@@ -268,7 +268,7 @@ pendingFiles={pendingFiles}
                   prevData: field.data,
                 });
               }}
-pendingFiles={pendingFiles}
+              pendingFiles={pendingFiles}
               onPendingFile={onPendingFile}
               onRemovePending={onRemovePending}
             />
@@ -283,7 +283,7 @@ pendingFiles={pendingFiles}
               index={index}
               fieldName={field.name}
               onFieldChange={onFieldChange}
-pendingFiles={pendingFiles}
+              pendingFiles={pendingFiles}
               onPendingFile={onPendingFile}
               onRemovePending={onRemovePending}
             />
@@ -298,7 +298,7 @@ pendingFiles={pendingFiles}
               index={index}
               fieldName={field.name}
               onFieldChange={onFieldChange}
-pendingFiles={pendingFiles}
+              pendingFiles={pendingFiles}
               onPendingFile={onPendingFile}
               onRemovePending={onRemovePending}
             />
@@ -325,7 +325,7 @@ pendingFiles={pendingFiles}
               index={index}
               fieldName={field.name}
               onFieldChange={onFieldChange}
-pendingFiles={pendingFiles}
+              pendingFiles={pendingFiles}
               onPendingFile={onPendingFile}
               onRemovePending={onRemovePending}
             />
