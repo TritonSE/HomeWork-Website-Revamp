@@ -7,19 +7,16 @@ import { Flashcard, FlashcardListData } from "@/types/fieldTypes";
 type FlashcardListFieldProps = {
   data: FlashcardListData;
   index: number;
-  fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
-pendingFiles?: Map<string, File>;
+  pendingFiles?: Map<string, File>;
   onPendingFile?: (blobUrl: string, file: File) => void;
   onRemovePending?: (blobUrl: string) => void;
 };
 
-const FlashcardListField: React.FC<FlashcardListFieldProps> = ({ 
-data, 
-index, 
-  fieldName,
-onFieldChange,
-  pendingFiles,
+const FlashcardListField: React.FC<FlashcardListFieldProps> = ({
+  data,
+  index,
+  onFieldChange,
   onPendingFile,
   onRemovePending,
 }) => {
@@ -83,7 +80,6 @@ onFieldChange,
                   onChange={(url) => {
                     handleFlashcardChange(cardIndex, { icon: url });
                   }}
-pendingFiles={pendingFiles}
                   onPendingFile={onPendingFile}
                   onRemovePending={onRemovePending}
                 />

@@ -1,15 +1,11 @@
 // src/components/fields/FieldImageUpload.tsx
 "use client";
 
-import { deleteObject, ref as storageRef } from "firebase/storage";
-import React, { useEffect, useRef, useState } from "react";
-
-import { storage } from "@/firebase/firebase";
+import React, { useEffect, useRef } from "react";
 
 type FieldImageUploadProps = {
   value: string;
   onChange: (url: string, file?: File) => void;
-  pendingFiles?: Map<string, File>;
   onPendingFile?: (url: string, file: File) => void;
   onRemovePending?: (url: string) => void;
 };
@@ -17,33 +13,16 @@ type FieldImageUploadProps = {
 export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({
   value,
   onChange,
-  pendingFiles = new Map(),
   onPendingFile,
   onRemovePending,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   // Check if current value is a blob URL (pending)
   const isPending = value.startsWith("blob:");
-  const hasFile = pendingFiles.has(value);
-
-  /** Given a download URL, delete that file from Storage */
-  const deleteFirebaseFile = async (fileUrl: string) => {
-    try {
-      const urlObj = new URL(fileUrl);
-      const encodedPath = urlObj.pathname.split("/o/")[1];
-      const fullPath = decodeURIComponent(encodedPath);
-      const fileRef = storageRef(storage, fullPath);
-      await deleteObject(fileRef);
-    } catch (err) {
-      console.error("Error deleting old file:", err);
-    }
-  };
 
   /** Handle user selecting a new file */
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -63,11 +42,11 @@ export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({
 
   /** Open the hidden file input */
   const handleClick = () => {
-    if (!uploading) fileInputRef.current?.click();
+    fileInputRef.current?.click();
   };
 
   /** Remove the current image */
-  const handleRemove = async (e?: React.MouseEvent) => {
+  const handleRemove = (e?: React.MouseEvent) => {
     e?.stopPropagation();
     if (value) {
       if (isPending) {
@@ -100,7 +79,6 @@ export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({
         className="hidden"
         ref={fileInputRef}
         onChange={handleFileChange}
-        disabled={uploading}
       />
 
       {/* Show pending indicator */}
@@ -110,9 +88,7 @@ export const FieldImageUpload: React.FC<FieldImageUploadProps> = ({
         </div>
       )}
 
-      {uploading ? (
-        <div className="text-center">Uploading… {Math.round(progress)}%</div>
-      ) : value ? (
+      {value ? (
         <>
           <img
             src={value}

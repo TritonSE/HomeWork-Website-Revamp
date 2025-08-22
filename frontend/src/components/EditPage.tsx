@@ -14,7 +14,6 @@ import { updatePageData } from "@/api/pageData";
 import { get } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
 import { storage } from "@/firebase/firebase";
-import { HeaderData } from "@/types/fieldTypes";
 
 type PageDataField = {
   name: string;
@@ -151,7 +150,7 @@ const EditPage: React.FC = () => {
     setOriginalImageUrls(imageUrls);
   };
 
-  const handleCloseEditor = async (): Promise<void> => {
+  const handleCloseEditor = () => {
     // Clean up any blob URLs
     for (const blobUrl of pendingFiles.keys()) {
       URL.revokeObjectURL(blobUrl);
@@ -218,11 +217,13 @@ const EditPage: React.FC = () => {
       });
 
       // Delete original images that are no longer being used
-      for (const originalUrl of originalImageUrls) {
-        if (!currentImageUrls.has(originalUrl)) {
-          await deleteFirebaseFile(originalUrl);
-        }
-      }
+      await Promise.all(
+        Array.from(originalImageUrls)
+          .filter((originalUrl) => !currentImageUrls.has(originalUrl))
+          .map(async (originalUrl) => {
+            await deleteFirebaseFile(originalUrl);
+          }),
+      );
 
       // Clean up blob URLs
       for (const blobUrl of pendingFiles.keys()) {
@@ -268,9 +269,14 @@ const EditPage: React.FC = () => {
         (error) => {
           reject(error);
         },
-        async () => {
-          const url = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve(url);
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((url) => {
+              resolve(url);
+            })
+            .catch((err: unknown) => {
+              console.error(err);
+            });
         },
       );
     });
@@ -337,6 +343,7 @@ const EditPage: React.FC = () => {
         if ("data" in newData) {
           return { ...field, data: newData.data as Record<string, unknown> | unknown[] };
         }
+        // eslint-disable-next-line @typescript-eslint/no-misused-spread
         return { ...field, data: { ...field.data, ...newData } };
       }),
     );
@@ -402,7 +409,7 @@ const EditPage: React.FC = () => {
                 )}
               </button>
               <button
-                onClick={() => void handleCloseEditor()}
+                onClick={handleCloseEditor}
                 className="px-4 py-2 bg-white text-gray-700 rounded-md flex items-center gap-2"
               >
                 <svg
@@ -481,7 +488,6 @@ const EditPage: React.FC = () => {
                         countWords={countWords}
                         getStringValue={getStringValue}
                         onFieldChange={handleFieldChange}
-                        pendingFiles={pendingFiles}
                         onPendingFile={handlePendingFile}
                         onRemovePending={handleRemovePending}
                       />

@@ -12,7 +12,7 @@ type HomeworkModelFieldProps = {
   index: number;
   fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
-pendingFiles?: Map<string, File>;
+  pendingFiles?: Map<string, File>;
   onPendingFile?: (blobUrl: string, file: File) => void;
   onRemovePending?: (blobUrl: string) => void;
 };
@@ -22,7 +22,6 @@ const HomeworkModelField: React.FC<HomeworkModelFieldProps> = ({
   index,
   fieldName,
   onFieldChange,
-pendingFiles,
   onPendingFile,
   onRemovePending,
 }) => {
@@ -115,7 +114,6 @@ pendingFiles,
                     onChange={(value: string) => {
                       handlePillarChange(pillarIndex, "icon", value);
                     }}
-pendingFiles={pendingFiles}
                     onPendingFile={onPendingFile}
                     onRemovePending={onRemovePending}
                   />

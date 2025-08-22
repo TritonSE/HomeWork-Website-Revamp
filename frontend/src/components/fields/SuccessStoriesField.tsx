@@ -12,7 +12,6 @@ type SuccessStoriesFieldProps = {
   index: number;
   fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
-pendingFiles?: Map<string, File>;
   onPendingFile?: (blobUrl: string, file: File) => void;
   onRemovePending?: (blobUrl: string) => void;
 };
@@ -22,7 +21,6 @@ const SuccessStoriesField: React.FC<SuccessStoriesFieldProps> = ({
   index,
   fieldName,
   onFieldChange,
-pendingFiles,
   onPendingFile,
   onRemovePending,
 }) => {
@@ -103,7 +101,6 @@ pendingFiles,
                     onChange={(value: string) => {
                       handleSlideChange(slideIndex, "image", value);
                     }}
-pendingFiles={pendingFiles}
                     onPendingFile={onPendingFile}
                     onRemovePending={onRemovePending}
                   />

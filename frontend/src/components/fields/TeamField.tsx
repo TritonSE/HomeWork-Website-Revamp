@@ -7,19 +7,15 @@ import { TeamData } from "@/types/fieldTypes";
 type TeamFieldProps = {
   data: TeamData;
   index: number;
-  fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
-pendingFiles?: Map<string, File>;
   onPendingFile?: (blobUrl: string, file: File) => void;
   onRemovePending?: (blobUrl: string) => void;
 };
 
-const TeamField: React.FC<TeamFieldProps> = ({ 
-data, 
-index, 
-fieldName,
-onFieldChange,
-  pendingFiles,
+const TeamField: React.FC<TeamFieldProps> = ({
+  data,
+  index,
+  onFieldChange,
   onPendingFile,
   onRemovePending,
 }) => {
@@ -54,7 +50,6 @@ onFieldChange,
           onChange={(url) => {
             onFieldChange(index, { ...data, imageUrl: url });
           }}
-pendingFiles={pendingFiles}
           onPendingFile={onPendingFile}
           onRemovePending={onRemovePending}
         />

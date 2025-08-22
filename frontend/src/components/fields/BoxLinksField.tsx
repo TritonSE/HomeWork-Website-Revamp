@@ -7,7 +7,6 @@ import { BoxLink, BoxLinksData } from "@/types/fieldTypes";
 type BoxLinksFieldProps = {
   data: BoxLinksData;
   index: number;
-  fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
   pendingFiles?: Map<string, File>;
   onPendingFile?: (blobUrl: string, file: File) => void;
@@ -15,11 +14,9 @@ type BoxLinksFieldProps = {
 };
 
 const BoxLinksField: React.FC<BoxLinksFieldProps> = ({
-data, 
-index, 
-fieldName,
+  data,
+  index,
   onFieldChange,
-  pendingFiles,
   onPendingFile,
   onRemovePending,
 }) => {
@@ -83,7 +80,6 @@ fieldName,
                   onChange={(url) => {
                     handleBoxLinkChange(boxIndex, { src: url });
                   }}
-pendingFiles={pendingFiles}
                   onPendingFile={onPendingFile}
                   onRemovePending={onRemovePending}
                 />

@@ -7,19 +7,15 @@ import { MissionData } from "@/types/fieldTypes";
 type MissionFieldProps = {
   data: MissionData;
   index: number;
-  fieldName: string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
-  pendingFiles?: Map<string, File>;
   onPendingFile?: (blobUrl: string, file: File) => void;
   onRemovePending?: (blobUrl: string) => void;
 };
 
 const MissionField: React.FC<MissionFieldProps> = ({
-data,
-index,
-fieldName,
-onFieldChange,
-  pendingFiles,
+  data,
+  index,
+  onFieldChange,
   onPendingFile,
   onRemovePending,
 }) => {
@@ -58,7 +54,6 @@ onFieldChange,
           onChange={(url) => {
             onFieldChange(index, { ...data, imageUrl: url });
           }}
-pendingFiles={pendingFiles}
           onPendingFile={onPendingFile}
           onRemovePending={onRemovePending}
         />

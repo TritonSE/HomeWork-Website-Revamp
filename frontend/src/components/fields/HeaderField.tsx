@@ -13,7 +13,6 @@ type HeaderFieldProps = {
   countWords: (text: string) => number;
   getStringValue: (value: unknown) => string;
   onFieldChange: (fieldIndex: number, newData: Record<string, unknown>) => void;
-  pendingFiles?: Map<string, File>;
   onPendingFile?: (blobUrl: string, file: File) => void;
   onRemovePending?: (blobUrl: string) => void;
 };
@@ -27,7 +26,6 @@ const HeaderField: React.FC<HeaderFieldProps> = ({
   countWords,
   getStringValue,
   onFieldChange,
-pendingFiles,
   onPendingFile,
   onRemovePending,
 }) => {
@@ -86,7 +84,6 @@ pendingFiles,
           onChange={(url) => {
             onFieldChange(index, { ...data, imageUrl: url });
           }}
-pendingFiles={pendingFiles}
           onPendingFile={onPendingFile}
           onRemovePending={onRemovePending}
         />
