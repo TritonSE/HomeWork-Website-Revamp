@@ -7,12 +7,10 @@ import React, { useContext, useEffect, useState } from "react";
 
 import Header from "@/components/Header";
 import { PageDataContext } from "@/contexts/pageDataContext";
-import { useWindowSize } from "@/hooks/useWindowSize";
 
 const GetInvolvedPage: React.FC = () => {
   const context = useContext(PageDataContext);
   const [isVisible, setIsVisible] = useState(false);
-  const { isMobile } = useWindowSize();
 
   useEffect(() => {
     if (context?.pageData && !context.loading) {
