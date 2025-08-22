@@ -353,7 +353,7 @@ const EditPage: React.FC = () => {
         <div className="bg-[#F7F7F7] rounded-lg p-6">
           <div className="flex items-center justify-between border-b border-gray-200 mb-6 pb-1">
             {/* Page Tabs */}
-            <div className="flex space-x-4 overflow-x-auto">
+            <div className="flex space-x-4 flex-grow w-1 overflow-x-scroll">
               {pages.map((page) => (
                 <button
                   key={page._id}
