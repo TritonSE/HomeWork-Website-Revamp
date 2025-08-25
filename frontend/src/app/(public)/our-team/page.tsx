@@ -10,6 +10,7 @@ import { useWindowSize } from "@/hooks/useWindowSize";
 
 type Member = { name: string; title: string; imageUrl: string; bio: string };
 type Intro = { title: string; description: string };
+type Header = { imageUrl: string; header: string; subheader: string };
 
 export default function OurTeamPage() {
   const context = useContext(PageDataContext);
@@ -17,7 +18,8 @@ export default function OurTeamPage() {
   const [isVisible, setIsVisible] = useState(false);
 
   const [members, setMembers] = useState<Member[]>();
-  const [headerData, setHeaderData] = useState<Intro>();
+  const [descriptionData, setDescriptionData] = useState<Intro>();
+  const [headerData, setHeaderData] = useState<Header>();
   const [bioMD, setBioMD] = useState<string[]>();
   const [gridWidth, setGridWidth] = useState(0);
   const imageFrac = isMobile ? 0.4 : 0.25;
@@ -54,10 +56,12 @@ export default function OurTeamPage() {
       const { pageData } = context;
       const teamPage = pageData.find((data) => data.pagename === "our-team");
 
-      const headerField = teamPage?.fields.find((field) => field.name === "header");
+      const descriptionField = teamPage?.fields.find((field) => field.name === "description");
       const membersField = teamPage?.fields.find((field) => field.name === "members");
+      const headerField = teamPage?.fields.find((field) => field.name === "header");
       setMembers(membersField?.data as Member[]);
-      setHeaderData(headerField?.data as Intro);
+      setDescriptionData(descriptionField?.data as Intro);
+      setHeaderData(headerField?.data as Header);
 
       const timer = setTimeout(() => {
         setIsVisible(true);
@@ -94,20 +98,18 @@ export default function OurTeamPage() {
     >
       {/* Header */}
       <Header
-        imageUrl="/images/our-team-header.png"
-        header="Our Team"
-        subheader="Our incredible staff that drives the spirit of Homework. We’re committed to helping you redefine what it means to be formerly incarcerated."
+        imageUrl={headerData?.imageUrl ?? ""}
+        header={headerData?.header ?? ""}
+        subheader={headerData?.subheader ?? ""}
       />
 
       {/* Team Members Section */}
       <div className="h-[20px] sm:h-[40px]" />
-
       <div className="p-6 md:p-12">
         <h2 className="text-[28px] font-medium md:text-[48px] leading-[3rem] sm:leading-[3.5rem] tracking-normal text-left mb-2 md:mb-6">
-          {headerData?.title}
+          {descriptionData?.title}
         </h2>
-        <p className="mb-12 text-[14px] md:text-[20px]">{headerData?.description}</p>
-
+        <p className="mb-12 text-[14px] md:text-[20px]">{descriptionData?.description}</p>
         {/* Grid Layout */}
         <div
           id="grid-container"
