@@ -43,6 +43,10 @@ const SectionField: React.FC<SectionFieldProps> = ({
     onFieldChange(index, { ...data, paragraphs: updatedParagraphs });
   };
 
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onFieldChange(index, { ...data, description: e.target.value });
+  };
+
   return (
     <div>
       <div className="mb-4">
@@ -54,11 +58,22 @@ const SectionField: React.FC<SectionFieldProps> = ({
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f26522]"
         />
       </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">Paragraphs</label>
-        <div className="space-y-2">
-          {Array.isArray(data.paragraphs) &&
-            data.paragraphs.map((p, pIndex) => (
+      {data.description && (
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <textarea
+            value={data.description}
+            rows={3}
+            onChange={handleDescriptionChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f26522]"
+          />
+        </div>
+      )}
+      {Array.isArray(data.paragraphs) && (
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Paragraphs</label>
+          <div className="space-y-2">
+            {data.paragraphs.map((p, pIndex) => (
               <div key={pIndex} className="flex gap-2 items-start">
                 <textarea
                   value={p}
@@ -93,15 +108,16 @@ const SectionField: React.FC<SectionFieldProps> = ({
                 </button>
               </div>
             ))}
+          </div>
+          <button
+            type="button"
+            className="mt-2 px-3 py-1 bg-[#f26522] text-white rounded-md"
+            onClick={handleAddParagraph}
+          >
+            Add Paragraph
+          </button>
         </div>
-        <button
-          type="button"
-          className="mt-2 px-3 py-1 bg-[#f26522] text-white rounded-md"
-          onClick={handleAddParagraph}
-        >
-          Add Paragraph
-        </button>
-      </div>
+      )}
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">Section Image</label>
         <FieldImageUpload
