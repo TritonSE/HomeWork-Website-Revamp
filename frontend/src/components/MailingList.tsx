@@ -8,7 +8,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import EditContactModal from "./EditContactModal";
 import { NotificationCard } from "./Notifications/NotificationCard";
 
-import type { ColumnDef, SortingState } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 
 import { del } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
@@ -64,10 +64,7 @@ const MailingList: React.FC = () => {
     setData(rows);
   }, [subs]);
 
-  const [sorting, setSorting] = useState<SortingState>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
   const [rowSelection, setRowSelection] = useState<Record<number, boolean>>({});
   const [showConfirm, setShowConfirm] = useState(false);
   const [showAddContactModal, setShowAddContactModal] = useState(false);
@@ -89,25 +86,10 @@ const MailingList: React.FC = () => {
     ),
   );
 
-  const sorted = [...filtered];
-
-  if (sorting.length > 0) {
-    const { id, desc } = sorting[0];
-    sorted.sort((a, b) => {
-      const valA = (a[id as keyof User] ?? "").toString().toLowerCase();
-      const valB = (b[id as keyof User] ?? "").toString().toLowerCase();
-      if (valA < valB) return desc ? 1 : -1;
-      if (valA > valB) return desc ? -1 : 1;
-      return 0;
-    });
-  }
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
-  const paginated = sorted.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   const toggleAll = () => {
-    const allSelected = paginated.every((_, idx) => rowSelection[idx]);
+    const allSelected = filtered.every((_, idx) => rowSelection[idx]);
     const next: Record<number, boolean> = {};
-    paginated.forEach((_, idx) => (next[idx] = !allSelected));
+    filtered.forEach((_, idx) => (next[idx] = !allSelected));
     setRowSelection(next);
   };
 
@@ -117,7 +99,7 @@ const MailingList: React.FC = () => {
       header: () => (
         <input
           type="checkbox"
-          checked={paginated.length > 0 && paginated.every((_, idx) => rowSelection[idx])}
+          checked={filtered.length > 0 && filtered.every((_, idx) => rowSelection[idx])}
           onChange={toggleAll}
           className="orange-checkbox"
         />
@@ -138,54 +120,15 @@ const MailingList: React.FC = () => {
       },
     },
     {
-      header: () => (
-        <span
-          className="cursor-pointer"
-          onClick={() => {
-            setSorting((prev) =>
-              prev[0]?.id === "firstName" && !prev[0].desc
-                ? [{ id: "firstName", desc: true }]
-                : [{ id: "firstName", desc: false }],
-            );
-          }}
-        >
-          First Name {sorting[0]?.id === "firstName" ? (sorting[0].desc ? "↓" : "↑") : ""}
-        </span>
-      ),
+      header: () => <span className="cursor-pointer">First Name</span>,
       accessorKey: "firstName",
     },
     {
-      header: () => (
-        <span
-          className="cursor-pointer"
-          onClick={() => {
-            setSorting((prev) =>
-              prev[0]?.id === "lastName" && !prev[0].desc
-                ? [{ id: "lastName", desc: true }]
-                : [{ id: "lastName", desc: false }],
-            );
-          }}
-        >
-          Last Name {sorting[0]?.id === "lastName" ? (sorting[0].desc ? "↓" : "↑") : ""}
-        </span>
-      ),
+      header: () => <span className="cursor-pointer">Last Name</span>,
       accessorKey: "lastName",
     },
     {
-      header: () => (
-        <span
-          className="cursor-pointer"
-          onClick={() => {
-            setSorting((prev) =>
-              prev[0]?.id === "emailAdd" && !prev[0].desc
-                ? [{ id: "emailAdd", desc: true }]
-                : [{ id: "emailAdd", desc: false }],
-            );
-          }}
-        >
-          Email {sorting[0]?.id === "emailAdd" ? (sorting[0].desc ? "↓" : "↑") : ""}
-        </span>
-      ),
+      header: () => <span className="cursor-pointer">Email</span>,
       accessorKey: "emailAdd",
       cell: ({ row }) => {
         const email = String(row.getValue("emailAdd") ?? "");
@@ -214,37 +157,11 @@ const MailingList: React.FC = () => {
       },
     },
     {
-      header: () => (
-        <span
-          className="cursor-pointer"
-          onClick={() => {
-            setSorting((prev) =>
-              prev[0]?.id === "joinDate" && !prev[0].desc
-                ? [{ id: "joinDate", desc: true }]
-                : [{ id: "joinDate", desc: false }],
-            );
-          }}
-        >
-          Join Date {sorting[0]?.id === "joinDate" ? (sorting[0].desc ? "↓" : "↑") : ""}
-        </span>
-      ),
+      header: () => <span className="cursor-pointer">Join Date</span>,
       accessorKey: "joinDate",
     },
     {
-      header: () => (
-        <span
-          className="cursor-pointer"
-          onClick={() => {
-            setSorting((prev) =>
-              prev[0]?.id === "membership" && !prev[0].desc
-                ? [{ id: "membership", desc: true }]
-                : [{ id: "membership", desc: false }],
-            );
-          }}
-        >
-          Membership {sorting[0]?.id === "membership" ? (sorting[0].desc ? "↓" : "↑") : ""}
-        </span>
-      ),
+      header: () => <span className="cursor-pointer">Membership</span>,
       accessorKey: "membership",
       cell: ({ row }) => {
         const val = String(row.getValue("membership") ?? "");
@@ -259,20 +176,7 @@ const MailingList: React.FC = () => {
     },
 
     {
-      header: () => (
-        <span
-          className="cursor-pointer"
-          onClick={() => {
-            setSorting((prev) =>
-              prev[0]?.id === "status" && !prev[0].desc
-                ? [{ id: "status", desc: true }]
-                : [{ id: "status", desc: false }],
-            );
-          }}
-        >
-          Status {sorting[0]?.id === "status" ? (sorting[0].desc ? "↓" : "↑") : ""}
-        </span>
-      ),
+      header: () => <span className="cursor-pointer">Status</span>,
       accessorKey: "status",
       cell: ({ row }) => {
         const val: User["status"] = row.getValue("status");
@@ -283,7 +187,7 @@ const MailingList: React.FC = () => {
     },
   ];
 
-  const selectedEmails = paginated
+  const selectedEmails = filtered
     .map((u, idx) => (rowSelection[idx] ? u.emailAdd : null))
     .filter(Boolean) as string[];
 
@@ -361,7 +265,7 @@ const MailingList: React.FC = () => {
   if (loading) return <p className="p-6">Loading subscriptions…</p>;
 
   return (
-    <div className="min-h-screen flex flex-col justify-between p-6">
+    <div className="min-h-screen flex flex-col p-6">
       <div className="fixed top-4 left-1/2 -translate-x-1/2 flex flex-col gap-3 items-center z-[100]">
         {notifications.map((n) => (
           <NotificationCard
@@ -431,47 +335,20 @@ const MailingList: React.FC = () => {
         ) : (
           <Table
             columns={columns}
-            data={paginated}
+            data={filtered}
             className="w-full tse-table group/row"
-            enablePagination={false}
+            enablePagination={true}
             enableSorting={true}
             enableGlobalFiltering={false}
           />
         )}
       </div>
-
-      <div className="flex items-center justify-center mt-auto pt-6">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => {
-              setCurrentPage((p) => Math.max(p - 1, 1));
-            }}
-            disabled={currentPage === 1}
-            className="text-gray-500 disabled:opacity-50"
-          >
-            <Icon name="ic_caretleft" fill="black" />
-          </button>
-          <div className="flex items-center gap-2 text-gray-500">
-            <span>page</span>
-            <div className="w-8 h-8 flex items-center justify-center border border-gray-200 rounded">
-              {currentPage}
-            </div>
-            <span>of</span>
-            <span>{totalPages}</span>
-          </div>
-          <button
-            onClick={() => {
-              setCurrentPage((p) => Math.min(p + 1, totalPages));
-            }}
-            disabled={currentPage === totalPages}
-            className="text-gray-500 disabled:opacity-50"
-          >
-            <Icon name="ic_caretright" fill="black" />
-          </button>
-        </div>
-      </div>
       {/* styles (unchanged + new checkbox rules) */}
       <style jsx>{`
+        :global(._headerCell_1autq_27) {
+          color: #ffffff !important;
+          font-weight: 500 !important;
+        }
         :global(.tse-table th),
         :global(.tse-table th span),
         :global(.tse-table th div),
@@ -483,7 +360,6 @@ const MailingList: React.FC = () => {
           background-color: #f26522 !important;
         }
         :global(.tse-table tr:hover) {
-          border: 3px solid #f7941c !important;
           background-color: #f8f8f8 !important;
         }
         :global(.tse-table tr[aria-selected="true"]) {
@@ -525,6 +401,21 @@ const MailingList: React.FC = () => {
           background-size: 16px 16px;
           background-color: #ffffff;
           border-color: #f05629;
+        }
+
+        :global(.tse-table._container_1autq_1) {
+          flex: 1 1 auto !important;
+          min-height: 0 !important;
+          display: flex !important;
+          flex-direction: column !important;
+        }
+
+        :global(.tse-table [class*="paginationContainer"]) {
+          display: flex !important;
+          justify-content: center !important;
+          margin-top: 24px !important;
+          bottom: 0 !important;
+          margin-bottom: 24px !important;
         }
       `}</style>
 
