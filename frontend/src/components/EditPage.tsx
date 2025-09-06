@@ -14,6 +14,7 @@ import { updatePageData } from "@/api/pageData";
 import { get } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
 import { storage } from "@/firebase/firebase";
+import { useRouter } from "next/navigation";
 
 type PageDataField = {
   name: string;
@@ -109,6 +110,7 @@ const EditPage: React.FC = () => {
   const [pendingFiles, setPendingFiles] = useState<Map<string, File>>(new Map());
   const [originalImageUrls, setOriginalImageUrls] = useState<Set<string>>(new Set());
   const [uploading, setUploading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchPages = async (): Promise<void> => {
@@ -159,6 +161,7 @@ const EditPage: React.FC = () => {
     setPendingFiles(new Map());
     setOriginalImageUrls(new Set());
     setSelectedPage(null);
+    router.push("/");
   };
 
   const handleSaveChanges = async (): Promise<void> => {
