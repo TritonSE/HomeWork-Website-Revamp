@@ -142,7 +142,7 @@ const Navbar: React.FC = () => {
           {[
             {
               title: "Page Editor",
-              href: "/page-editor",
+              href: "/edit-page",
               icon: "/images/adminNavBar/pageEditorIcon.svg",
             },
             {

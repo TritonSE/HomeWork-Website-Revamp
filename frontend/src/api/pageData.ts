@@ -41,7 +41,7 @@ export async function updatePageData(
   try {
     // POST request to secured update endpoint.
     // The headers include the Bearer token for authentication.
-    const response = await post("/api/pageData/update", payload, {
+    const response = await post("/pageData/update", payload, {
       Authorization: `Bearer ${token}`,
     });
     const data = (await response.json()) as PageData;
