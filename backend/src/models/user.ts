@@ -12,6 +12,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    privileged: {
+      type: Boolean,
+      required: true,
+      default: false, // Default to false for all new users
+    },
   },
   { timestamps: true },
 );

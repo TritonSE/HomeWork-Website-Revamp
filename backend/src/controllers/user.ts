@@ -32,6 +32,7 @@ export const createUser: RequestHandler = async (req, res, next) => {
       _id: userRecord.uid,
       name,
       email,
+      privileged: false,
     });
 
     res.status(201).json(newUser);
