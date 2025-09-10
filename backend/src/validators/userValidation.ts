@@ -33,17 +33,8 @@ const makePasswordValidator = () =>
     .isString()
     .withMessage("password must be a string");
 
-const privilegedValidator = () =>
-  body("privileged")
-    .exists()
-    .withMessage("privileged is required")
-    .bail()
-    .isBoolean()
-    .withMessage("default users will have no privilege");
-
 export const createUserValidation = [
   makeNameValidator(),
   makeEmailValidator(),
   makePasswordValidator(),
-  privilegedValidator(),
 ];

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { DecodedIdToken } from "firebase-admin/auth";
 
 import { AuthError } from "../errors/auth";
+import UserModel from "../models/user";
 import { decodeAuthToken } from "../util/auth";
 
 type RequestBody = {
@@ -44,4 +45,23 @@ const verifyAuthToken = async (req: RequestWithUserId, res: Response, next: Next
   }
 };
 
-export { verifyAuthToken };
+const verifyPrivileged = async (req: RequestWithUserId, res: Response, next: NextFunction) => {
+  // verify uid has privilege
+  const user = await UserModel.findById(req.body.uid);
+  if (!user) {
+    res
+      .status(AuthError.INVALID_AUTH_TOKEN.status)
+      .send(AuthError.INVALID_AUTH_TOKEN.displayMessage(true));
+    return;
+  }
+  if (!user.privileged) {
+    res
+      .status(AuthError.INVALID_AUTH_PRIVILEGE.status)
+      .send(AuthError.INVALID_AUTH_PRIVILEGE.displayMessage(true));
+    return;
+  }
+
+  next();
+};
+
+export { verifyAuthToken, verifyPrivileged };

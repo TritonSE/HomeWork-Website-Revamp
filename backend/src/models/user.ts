@@ -14,7 +14,6 @@ const userSchema = new mongoose.Schema(
     },
     privileged: {
       type: Boolean,
-      required: true,
       default: false, // Default to false for all new users
     },
   },
