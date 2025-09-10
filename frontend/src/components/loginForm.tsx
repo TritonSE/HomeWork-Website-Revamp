@@ -83,23 +83,17 @@ const LoginForm: React.FC = () => {
       <div className="w-full md:w-1/2 flex flex-col items-center justify-center">
         <div className="w-full max-w-md">
           <div className="flex items-start">
-            <Link href="/" className="text-[#B4B4B4] hover:underline flex items-start gap-2">
+            <Link href="/" className="text-[#B4B4B4] hover:underline flex items-center gap-2">
               <Icon name="ic_arrowback" fill="#B4B4B4" size={16} />
               Back to Homework website
             </Link>
           </div>
           {/* Logo */}
-          <div className="mt-10 mb-5 flex justify-left">
+          <div className="mt-10 mb-2 flex justify-left">
             <Image src="/images/homeworkLogo.png" alt="Homework Logo" width={155} height={86} />
           </div>
 
-          <h1 className="text-3xl mb-2">Log In</h1>
-          <p className="mb-10 text-[#909090]">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-[#F26522] hover:underline">
-              Sign Up
-            </Link>
-          </p>
+          <h1 className="text-3xl mb-16">Log In</h1>
 
           <form onSubmit={handleSubmit}>
             <TextField

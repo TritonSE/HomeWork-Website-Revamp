@@ -56,7 +56,8 @@
       }
     ],
     "@typescript-eslint/no-unnecessary-condition": "off",
-    "react-hooks/exhaustive-deps": "off"
+    "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/restrict-template-expressions": "off"
   },
   "overrides": [
     {

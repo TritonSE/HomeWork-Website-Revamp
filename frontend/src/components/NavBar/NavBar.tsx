@@ -1,3 +1,4 @@
+import { Button } from "@tritonse/tse-constellation";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -8,7 +9,7 @@ const Navbar: React.FC<{ opaque?: boolean }> = ({ opaque = false }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(opaque || window.scrollY > 500); //header length
+      setIsScrolled(opaque || window.scrollY > 250); //header length
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -62,7 +63,7 @@ const Navbar: React.FC<{ opaque?: boolean }> = ({ opaque = false }) => {
               title: "Get Involved",
               href: "/get-involved",
               links: [
-                { label: "Upcoming Events", href: "/events" },
+                { label: "Upcoming Events", href: "/calendar" },
                 { label: "Donate", href: "/donate" },
               ],
             },
@@ -112,10 +113,9 @@ const Navbar: React.FC<{ opaque?: boolean }> = ({ opaque = false }) => {
           {/* Donate Button */}
           <Link
             href="/donate"
-            className="w-[120px] h-[48px] flex items-center justify-center px-6 py-3 
-          bg-orange-500 text-white font-GolosText rounded-md hover:bg-orange-600 transition mt-5"
+            className="w-[120px] h-[48px] flex items-center justify-center transition mt-5"
           >
-            Donate
+            <Button>Donate</Button>
           </Link>
         </div>
       </nav>

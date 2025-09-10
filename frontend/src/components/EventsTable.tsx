@@ -31,8 +31,6 @@ const EventsTable: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [_isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<ArticleWithStatus | null>(null);
@@ -82,15 +80,8 @@ const EventsTable: React.FC = () => {
     ...article,
     status: article.isPublished ? "Published" : "Draft",
   }));
-
   const filteredArticles = articlesWithStatus.filter((article) =>
     article.header.toLowerCase().startsWith(searchQuery.toLowerCase()),
-  );
-
-  const totalPages = Math.ceil(filteredArticles.length / itemsPerPage);
-  const paginatedArticles = filteredArticles.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
   );
 
   const showSuccessMessage = (message: string): void => {
@@ -101,7 +92,7 @@ const EventsTable: React.FC = () => {
   };
 
   const handleRowClick = (index: number): void => {
-    const article = paginatedArticles[index] ?? null;
+    const article = filteredArticles[index] ?? null;
     if (article) {
       setSelectedArticle(article);
       setIsDetailModalOpen(true);
@@ -217,7 +208,7 @@ const EventsTable: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 min-h-screen">
       {successMessage && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-[#AFF4C6] text-[#1B1B1B] px-6 py-3 rounded-md flex items-center gap-2 z-[9998] shadow-lg">
           <svg
@@ -304,7 +295,7 @@ const EventsTable: React.FC = () => {
         </div>
       )}
 
-      <div className="bg-white rounded-lg p-6">
+      <div className="bg-white rounded-lg p-6 flex flex-col flex-grow">
         <style jsx>{`
           :global(._headerCell_1autq_27) {
             color: #ffffff !important;
@@ -325,6 +316,20 @@ const EventsTable: React.FC = () => {
           }
           :global(._sortToggleContainer_1autq_41 svg) {
             fill: #ffffff !important;
+          }
+          :global(.tse-table._container_1autq_1) {
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+          }
+          :global(.tse-table [class*="paginationContainer"]) {
+            display: flex !important;
+            justify-content: center !important;
+            margin-top: auto !important;
+            padding-top: 24px !important;
+            bottom: 0 !important;
+            margin-bottom: 24px !important;
           }
         `}</style>
 
@@ -356,14 +361,15 @@ const EventsTable: React.FC = () => {
           </button>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto flex-grow flex flex-col">
           <Table
             columns={columns}
-            data={paginatedArticles}
+            data={filteredArticles}
             className="w-full tse-table"
-            enablePagination={false}
+            enablePagination={true}
             enableSorting={true}
             enableGlobalFiltering={false}
+            autoResetPageIndex={true}
           />
           {filteredArticles.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 px-4">
@@ -389,37 +395,6 @@ const EventsTable: React.FC = () => {
             </div>
           )}
         </div>
-
-        {filteredArticles.length > 0 && (
-          <div className="flex justify-center items-center gap-4 mt-6">
-            <button
-              onClick={(): void => {
-                setCurrentPage((prev) => Math.max(prev - 1, 1));
-              }}
-              disabled={currentPage === 1}
-              className="text-gray-500 disabled:opacity-50"
-            >
-              <Icon name="ic_caretleft" fill="black" />
-            </button>
-            <div className="flex items-center gap-2 text-gray-500">
-              <span>page</span>
-              <div className="w-8 h-8 flex items-center justify-center border border-gray-200 rounded">
-                {currentPage}
-              </div>
-              <span>of</span>
-              <span>{totalPages}</span>
-            </div>
-            <button
-              onClick={(): void => {
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-              }}
-              disabled={currentPage === totalPages}
-              className="text-gray-500 disabled:opacity-50"
-            >
-              <Icon name="ic_caretright" fill="black" />
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Event Detail Modal */}

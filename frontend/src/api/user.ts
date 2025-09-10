@@ -23,17 +23,32 @@ export async function verifyUser(token: string): Promise<APIResult<User>> {
   }
 }
 
-export async function createUser(
-  name: string,
-  email: string,
-  password: string,
-): Promise<APIResult<UserCreate>> {
+export async function createUser({
+  firstName,
+  lastName,
+  email,
+  password,
+  token,
+}: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  token: string;
+}): Promise<APIResult<UserCreate>> {
   try {
-    const response = await post("/users/create", {
-      name,
-      email,
-      password,
-    });
+    const response = await post(
+      "/users/create",
+      {
+        name: `${firstName} ${lastName}`,
+        email,
+        password,
+      },
+      {
+        Authorization: `Bearer ${token}`,
+      },
+    );
+
     const data = (await response.json()) as UserCreate;
     return { success: true, data };
   } catch (error) {

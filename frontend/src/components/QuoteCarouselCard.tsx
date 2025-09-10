@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 /**
  * Interface for slide data structure
  */
@@ -15,7 +17,7 @@ export type Testimonial = {
  */
 type QuoteCarouselCardProps = {
   slide: Testimonial;
-  position: "center" | "left" | "right" | "hidden";
+  position: "center" | "left" | "right" | "hiddenRight" | "hiddenLeft";
 };
 
 /**
@@ -23,24 +25,28 @@ type QuoteCarouselCardProps = {
  */
 const QuoteCarouselCard: React.FC<QuoteCarouselCardProps> = ({ slide, position }) => {
   const positionClasses = {
-    center: "left-1/2 -translate-x-1/2 -translate-y-4 z-30 scale-100 opacity-100",
-    left: "left-24 -translate-x-1/2 z-20 scale-90 opacity-60",
-    right: "right-24 translate-x-1/2 z-20 scale-90 opacity-60",
-    hidden: "left-1/2 -translate-x-1/2 z-10 scale-75 opacity-0",
+    center: "left-1/2 -translate-x-1/2 -translate-y-4 z-30 opacity-100",
+    left: "left-24 -translate-x-1/2 z-20 opacity-60",
+    right: "right-24 translate-x-1/2 z-20 opacity-60",
+    hiddenRight: "right-24 translate-x-full z-0 opacity-0",
+    hiddenLeft: "-translate-x-full z-0 opacity-0",
   };
   const quote = '"' + slide.quote + '"';
 
   return (
     <div
-      className={`absolute w-full max-w-md rounded-lg bg-white p-6 border-2 border-black transition-all duration-500 ease-in-out transform ${position === "center" ? "shadow-xl" : "shadow-lg"}
+      className={`absolute w-full max-w-[40%] max-h-[80%] h-full rounded-lg bg-white p-6 border-2 border-black transition-all duration-500 ease-in-out transform 
+        ${position === "center" ? "shadow-xl" : "shadow-lg"}
         ${positionClasses[position]}
       `}
     >
-      <div className="flex flex-col items-center">
-        <img src={slide.image} className="w-full h-80 object-cover rounded mb-6" />
+      <div className="flex flex-col items-center text-text_black h-full text-lg">
+        <div className="w-full h-[60%] bg-gray-100 relative">
+          {<Image src={slide.image} layout="fill" className="object-cover" alt="testimonial" />}
+        </div>
         <div className="text-center p-6">
-          <p className="text-gray-800 text-lg mb-6">{quote}</p>
-          <p className="text-gray-600 text-lg">-- {slide.author}</p>
+          <p className="mb-6">{quote}</p>
+          <p>-- {slide.author}</p>
         </div>
       </div>
     </div>

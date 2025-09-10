@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@tritonse/tse-constellation";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
@@ -24,7 +25,7 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
       <p className="line-clamp-3">{article.body ?? ""}</p>
       <Link
         href={{ pathname: "/article-viewer", query: { articleId: article._id } }}
-        className="flex flex-row gap-2 w-fit text-gray-400 border border-transparent cursor-pointer hover:border-b-gray-400"
+        className="flex flex-row gap-2 w-fit text-[#6C6C6C] border border-transparent cursor-pointer"
       >
         <p>LEARN MORE</p>
         <Image src="/icons/learnMore.svg" width={20} height={20} alt="Learn more arrow" />
@@ -81,20 +82,19 @@ const StayConnectedPage: React.FC = () => {
             header={headerData.header}
             subheader={headerData.subheader}
             fancy={headerData.fancy}
-          />
-          <div className="flex justify-end w-full mt-4 px-10">
+          >
             <Link
               href="/contact"
               className="w-[25%] border rounded-lg px-6 py-3 bg-transparent hover:bg-white/25"
             >
               Send us a Message
             </Link>
-          </div>
+          </Header>
         </>
       )}
 
       {/* Content Section */}
-      <div className="p-10 font-golos">
+      <div className="px-12 pt-[24px] font-golos">
         <h1 className="mb-5 text-3xl sm:text-5xl font-medium">{descData.title}</h1>
         <p>{descData.description}</p>
 
@@ -112,11 +112,8 @@ const StayConnectedPage: React.FC = () => {
         </div>
 
         <div className="flex justify-start items-center w-full mt-10 mb-5">
-          <Link
-            href="/events-archive"
-            className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos"
-          >
-            See All Articles
+          <Link href="/events-archive">
+            <Button>See All Articles</Button>
           </Link>
         </div>
       </div>

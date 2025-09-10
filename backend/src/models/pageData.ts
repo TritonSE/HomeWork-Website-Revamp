@@ -5,6 +5,7 @@ import mongoose, { Document, Schema } from "mongoose";
  */
 export type IField = {
   name: string;
+  type: string;
   data: unknown; // Mixed type to hold any shape of data
 };
 
@@ -24,6 +25,7 @@ export type IPageData = {
 const fieldSchema: Schema = new Schema(
   {
     name: { type: String, required: true },
+    type: { type: String, required: true },
     data: { type: Schema.Types.Mixed, required: true },
   },
   { _id: false },
