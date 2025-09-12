@@ -502,7 +502,9 @@ const EventsTable: React.FC = () => {
 
                 <div>
                   <h3 className="text-lg font-medium text-gray-700 mb-1">Event Description</h3>
-                  <p className="text-base">{selectedArticle.body ?? "No description available."}</p>
+                  <p className="text-base whitespace-pre-wrap">
+                    {selectedArticle.body ?? "No description available."}
+                  </p>
                 </div>
               </div>
             </div>

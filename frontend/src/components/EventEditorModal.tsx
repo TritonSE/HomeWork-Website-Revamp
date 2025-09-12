@@ -1,5 +1,5 @@
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { storage } from "../firebase/firebase";
 
@@ -22,14 +22,23 @@ const EventEditorModal: React.FC<EventEditorModalProps> = ({
   selectedArticle,
 }) => {
   const { firebaseUser } = useAuthState();
-  const [eventTitle, setEventTitle] = useState(selectedArticle?.header ?? "");
-  const [eventDescription, setEventDescription] = useState(selectedArticle?.body ?? "");
+  const [eventTitle, setEventTitle] = useState<string>("");
+  const [eventDescription, setEventDescription] = useState<string>("");
+  const [originalThumbnailURL, setOriginalThumbnailURL] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (selectedArticle) {
+      setEventTitle(selectedArticle.header);
+      setEventDescription(selectedArticle.body ?? "");
+      setOriginalThumbnailURL(selectedArticle.thumbnail ?? "");
+    }
+  }, [selectedArticle]);
 
   const getAuthHeader = async (): Promise<Record<string, string>> => {
     if (!firebaseUser) {
@@ -133,7 +142,10 @@ const EventEditorModal: React.FC<EventEditorModalProps> = ({
     if (!eventTitle || !selectedFile) return;
 
     try {
-      const thumbnailUrl = await uploadFileToFirebase(selectedFile);
+      const thumbnailUrl = selectedFile
+        ? await uploadFileToFirebase(selectedFile)
+        : (selectedArticle?.thumbnail ?? "");
+
       const headers = await getAuthHeader();
 
       const response = await post(
@@ -215,7 +227,7 @@ const EventEditorModal: React.FC<EventEditorModalProps> = ({
         {
           header: eventTitle,
           body: eventDescription,
-          author: firebaseUser?.displayName ?? selectedArticle.author,
+          author: selectedArticle.author,
           thumbnail: thumbnailUrl,
           isPublished: shouldPublish,
         },
@@ -346,6 +358,33 @@ const EventEditorModal: React.FC<EventEditorModalProps> = ({
                         <line x1="12" y1="3" x2="12" y2="15"></line>
                       </svg>
                       <span className="ml-2">{selectedFile.name}</span>
+                    </div>
+                  </div>
+                ) : originalThumbnailURL ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="flex items-center justify-center w-full">
+                      <img
+                        src={originalThumbnailURL}
+                        alt="Preview"
+                        className="max-h-32 object-contain"
+                      />
+                    </div>
+                    <div className="flex items-center mt-2 text-gray-600">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                      </svg>
                     </div>
                   </div>
                 ) : (
