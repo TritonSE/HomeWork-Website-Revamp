@@ -64,30 +64,32 @@ const QuoteCarousel: React.FC<QuoteCarouselProps> = ({ slides = [] }) => {
   };
 
   return (
-    <div className="relative w-screen mx-auto px-10 pt-12 overflow-hidden h-screen">
-      {/* Main carousel container */}
-      {/* Slides */}
-      {slidesToDisplay.map((slide, index) => (
-        <QuoteCarouselCard key={index} slide={slide} position={getSlidePosition(index)} />
-      ))}
-
+    <div className="relative flex flex-row w-screen bg-gray justify-between -mx-6 md:-mx-12 pt-12 overflow-hidden h-screen">
       {/* Navigation buttons */}
       <button
         onClick={prevSlide}
-        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-40 bg-white rounded-full p-2 shadow-lg focus:outline-none hover:bg-gray-100 transition-colors"
+        className="z-40 bg-white md:pl-6 md:shadow-lg focus:outline-none hover:bg-gray-100 transition-colors"
         disabled={isAnimating}
         aria-label="Previous slide"
       >
-        <ChevronLeft size={24} className="text-gray-700" />
+        <ChevronLeft size={48} className="text-gray-700" />
       </button>
+
+      {/* Main carousel container */}
+      {/* Slides */}
+      <div className="w-full">
+        {slidesToDisplay.map((slide, index) => (
+          <QuoteCarouselCard key={index} slide={slide} position={getSlidePosition(index)} />
+        ))}
+      </div>
 
       <button
         onClick={nextSlide}
-        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-40 bg-white rounded-full p-2 shadow-lg focus:outline-none hover:bg-gray-100 transition-colors"
+        className="z-40 bg-white md:pr-6 md:shadow-lg focus:outline-none hover:bg-gray-100 transition-colors"
         disabled={isAnimating}
         aria-label="Next slide"
       >
-        <ChevronRight size={24} className="text-gray-700" />
+        <ChevronRight size={48} className="text-gray-700" />
       </button>
     </div>
   );

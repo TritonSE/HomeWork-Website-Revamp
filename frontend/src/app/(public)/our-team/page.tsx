@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 
 import Header from "@/components/Header";
 import { PageDataContext } from "@/contexts/pageDataContext";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 type Member = { name: string; title: string; imageUrl: string; bio: string };
 type Intro = { title: string; description: string };
@@ -13,6 +14,7 @@ type Header = { imageUrl: string; header: string; subheader: string };
 
 export default function OurTeamPage() {
   const context = useContext(PageDataContext);
+  const { isMobile } = useWindowSize();
   const [isVisible, setIsVisible] = useState(false);
 
   const [members, setMembers] = useState<Member[]>();
@@ -20,7 +22,7 @@ export default function OurTeamPage() {
   const [headerData, setHeaderData] = useState<Header>();
   const [bioMD, setBioMD] = useState<string[]>();
   const [gridWidth, setGridWidth] = useState(0);
-  const imageFrac = 0.25;
+  const imageFrac = isMobile ? 0.4 : 0.25;
 
   useEffect(() => {
     const getGridWidth = () => {
@@ -103,18 +105,16 @@ export default function OurTeamPage() {
 
       {/* Team Members Section */}
       <div className="h-[20px] sm:h-[40px]" />
-
-      <div className="p-12">
-        <h2 className="text-[16px] font-medium sm:text-[48px] leading-[3rem] sm:leading-[3.5rem] tracking-normal text-left mb-6">
+      <div className="p-6 md:p-12">
+        <h2 className="text-[28px] font-medium md:text-[48px] leading-[3rem] sm:leading-[3.5rem] tracking-normal text-left mb-2 md:mb-6">
           {descriptionData?.title}
         </h2>
-        <p className="mb-12 text-[20px]">{descriptionData?.description}</p>
-
+        <p className="mb-12 text-[14px] md:text-[20px]">{descriptionData?.description}</p>
         {/* Grid Layout */}
         <div
           id="grid-container"
           style={{ gap: `20px ${(gridWidth * (1 - 3 * imageFrac)) / 2}px` }}
-          className="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 hidden"
+          className="grid-cols-2 md:grid-cols-3 hidden"
         >
           {members?.map((member, index) => (
             <div key={index}>
@@ -132,12 +132,12 @@ export default function OurTeamPage() {
                   className="mb-4 object-contain"
                 />
               </div>
-              <h3 className="text-xl font-semibold">{member.name}</h3>
-              {member.title}
+              <h3 className="text-[20px] md:text-xl font-semibold">{member.name}</h3>
+              <p className="text-[12px] md:text-lg">{member.title}</p>
               {bioMD && (
                 <p
                   dangerouslySetInnerHTML={{ __html: bioMD[index] }}
-                  className="text-[12px] whitespace-pre-line"
+                  className="text-[10px] md:text-[12px] whitespace-pre-line"
                 ></p>
               )}
             </div>

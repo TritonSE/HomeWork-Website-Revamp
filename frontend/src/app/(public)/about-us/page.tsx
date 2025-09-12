@@ -72,12 +72,12 @@ const InfoCard: React.FC<{ title: string; icon: string; description: string }> =
   icon,
   description,
 }) => (
-  <div className="bg-gray-100 rounded-xl px-6 md:px-0 py-12 text-center shadow-sm w-1/4 min-w-[200px] h-full">
-    <div className="mx-auto w-1/3 h-[60%] mb-4 relative">
+  <div className="bg-gray-100 h-auto w-auto rounded-xl px-3 md:px-0 py-4 md:w-1/4 md:py-12 text-center shadow-sm md:min-w-[200px] h-full">
+    <div className="mx-auto w-[60px] md:w-[100px] h-[54px] md:h-[80px] mb-4 relative">
       <Image src={icon} alt={title} fill={true} className="object-fill" />
     </div>
-    <h3 className="text-xl font-semibold">{title}</h3>
-    <p className="text-gray-600">{description}</p>
+    <h3 className="text-md pb-1 md:pb-0 md:text-xl font-semibold">{title}</h3>
+    <p className="text-xs md:text-lg text-gray-600">{description}</p>
   </div>
 );
 
@@ -86,10 +86,12 @@ const Stat: React.FC<{ percentage: number; description: string }> = ({
   description,
 }) => (
   <div className="flex flex-col items-center">
-    <div className="font-libre-baskerville text-[96px] font-bold text-secondary_highlight_1 pb-4">
+    <div className="font-libre-baskerville text-[64px] md:text-[96px] font-bold text-secondary_highlight_1 pb-2 md:pb-4">
       {percentage}
     </div>
-    <div className="font-golos text-[20px] font-normal">{description}</div>
+    <div className="font-golos text-[14px] md:text-[20px] font-normal text-center md:text-left mx-24 md:mx-0">
+      {description}
+    </div>
   </div>
 );
 
@@ -148,10 +150,12 @@ const AboutUsPage = () => {
       )}
       {/* Our Impact Section */}
       {impactField && (
-        <div className="px-12">
+        <div className="px-6 md:px-12">
           <div className="font-golos py-[60px]">
-            <div className="text-[48px] font-medium pb-4">{impactData.title}</div>
-            <div className="text-[20px] font-normal pb-12">{impactData.description}</div>
+            <div className="text-[28px] md:text-[48px] font-medium pb-4">{impactData.title}</div>
+            <div className="text-[14px] md:text-[20px] font-normal pb-12">
+              {impactData.description}
+            </div>
             <div className="flex flex-col md:flex-row justify-between items-center md:px-[calc(10%)] gap-8">
               {impactData.stats.map((stat, index) => (
                 <Stat key={index} percentage={stat.percentage} description={stat.description} />
@@ -166,34 +170,38 @@ const AboutUsPage = () => {
       )}
       {/* Our Mission Section */}
       {missionField && (
-        <div className="flex md:flex-row flex-col md:justify-between bg-text_bg py-[50px] items-center mt-8">
-          <div className="font-golos w-full max-w-[calc(80%)] md:max-w-[calc(50%)] ml-[50px] mr-4">
-            <div className="text-[48px] font-medium pb-4">{missionData.title}</div>
-            <div className="text-[20px] font-normal max-w-auto">{missionData.description}</div>
+        <div className="flex md:flex-row flex-col md:justify-between md:bg-text_bg py-[50px] items-center mt-8 px-6 md:px-0">
+          <div className="font-golos w-full max-w-full md:max-w-[calc(50%)] md:ml-[50px] md:mr-4 ">
+            <div className="text-[28px] md:text-[48px] font-medium pb-2 md:pb-4">
+              {missionData.title}
+            </div>
+            <div className="text-[14px] md:text-[20px] font-normal leading-[20px] pb-4 md:pb-0  max-w-auto">
+              {missionData.description}
+            </div>
           </div>
           {missionData.imageUrl && (
-            <Image
-              className="md:pt-0 pt-8 md:mr-[50px] md:max-w-[calc(50%)] max-w-[calc(80%)] mx-auto"
-              src={missionData.imageUrl}
-              alt="Our Mission"
-              width={628}
-              height={400}
-            />
+            <div className="relative md:pt-0 pt-8 md:mr-[50px] w-full md:w-[50%] h-[300px] md:h-[400px] mx-auto">
+              <Image src={missionData.imageUrl} alt="Our Mission" fill={true} objectFit="cover" />
+            </div>
           )}
         </div>
       )}
       {/* Our Vision & Pillars Section */}
       {visionField && visionData.pillars && (
-        <div className="mx-[50px] flex flex-col pt-16">
+        <div className="mx-6 md:mx-[50px] flex flex-col pt-8 md:pt-16">
           <div className="flex flex-col font-golos">
-            <div className="text-[48px] font-medium pb-4">{visionData.title}</div>
-            <div className="text-[20px] font-normal pb-6">{visionData.description}</div>
-            <div className="text-[32px] font-medium pb-[20px]">{visionData.pillars.title}</div>
-            <div className="text-[20px] font-normal pb-[60px]">
+            <div className="text-[28px] md:text-[48px] font-medium pb-4">{visionData.title}</div>
+            <div className="text-[14px] md:text-[20px] leading-[20px] md:leading-[26px] font-normal pb-6">
+              {visionData.description}
+            </div>
+            <div className="text-[20px] md:text-[32px] font-medium pb-[20px]">
+              {visionData.pillars.title}
+            </div>
+            <div className="text-[14px] md:text-[20px] leading-[20px] md:leading-[26px] font-normal pb-6 md:pb-[60px]">
               {visionData.pillars.description}
             </div>
           </div>
-          <div className="mt-10 flex flex-nowrap justify-between gap-6 h-60">
+          <div className="md:mt-10 h-auto md:h-60 grid grid-flow-row grid-rows-2 grid-cols-2 gap-8 md:flex md:flex-nowrap md:justify-between md:gap-6">
             {visionData.pillars.cards.map((card, index) => (
               <InfoCard
                 key={index}
@@ -211,11 +219,11 @@ const AboutUsPage = () => {
       )}
       {/* Our Team Section */}
       {teamField && (
-        <div className="mx-[50px] flex md:flex-row flex-col md:justify-between md:items-center pt-16 mb-16">
+        <div className="mx-6 md:mx-[50px] flex md:flex-row flex-col md:justify-between md:items-center pt-16 mb-16">
           <div className="flex flex-col md:max-w-[calc(50%)]">
             <div className="font-golos pb-8">
-              <div className="text-[48px] font-medium pb-4">{teamData.title}</div>
-              <div className="text-[20px] font-normal max-w-[calc(80%)]">
+              <div className="text-[32px] md:text-[48px] font-medium pb-4">{teamData.title}</div>
+              <div className="text-[14px] md:text-[20px] font-normal md:max-w-[calc(80%)]">
                 {teamData.description}
               </div>
             </div>
@@ -234,7 +242,7 @@ const AboutUsPage = () => {
           </div>
           {teamData.imageUrl && (
             <Image
-              className="md:max-w-[calc(50%)] max-w-[calc(80%)] md:mx-0 mx-auto"
+              className="md:max-w-[calc(50%)] md:mx-0 mx-auto"
               src={teamData.imageUrl}
               alt={teamData.title}
               width={628}
