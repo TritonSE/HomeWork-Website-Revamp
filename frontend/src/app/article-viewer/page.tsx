@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useContext } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 
 import { ArticleContext } from "@/contexts/articleContext";
 import { Article } from "@/hooks/useArticles";
@@ -40,7 +40,7 @@ const SelectedArticle: React.FC<{ article: Article }> = ({ article }) => {
             {article.header}
           </h1>
           <p className="font-golos text-lg text-orange-500 font-semibold">{formattedDate}</p>
-          <p className="font-golos text-lg leading-8">{article.body}</p>
+          <p className="font-golos text-lg whitespace-pre-wrap leading-8">{article.body}</p>
         </div>
       </div>
 
@@ -51,7 +51,7 @@ const SelectedArticle: React.FC<{ article: Article }> = ({ article }) => {
         </h1>
         <p className="font-golos sm:text-lg text-orange-500 font-normal">{formattedDate}</p>
         <img src={article.thumbnail} alt={article.header} className="w-full h-auto object-cover" />
-        <p className="font-golos sm:text-lg leading-8">{article.body}</p>
+        <p className="font-golos sm:text-lg whitespace-pre-wrap leading-8">{article.body}</p>
       </div>
     </div>
   );
@@ -75,8 +75,19 @@ const ArticleCard: React.FC<{ article: Article; index: number }> = ({ article, i
   );
 };
 
-const RelatedArticles: React.FC<{ sortedArticles: Article[] }> = ({ sortedArticles }) => {
+const RelatedArticles: React.FC<{ sortedArticles: Article[]; selectedArticle: Article }> = ({
+  sortedArticles,
+  selectedArticle,
+}) => {
   const hasArticles = sortedArticles.length > 0;
+  const [displayedArticles, setDisplayedArticles] = useState<Article[]>(sortedArticles.slice(0, 4));
+
+  useEffect(() => {
+    if (displayedArticles.includes(selectedArticle))
+      setDisplayedArticles(
+        displayedArticles.toSpliced(displayedArticles.indexOf(selectedArticle), 1),
+      );
+  }, [selectedArticle]);
 
   return (
     <div>
@@ -85,7 +96,7 @@ const RelatedArticles: React.FC<{ sortedArticles: Article[] }> = ({ sortedArticl
       </h2>
       <div className="flex flex-col md:flex-row gap-10 h-full">
         {hasArticles ? (
-          sortedArticles
+          displayedArticles
             .slice(0, 3)
             .map((article, index) => <ArticleCard key={index} article={article} index={index} />)
         ) : (
@@ -160,12 +171,12 @@ const ArticleViewerContent: React.FC = () => {
         {loading ? (
           <LoadingText text="Loading related articles..." />
         ) : (
-          <RelatedArticles sortedArticles={articles} />
+          <RelatedArticles sortedArticles={articles} selectedArticle={selectedArticle} />
         )}
         <div className="flex justify-center items-center w-full mt-10 mb-5">
           <Link
             href={"/events-archive"}
-            className="p-3 border-transparent rounded bg-orange-500 hover:bg-orange-400 text-white font-golos"
+            className="p-3 border-transparent rounded bg-primary_orange hover:bg-orange-400 text-white font-golos"
           >
             See All Articles
           </Link>
