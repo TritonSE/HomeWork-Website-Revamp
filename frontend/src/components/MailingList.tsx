@@ -250,8 +250,8 @@ const MailingList: React.FC = () => {
 
   const exportCSV = () => {
     const csv = [
-      ["First Name", "Last Name", "Email", "Join Date", "Status"],
-      ...data.map((u) => [u.firstName, u.lastName, u.emailAdd, u.joinDate, u.status]),
+      ["First Name", "Last Name", "Email", "Join Date", "Membership", "Status"],
+      ...data.map((u) => [u.firstName, u.lastName, u.emailAdd, u.joinDate, u.membership, u.status]),
     ]
       .map((r) => r.map((c) => `"${c}"`).join(","))
       .join("\n");
