@@ -6,6 +6,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 import FieldRenderer from "./fields/FieldRenderer";
@@ -14,7 +15,6 @@ import { updatePageData } from "@/api/pageData";
 import { get } from "@/api/requests";
 import { useAuthState } from "@/contexts/userContext";
 import { storage } from "@/firebase/firebase";
-import { useRouter } from "next/navigation";
 
 type PageDataField = {
   name: string;
