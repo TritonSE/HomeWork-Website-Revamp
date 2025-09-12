@@ -89,7 +89,7 @@ export default function HomePage() {
   const publishedArticles = (articles ?? []).filter((a) => a.isPublished);
   const events: Event[] = publishedArticles.map((article) => ({
     header: article.header,
-    dateCreated: article.dateCreated,
+    dateCreated: new Date(article.dateCreated).toLocaleDateString(),
     body: article.body ?? "",
     thumbnail: article.thumbnail,
     learnMoreUrl: `/article-viewer?articleId=${article._id}`,

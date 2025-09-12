@@ -39,11 +39,7 @@ const LoginForm: React.FC = () => {
 
       // Verify with backend
       const result = await verifyUser(token);
-      if (result.success) {
-        console.log("User verified", result.data);
-      } else {
-        setEmailError("Authentication failed. Please try again.");
-      }
+      if (!result.success) setEmailError("Authentication failed. Please try again.");
     } catch (error) {
       if (error instanceof Error) {
         // Handle Firebase auth errors

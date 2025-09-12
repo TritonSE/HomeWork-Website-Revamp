@@ -8,13 +8,15 @@ import { useState } from "react";
 
 import { useAuthState } from "../../contexts/userContext";
 import { auth } from "../../firebase/firebase";
+import CreateUserModal from "../CreateUserModal";
 const Navbar: React.FC = () => {
   const router = useRouter();
-  const { loading, firebaseUser, logout } = useAuthState();
+  const { loading, firebaseUser, logout, privileged } = useAuthState();
   const displayEmail = firebaseUser?.email;
   const displayName = firebaseUser?.displayName;
   const [open, setOpen] = useState(false);
   const [resetPassword, setResetPassword] = useState(false);
+  const [createUser, setCreateUser] = useState<boolean>(false);
   const toggle = () => {
     setOpen((o) => !o);
   };
@@ -142,7 +144,7 @@ const Navbar: React.FC = () => {
           {[
             {
               title: "Page Editor",
-              href: "/page-editor",
+              href: "/edit-page",
               icon: "/images/adminNavBar/pageEditorIcon.svg",
             },
             {
@@ -175,12 +177,14 @@ const Navbar: React.FC = () => {
         <div className="mt-auto mb-8">
           {open && (
             <div className=" w-48 bg-white border shadow-lg overflow-hidden">
-              <Link
-                href="/create-account"
-                className="block px-4 py-2 hover:bg-gray-100 text-center"
+              <button
+                onClick={() => {
+                  setCreateUser(true);
+                }}
+                className={`block w-full px-4 py-2 hover:bg-gray-100 text-center ${privileged ? "" : "hidden"}`}
               >
                 Create an Account
-              </Link>
+              </button>
               <button
                 onClick={() => {
                   setResetPassword(true);
@@ -217,6 +221,13 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </nav>
+      {createUser && (
+        <CreateUserModal
+          onClose={() => {
+            setCreateUser(false);
+          }}
+        />
+      )}
       {resetPassword && (
         <div
           className="fixed inset-0 z-[999] bg-slate-500 bg-opacity-25 flex items-center justify-center"

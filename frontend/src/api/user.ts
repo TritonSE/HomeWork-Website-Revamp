@@ -3,6 +3,7 @@ import { APIResult, get, post } from "./requests";
 export type User = {
   id: string;
   email: string;
+  privileged?: boolean;
 };
 
 export type UserCreate = {

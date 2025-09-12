@@ -1,14 +1,14 @@
 import express from "express";
 
 import * as UserController from "../controllers/user";
-import { verifyAuthToken } from "../validators/auth";
+import { verifyAuthToken, verifyPrivileged } from "../validators/auth";
 import * as UserValidator from "../validators/userValidation";
 
 const router = express.Router();
 
 router.post(
   "/create",
-  [verifyAuthToken],
+  [verifyAuthToken, verifyPrivileged],
   UserValidator.createUserValidation,
   UserController.createUser,
 );
