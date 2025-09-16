@@ -5,7 +5,8 @@ import ThemeWrapper from "@/components/ThemeWrapper";
 
 export const metadata: Metadata = {
   title: "HoMEwork: Freedom Looks Good On You",
-  description: "HoMEwork is an organization committed to reducing recidivism for post-incarcerated individuals. By leveraging community resources, we establish a supportive peer mentoring environment that empowers San Diegans towards lasting change and success."
+  description:
+    "HoMEwork is an organization committed to reducing recidivism for post-incarcerated individuals. By leveraging community resources, we establish a supportive peer mentoring environment that empowers San Diegans towards lasting change and success.",
 };
 
 export default function RootLayout({
