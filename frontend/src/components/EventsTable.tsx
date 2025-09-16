@@ -517,12 +517,14 @@ const EventsTable: React.FC = () => {
         isOpen={isModalOpen}
         onClose={(): void => {
           setIsModalOpen(false);
+          setSelectedArticle(null);
         }}
         onSuccess={(): void => {
           void fetchArticles();
           showSuccessMessage(
             selectedArticle ? "Event updated successfully." : "Event published successfully.",
           );
+          setSelectedArticle(null);
         }}
         selectedArticle={selectedArticle ?? undefined}
       />
