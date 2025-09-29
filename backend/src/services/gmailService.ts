@@ -1,6 +1,35 @@
-import { gmail } from "../config";
+import dotenv from "dotenv";
+dotenv.config();
+
+import { google } from "googleapis";
+
+const { GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN, GMAIL_REDIRECT_URI } =
+  process.env;
+
+const oauth2Client = new google.auth.OAuth2({
+  clientId: GMAIL_CLIENT_ID,
+  clientSecret: GMAIL_CLIENT_SECRET,
+  redirectUri: GMAIL_REDIRECT_URI,
+});
+
+oauth2Client.setCredentials({
+  refresh_token: GMAIL_REFRESH_TOKEN,
+});
+
+const getAuthorizedGmail = async () => {
+  if (!oauth2Client.credentials.expiry_date || oauth2Client.credentials.expiry_date < Date.now()) {
+    console.log("Refreshing access token...");
+    await oauth2Client.refreshAccessToken();
+  } else {
+    console.log("Using cached access token.");
+  }
+
+  return google.gmail({ version: "v1", auth: oauth2Client });
+};
 
 export const sendConfirmationEmail = async (to: string, subject: string, message: string) => {
+  const gmail = await getAuthorizedGmail();
+
   const rawMessage = Buffer.from(
     `To: ${to}\r\n` +
       `Subject: ${subject}\r\n` +
@@ -23,6 +52,8 @@ export const sendConfirmationEmail = async (to: string, subject: string, message
 };
 
 export const getRecentMessages = async (maxResults = 50) => {
+  const gmail = await getAuthorizedGmail();
+
   const list = await gmail.users.messages.list({
     userId: "me",
     maxResults,
