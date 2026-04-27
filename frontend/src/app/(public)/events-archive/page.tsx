@@ -126,6 +126,13 @@ const EventsArchiveContent: React.FC = () => {
     (currPage + 1) * EVENTS_PER_PAGE,
   );
 
+  if (pageArticles.length === 0)
+    return (
+      <section className="flex flex-col items-center justify-center text-xl text-gray-400 my-12">
+        No articles yet. Check back later!
+      </section>
+    );
+
   return (
     <>
       <section

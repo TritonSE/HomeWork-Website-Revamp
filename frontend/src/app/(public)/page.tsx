@@ -103,9 +103,13 @@ export default function HomePage() {
       {successData && <SuccessStories data={successData} />}
       {newsData && <NewsPastEvents data={newsData} />}
       <div className="mb-10">
-        <EventsCarousel>
-          {events?.map((event, index) => <EventsCarouselCard key={index} event={event} />)}
-        </EventsCarousel>
+        {events.length > 0 && (
+          <EventsCarousel>
+            {events.map((event, index) => (
+              <EventsCarouselCard key={index} event={event} />
+            ))}
+          </EventsCarousel>
+        )}
       </div>
     </div>
   );

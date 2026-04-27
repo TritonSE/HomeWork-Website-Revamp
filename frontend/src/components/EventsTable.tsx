@@ -362,16 +362,7 @@ const EventsTable: React.FC = () => {
         </div>
 
         <div className="overflow-x-auto flex-grow flex flex-col">
-          <Table
-            columns={columns}
-            data={filteredArticles}
-            className="w-full tse-table"
-            enablePagination={true}
-            enableSorting={true}
-            enableGlobalFiltering={false}
-            autoResetPageIndex={true}
-          />
-          {filteredArticles.length === 0 && (
+          {filteredArticles.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 px-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -387,12 +378,25 @@ const EventsTable: React.FC = () => {
                   fill="#1B1B1B"
                 />
               </svg>
-              <h3 className="text-xl font-medium text-gray-900 mb-2">No Results Found</h3>
+
+              <h3 className="text-xl font-medium text-gray-900 mb-2">
+                {articles.length === 0 ? "No Articles Yet!" : "No Results Found"}
+              </h3>
               <p className="text-gray-600 text-center">
-                We can&apos;t find any events that match your search. Please double check your
-                selection and try again.
+                {articles.length !== 0 &&
+                  "We can't find any events that match your search. Please double check your selection and try again."}
               </p>
             </div>
+          ) : (
+            <Table
+              columns={columns}
+              data={filteredArticles}
+              className="w-full tse-table"
+              enablePagination={true}
+              enableSorting={true}
+              enableGlobalFiltering={false}
+              autoResetPageIndex={true}
+            />
           )}
         </div>
       </div>
