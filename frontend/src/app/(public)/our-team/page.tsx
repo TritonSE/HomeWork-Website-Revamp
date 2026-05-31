@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from "react";
 
 import Header from "@/components/Header";
 import { PageDataContext } from "@/contexts/pageDataContext";
-import { useWindowSize } from "@/hooks/useWindowSize";
 
 type Member = { name: string; title: string; imageUrl: string; bio: string };
 type Intro = { title: string; description: string };
@@ -14,30 +13,14 @@ type Header = { imageUrl: string; header: string; subheader: string };
 
 export default function OurTeamPage() {
   const context = useContext(PageDataContext);
-  const { isMobile } = useWindowSize();
   const [isVisible, setIsVisible] = useState(false);
 
   const [members, setMembers] = useState<Member[]>();
   const [descriptionData, setDescriptionData] = useState<Intro>();
   const [headerData, setHeaderData] = useState<Header>();
   const [bioMD, setBioMD] = useState<string[]>();
-  const [gridWidth, setGridWidth] = useState(0);
-  const imageFrac = isMobile ? 0.4 : 0.25;
 
   useEffect(() => {
-    const getGridWidth = () => {
-      const gridContainer = document.getElementById("grid-container");
-      if (gridContainer) {
-        //display grid after loading
-        gridContainer.style.display = "grid";
-
-        setGridWidth(gridContainer.offsetWidth);
-      }
-    };
-
-    window.addEventListener("resize", getGridWidth);
-    getGridWidth();
-
     // add styling to links
     DOMPurify.removeAllHooks();
     DOMPurify.addHook("afterSanitizeAttributes", function (node) {
@@ -45,10 +28,6 @@ export default function OurTeamPage() {
         node.setAttribute("class", "text-primary_orange hover:underline");
       }
     });
-
-    return () => {
-      window.removeEventListener("resize", getGridWidth);
-    };
   }, []);
 
   useEffect(() => {
@@ -111,33 +90,23 @@ export default function OurTeamPage() {
         </h2>
         <p className="mb-12 text-[14px] md:text-[20px]">{descriptionData?.description}</p>
         {/* Grid Layout */}
-        <div
-          id="grid-container"
-          style={{ gap: `20px ${(gridWidth * (1 - 3 * imageFrac)) / 2}px` }}
-          className="grid-cols-2 md:grid-cols-3 hidden"
-        >
+        <div className="grid grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-3 md:gap-x-10 md:gap-y-12">
           {members?.map((member, index) => (
-            <div key={index}>
-              <div
-                className="relative"
-                style={{
-                  width: `${gridWidth * imageFrac}px`,
-                  height: `${gridWidth * imageFrac}px`,
-                }}
-              >
+            <div key={index} className="min-w-0">
+              <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
                 <Image
                   src={member.imageUrl}
                   alt={member.name}
                   fill={true}
-                  className="mb-4 object-contain"
+                  className="object-cover"
                 />
               </div>
-              <h3 className="text-[20px] md:text-xl font-semibold">{member.name}</h3>
-              <p className="text-[12px] md:text-lg">{member.title}</p>
+              <h3 className="mt-2 text-[20px] font-semibold leading-tight md:text-xl">{member.name}</h3>
+              <p className="text-[14px] leading-snug md:text-lg">{member.title}</p>
               {bioMD && (
                 <p
                   dangerouslySetInnerHTML={{ __html: bioMD[index] }}
-                  className="text-[10px] md:text-[12px] whitespace-pre-line"
+                  className="whitespace-pre-line pt-1 text-[11px] leading-relaxed md:text-[12px]"
                 ></p>
               )}
             </div>

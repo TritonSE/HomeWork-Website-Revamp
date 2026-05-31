@@ -13,10 +13,12 @@ export type NewsPastEventsData = {
 export default function NewsPastEvents({ data }: { data: NewsPastEventsData }) {
   const { title, description, buttonText, buttonLink } = data;
   return (
-    <section className="flex text-text_black flex-col md:flex-row items-center justify-between p-12">
-      <div>
-        <h2 className="text-[48px] font-medium">{title}</h2>
-        <p className="mt-4 mb-6">{description}</p>
+    <section className="flex flex-col items-start justify-between p-6 text-text_black md:flex-row md:items-center md:p-12">
+      <div className="max-w-2xl">
+        <h2 className="text-[28px] font-medium leading-tight md:text-[48px]">{title}</h2>
+        <p className="mb-6 mt-4 text-[14px] leading-[20px] md:text-[20px] md:leading-[26px]">
+          {description}
+        </p>
         <Link href={buttonLink}>
           <Button>{buttonText}</Button>
         </Link>

@@ -39,8 +39,9 @@
 }
 
 .card {
-  width: 483px;
-  height: 408px;
+  width: min(483px, calc(100vw - 3rem));
+  height: min(408px, calc((100vw - 3rem) * 0.845));
+  max-height: 408px;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.3s ease-in-out;
@@ -90,4 +91,11 @@
   background-color: gray;
   border-radius: 50%;
   transform: translateY(-50%);
+}
+
+@media (max-width: 640px) {
+  .card {
+    width: min(483px, calc(100vw - 2rem));
+    height: min(408px, calc((100vw - 2rem) * 0.845));
+  }
 }

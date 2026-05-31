@@ -16,7 +16,6 @@ type FlashcardData = {
 const FlashcardPage: React.FC = () => {
   const context = useContext(PageDataContext);
 
-  const flashcardHeight = 408;
   const [viewport, setViewport] = useState({ h: 1000 }); // default placeholder
 
   useEffect(() => {
@@ -32,6 +31,9 @@ const FlashcardPage: React.FC = () => {
   }, []);
   const [screenWidth, setScreenWidth] = useState<number>(1200);
   const isMobile = screenWidth < 1200;
+  const flashcardHeight = isMobile
+    ? Math.min(408, (Math.max(screenWidth, 320) - 32) * (408 / 483))
+    : 408;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -153,16 +155,13 @@ const FlashcardPage: React.FC = () => {
     }
   })();
 
-  const totalMobileHeight = flashcards.length * flashcardHeight;
-  const ballYPositionMobile = flashcardHeight * 0.5 + progress * totalMobileHeight;
-
   const cardOpacity = (idx: number) => Math.min(Math.max((progress - (idx - 1) * SEG) / SEG, 0), 1);
 
   const fill = (seg: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9) =>
     Math.min(Math.max((progress - seg * SEG) / SEG, 0), 1);
 
   return (
-    <div>
+    <div className="overflow-x-hidden">
       {headerData && (
         <Header
           imageUrl={headerData.imageUrl}
@@ -171,19 +170,19 @@ const FlashcardPage: React.FC = () => {
           fancy={headerData.fancy}
         />
       )}{" "}
-      <div className="flex md:flex-row flex-col w-full justify-between h-[500px] pt-12">
+      <div className="flex h-auto w-full flex-col justify-between pt-12 md:h-[500px] md:flex-row">
         <div className="font-golos md:pb-0 pb-20 flex flex-col md:flex-row w-full">
-          <div className="md:pl-12 pb-6 md:pb-0 md:w-[80%] md:max-w-4xl ">
-            {heroData && <div className="text-[32px] mb-8 weight-500">{heroData.title}</div>}
+          <div className="px-6 pb-6 md:w-[80%] md:max-w-4xl md:pl-12 md:pb-0">
+            {heroData && <div className="mb-8 text-[30px] font-medium md:text-[32px]">{heroData.title}</div>}
             {heroData?.description.map((line, i) => (
-              <div className={i > 0 ? "mt-6 text-[20px]" : "text-[20px]"} key={i}>
+              <div className={i > 0 ? "mt-6 text-[16px] md:text-[20px]" : "text-[16px] md:text-[20px]"} key={i}>
                 {line}
               </div>
             ))}
           </div>
         </div>
         {heroData && (
-          <div className="md:mr-12 md:max-w-[35%] w-full bg-gray-300 h-full relative">
+          <div className="relative h-[280px] w-full bg-gray-300 md:mr-12 md:h-full md:max-w-[35%]">
             <Image
               src={heroData.imageUrl}
               alt={heroData.title}
@@ -194,8 +193,12 @@ const FlashcardPage: React.FC = () => {
           </div>
         )}
       </div>
-      <div className="px-8">
-        {modelHeading && <div className="text-5xl font-golos pb-8 mt-20">{modelHeading.text}</div>}
+      <div className="px-4 md:px-8">
+        {modelHeading && (
+          <div className="mt-12 pb-8 text-[34px] font-golos leading-tight md:mt-20 md:text-5xl">
+            {modelHeading.text}
+          </div>
+        )}
 
         <div ref={flashcardsRef} className="relative flex pb-20 flex-col">
           {!isMobile && (
@@ -287,25 +290,9 @@ const FlashcardPage: React.FC = () => {
               />
             </>
           )}
-          {isMobile && (
-            <>
-              <div
-                className="lineY absolute"
-                style={{
-                  left: "50%",
-                  top: flashcardHeight * 0.5,
-                  height: progress * totalMobileHeight,
-                }}
-              />
-              <div
-                className="circle absolute"
-                style={{ left: `calc(50% - 22.5px)`, top: ballYPositionMobile }}
-              />
-            </>
-          )}
           {flashcards.map((flashcard, index) => {
             const rowClass = isMobile
-              ? "flex-row justify-center py-12"
+              ? "flex-row justify-center py-6"
               : index % 2 === 0
                 ? "flex-row"
                 : "flex-row-reverse";

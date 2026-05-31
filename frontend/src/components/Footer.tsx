@@ -177,7 +177,7 @@ const AdminLoginButton: React.FC = () => {
 
 const HomeworkIcon: React.FC = () => {
   return (
-    <div className="relative w-full sm:w-1/3 h-44">
+    <div className="relative h-32 w-full sm:h-44 sm:w-1/3">
       <Image src="/images/white-logo.png" alt="Homework logo" fill className="object-contain" />
     </div>
   );
@@ -226,7 +226,7 @@ export const Footer = () => {
   };
 
   return (
-    <div className="bg-black p-10 text-white font-golos">
+    <div className="bg-black p-6 pb-10 text-white font-golos sm:p-10">
       {/* Desktop/Tablet layout */}
       <div className="hidden sm:block">
         <div className="w-full h-fit flex flex-row justify-between gap-5 mb-7 text-base">
