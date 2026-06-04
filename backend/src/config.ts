@@ -20,6 +20,7 @@ const serviceAccountKey = throwIfUndefined(
 );
 const storageBucket = throwIfUndefined(process.env.STORAGE_BUCKET, InternalError.NO_STORAGE_BUCKET);
 const email = throwIfUndefined(process.env.EMAIL, InternalError.NO_EMAIL);
+const recipientEmail = process.env.RECIPIENT_EMAIL ?? email;
 const emailPassword = throwIfUndefined(process.env.EMAIL_PASSWORD, InternalError.NO_EMAIL_PASSWORD);
 
 const gmailClientId = throwIfUndefined(
@@ -60,4 +61,4 @@ oAuth2Client.setCredentials({
 const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
 const devMode = process.env.DEVELOPER_MODE === "True";
 
-export { port, mongoUri, serviceAccountKey, storageBucket, email, emailPassword, gmail, devMode };
+export { port, mongoUri, serviceAccountKey, storageBucket, email, emailPassword, gmail, devMode, recipientEmail };
